@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('office_management', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('meldings_id')->nullable();
             $table->foreignId('berichten_id')->nullable();
             $table->timestamps();

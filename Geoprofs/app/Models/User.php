@@ -47,4 +47,21 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function werknemers()
+    {
+        return $this->hasMany(Werknemer::class);
+    }
+
+    // A user can be a manager
+    public function managers()
+    {
+        return $this->hasMany(Manager::class);
+    }
+
+    // A user can belong to office management
+    public function officeManagements()
+    {
+        return $this->hasMany(OfficeManagement::class);
+    }
 }
