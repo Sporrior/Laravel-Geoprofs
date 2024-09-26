@@ -25,7 +25,7 @@ Clone the repository/Folder
 
 switch to the folder
 
-    cd crm-vidian
+    cd Laravel-Geoprofs
 
 install Composer and npm
 
