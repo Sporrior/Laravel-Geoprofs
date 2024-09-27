@@ -83,13 +83,13 @@
 <body>
     <div class="login-container">
         <div class="logo">
-            <img src="../resources/assets/geoprofs.png" alt="Geoprofs Logo"> 
+            <img src="../resources/assets/geoprofs.png" alt="Geoprofs Logo">
         </div>
 
-        <form action="/login" method="POST" class="login-form">
+        <form action="{{ route('login.submit') }}" method="POST" class="login-form">
             @csrf
-            <input type="text" name="username" placeholder="Gebruikersnaam" required>
-            <input type="password" name="password" placeholder="Wachtwoord" required>
+            <input type="email" name="email" placeholder="Email" required> <!-- Uses 'email' -->
+            <input type="password" name="password" placeholder="Password" required>
             <button type="submit">LOGIN</button>
         </form>
         <a href="#" class="forgot-password">Wachtwoord vergeten?</a>
