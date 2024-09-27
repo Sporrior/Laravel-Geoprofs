@@ -7,7 +7,7 @@
     <title>Geoprofs Login</title>
     <style>
         body {
-            background-color: #d98a62; /* Background color similar to the image */
+            background-color: #d98a62;
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
@@ -47,13 +47,14 @@
 
         .login-form button {
             padding: 15px;
-            background-color: #d98a62;
-            color: white;
+            background-color: white;
+            color: #d98a62;
             border: 1px solid white;
             border-radius: 4px;
             font-size: 16px;
             width: 320px;
             cursor: pointer;
+            margin-bottom: 15px;
         }
 
         .login-form button:hover {
@@ -82,17 +83,16 @@
 <body>
     <div class="login-container">
         <div class="logo">
-            <!-- You can use an image for the logo if available -->
-            <img src="../resources/assets/geoprofs.png" alt="Geoprofs Logo"> <!-- Logo placeholder -->
+            <img src="../resources/assets/geoprofs.png" alt="Geoprofs Logo"> 
         </div>
-        <!-- <h1>GEOPROFS</h1> -->
+
         <form action="/login" method="POST" class="login-form">
             @csrf
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
+            <input type="text" name="username" placeholder="Gebruikersnaam" required>
+            <input type="password" name="password" placeholder="Wachtwoord" required>
             <button type="submit">LOGIN</button>
         </form>
-        <a href="#" class="forgot-password">Wachtwoord vergeten?</a> <!-- Forgot password link -->
+        <a href="#" class="forgot-password">Wachtwoord vergeten?</a>
     </div>
 </body>
 </html>
