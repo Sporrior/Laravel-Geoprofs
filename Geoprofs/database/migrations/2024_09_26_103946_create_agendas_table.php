@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('agendas', function (Blueprint $table) {
             $table->id();
-            $table->string('verlof');
-            $table->date('ziekmelden');
             $table->date('Datum');
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('verlofaanvragen_id')->nullable();
             $table->timestamps();
         });
     }

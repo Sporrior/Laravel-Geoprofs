@@ -11,6 +11,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+
     /**
      * The attributes that are mass assignable.
      *
@@ -48,20 +49,4 @@ class User extends Authenticatable
         ];
     }
 
-    public function werknemers()
-    {
-        return $this->hasMany(Werknemer::class);
-    }
-
-    // A user can be a manager
-    public function managers()
-    {
-        return $this->hasMany(Manager::class);
-    }
-
-    // A user can belong to office management
-    public function officeManagements()
-    {
-        return $this->hasMany(OfficeManagement::class);
-    }
 }

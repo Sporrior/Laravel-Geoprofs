@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('werknemers', function (Blueprint $table) {
+        Schema::create('verlofaanvragen', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('team_id')->nullable();
+            $table->string('verlofReden');
+            $table->string('verlofStatus');
+            $table->date('datum');
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('werknemers');
+        //
     }
 };

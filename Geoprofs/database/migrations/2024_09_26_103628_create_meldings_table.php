@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('meldings', function (Blueprint $table) {
             $table->id();
-            $table->string('ziekmelden');
-            $table->foreignId('berichten_id')->nullable();
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('verlofaanvragen_id')->nullable();
             $table->timestamps();
         });
     }
