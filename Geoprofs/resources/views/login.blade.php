@@ -23,7 +23,7 @@
 
         .login-container h1 {
             font-size: 48px;
-            color: #1f5c63; /* Matching the GEOPROFS text color */
+            color: #1f5c63;
             font-weight: bold;
             margin-bottom: 40px;
             text-transform: uppercase;
