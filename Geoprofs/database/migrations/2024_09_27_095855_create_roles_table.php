@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('verlofaanvragen', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->string('verlofReden');
-            $table->string('verlofSoort');
-            $table->date('aanvraagDatum');
-            $table->date('StartDatum');
-            $table->date('EindDatum');
-            $table->foreignId('user_id')->nullable();
+            $table->string('roleName')->unique();
             $table->timestamps();
         });
+
+        // DB::table('roles')->insert([
+        //     ['roleName' => 'werknemer'],
+        //     ['roleName' => 'manager'],
+        //     ['roleName' => 'office management'],
+        // ]);
+
     }
 
     /**
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('roles');
     }
 };

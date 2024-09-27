@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('berichtens', function (Blueprint $table) {
             $table->id();
             $table->string('berichten');
+            $table->date('tijd');
             $table->foreignId('user_id')->nullable();
             $table->timestamps();
         });
