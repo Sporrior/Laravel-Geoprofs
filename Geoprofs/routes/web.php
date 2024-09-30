@@ -1,18 +1,23 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController; // Import the controller
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\LoginController;
 
-Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
+// Show the login form
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 
-// Route to handle the login form submission
+// Handle login submission
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 
-// Route to handle logout
+// Show the registration form
+Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
+
+// Handle the registration submission
+Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
+
+// Handle logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Protected dashboard route
-Route::get('/dashboard', function () {
-    return view('dashboard'); // Replace with your actual dashboard view
-})->middleware('auth');
-
+// Show the dashboard (Only for authenticated users)
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
