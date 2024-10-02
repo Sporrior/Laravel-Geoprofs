@@ -1,91 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Geoprofs Login</title>
-    <style>
-        body {
-            background-color: #d98a62;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .login-container {
-            text-align: center;
-            color: white;
-        }
-
-        .login-container h1 {
-            font-size: 48px;
-            color: #1f5c63;
-            font-weight: bold;
-            margin-bottom: 40px;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-        }
-
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .login-form input {
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-            border: 1px solid #1f5c63;
-            width: 300px;
-            font-size: 16px;
-        }
-
-        .login-form button {
-            padding: 15px;
-            background-color: white;
-            color: #d98a62;
-            border: 1px solid white;
-            border-radius: 4px;
-            font-size: 16px;
-            width: 320px;
-            cursor: pointer;
-            margin-bottom: 15px;
-        }
-
-        .login-form button:hover {
-            background-color: #bf7b55;
-        }
-
-        .login-container a {
-            text-decoration: none;
-            color: white;
-            margin-top: 15px;
-        }
-
-        .login-container .forgot-password {
-            margin-top: 15px;
-        }
-
-        .logo {
-            margin-bottom: 20px;
-        }
-
-        .logo img {
-            width: 250px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/login.css') }}">
 </head>
+
 <body>
     <div class="login-container">
-        <div class="logo">
-            <img src="../resources/assets/geoprofs.png" alt="Geoprofs Logo">
+        <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
+        <h1><img src="{{ asset('assets/geoprofs.png') }}" alt="Geoprofs logo"></h1>
         </div>
+        <div class="formbg-outer">
+            <div class="formbg">
+                <div class="formbg-inner padding-horizontal--48">
+                    <span class="padding-bottom--15">Sign in to your account</span>
+                    <form action="{{ route('login.submit') }}" method="POST" class="login-form">
+                        @csrf <!-- CSRF protection -->
 
+<<<<<<< HEAD
         <form action="{{ route('login.submit') }}" method="POST" class="login-form">
             @csrf
             <input type="email" name="email" placeholder="Email" required>
@@ -93,6 +29,52 @@
             <button type="submit">LOGIN</button>
         </form>
         <a href="#" class="forgot-password">Wachtwoord vergeten?</a>
+=======
+                        @if ($errors->any())
+                            <div class="error-message">
+                                @foreach ($errors->all() as $error)
+                                    <p>{{ $error }}</p>
+                                @endforeach
+                            </div>
+                        @endif
+
+                        <div class="field padding-bottom--24">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" value="{{ old('email') }}" required>
+                        </div>
+
+                        <div class="field padding-bottom--24">
+                            <div class="grid--50-50">
+                                <label for="password">Password</label>
+                                <div class="reset-pass">
+                                    <a href="#">Forgot your password?</a>
+                                </div>
+                            </div>
+                            <input type="password" name="password" required>
+                        </div>
+
+                        <div class="field field-checkbox padding-bottom--24 flex-flex align-center">
+                            <label for="checkbox">
+                                <input type="checkbox" name="remember"> Stay signed in for a week
+                            </label>
+                        </div>
+
+                        <div class="field padding-bottom--24">
+                            <input type="submit" name="submit" value="Continue">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-link padding-top--24">
+                <div class="listing padding-top--24 padding-bottom--24 flex-flex center-center">
+                    <span><a href="#">© Geoprofs</a></span>
+                    <span><a href="#">Contact</a></span>
+                    <span><a href="#">Privacy & terms</a></span>
+                </div>
+            </div>
+        </div>
+>>>>>>> 4fb500fc6204823f3e75eaf25392a16fe3591328
     </div>
 </body>
+
 </html>
