@@ -18,29 +18,19 @@
             <div class="formbg">
                 <div class="formbg-inner padding-horizontal--48">
                     <span class="padding-bottom--15">Sign in to your account</span>
-
                     @if (session('error_message'))
                         <div class="error-message">
                             <p>{{ session('error_message') }}</p>
                         </div>
                     @endif
-
-                    <form action="{{ route('login.submit') }}" method="POST" class="login-form">
                         @csrf
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 1dc1389dd133eea908132a677e1c1732199882bc
-        <form action="{{ route('login.submit') }}" method="POST" class="login-form">
-            @csrf
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">LOGIN</button>
-        </form>
-        <a href="#" class="forgot-password">Wachtwoord vergeten?</a>
-<<<<<<< HEAD
-=======
+                        <form action="{{ route('login.submit') }}" method="POST" class="login-form">
+                            @csrf
+                            <input type="email" name="email" placeholder="Email" required>
+                            <input type="password" name="password" placeholder="Password" required>
+                            <button type="submit">LOGIN</button>
+                        </form>
+                        <a href="#" class="forgot-password">Wachtwoord vergeten?</a>
                         @if ($errors->any())
                             <div class="error-message">
                                 @foreach ($errors->all() as $error)
@@ -48,7 +38,6 @@
                                 @endforeach
                             </div>
                         @endif
-
                         <div class="field padding-bottom--24">
                             <label for="email">Email</label>
                             <input type="email" name="email" value="{{ old('email') }}" required>
@@ -84,9 +73,6 @@
                 </div>
             </div>
         </div>
->>>>>>> 4fb500fc6204823f3e75eaf25392a16fe3591328
-=======
->>>>>>> 1dc1389dd133eea908132a677e1c1732199882bc
     </div>
 </body>
 
