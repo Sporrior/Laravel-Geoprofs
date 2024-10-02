@@ -18,7 +18,6 @@
             <div class="formbg">
                 <div class="formbg-inner padding-horizontal--48">
                     <span class="padding-bottom--15">Sign in to your account</span>
-
                     @if (session('error_message'))
                         <div class="error-message">
                             <p>{{ session('error_message') }}</p>
