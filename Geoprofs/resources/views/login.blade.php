@@ -12,14 +12,21 @@
 <body>
     <div class="login-container">
         <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
-        <h1><img src="{{ asset('assets/geoprofs.png') }}" alt="Geoprofs logo"></h1>
+            <h1><img src="{{ asset('assets/geoprofs.png') }}" alt="Geoprofs logo"></h1>
         </div>
         <div class="formbg-outer">
             <div class="formbg">
                 <div class="formbg-inner padding-horizontal--48">
                     <span class="padding-bottom--15">Sign in to your account</span>
+
+                    @if (session('error_message'))
+                        <div class="error-message">
+                            <p>{{ session('error_message') }}</p>
+                        </div>
+                    @endif
+
                     <form action="{{ route('login.submit') }}" method="POST" class="login-form">
-                        @csrf <!-- CSRF protection -->
+                        @csrf
 
                         @if ($errors->any())
                             <div class="error-message">
