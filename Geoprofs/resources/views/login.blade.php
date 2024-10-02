@@ -38,7 +38,6 @@
                                 @endforeach
                             </div>
                         @endif
-
                         <div class="field padding-bottom--24">
                             <label for="email">Email</label>
                             <input type="email" name="email" value="{{ old('email') }}" required>
