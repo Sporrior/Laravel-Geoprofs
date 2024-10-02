@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -11,13 +12,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('agendas', function (Blueprint $table) {
+        Schema::create('statuses', function (Blueprint $table) {
             $table->id();
-            $table->date('Datum');
-            $table->foreignId('user_id')->nullable();
-            $table->foreignId('verlofaanvragen_id')->nullable();
+            $table->string('status');
             $table->timestamps();
         });
+
+        // Insert predefined statuses
+        DB::table('statuses')->insert([
+            ['status' => 'Ziekmelden'],
+            ['status' => 'Vakantie'],
+            ['status' => 'Personelijk'],
+            ['status' => 'Verlof'],
+        ]);
     }
 
     /**
@@ -25,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('agendas');
+        Schema::dropIfExists('statuses');
     }
 };

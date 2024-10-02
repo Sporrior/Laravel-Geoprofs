@@ -24,8 +24,8 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'voorNaam' => $this->faker->firstName(), // Use voorNaam instead of name
-            'achterNaam' => $this->faker->lastName(), // Use achterNaam for the last name
+            'voorNaam' => $this->faker->firstName(),
+            'achterNaam' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
             'telefoon' => $this->faker->phoneNumber(), // Add telefoon if required by your schema
             'email_verified_at' => now(),
