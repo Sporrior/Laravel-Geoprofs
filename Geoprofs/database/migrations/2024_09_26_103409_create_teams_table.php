@@ -24,6 +24,8 @@ return new class extends Migration
             ['group_name' => 'GeoDECY'],
             ['group_name' => 'HRM'],
             ['group_name' => 'Finances'],
+            ['group_name' => 'ICT'],
+            ['group_name' => 'OM'],
         ]);
     }
 

@@ -19,7 +19,7 @@ return new class extends Migration
         });
 
         // Insert predefined statuses
-        DB::table('status')->insert([
+        DB::table('statuses')->insert([ // Fixed table name here
             ['status' => 'Ziekmelden'],
             ['status' => 'Vakantie'],
             ['status' => 'Personelijk'],
