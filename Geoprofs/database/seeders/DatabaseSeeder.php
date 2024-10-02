@@ -4,7 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Role;
-use App\Models\Verlofaanvragen; // Ensure this matches the model name
+use App\Models\Team;
+use App\Models\Verlofaanvragen;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 

@@ -14,12 +14,12 @@ return new class extends Migration
     {
         Schema::create('statuses', function (Blueprint $table) {
             $table->id();
-            $table->string('status');
+            $table->string('status')->unique();
             $table->timestamps();
         });
 
         // Insert predefined statuses
-        DB::table('statuses')->insert([
+        DB::table('status')->insert([
             ['status' => 'Ziekmelden'],
             ['status' => 'Vakantie'],
             ['status' => 'Personelijk'],

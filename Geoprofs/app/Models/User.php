@@ -49,7 +49,7 @@ class User extends Authenticatable
         ];
     }
 
-    // Relationship with Role
+    // Relationship with
     public function role()
     {
         return $this->belongsTo(Role::class);
@@ -58,6 +58,11 @@ class User extends Authenticatable
     public function verlofaanvragens()
     {
         return $this->hasMany(Verlofaanvragen::class);
+    }
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
     }
 
 }

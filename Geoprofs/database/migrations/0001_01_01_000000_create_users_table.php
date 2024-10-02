@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->foreignId('role_id')->nullable();
-            $table->foreignId('team_id')->nullable();
+            $table->foreignId('role_id')->nullable()->constrained(); // Added foreign key constraint
+            $table->foreignId('team_id')->nullable()->constrained();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -37,7 +37,7 @@ return new class extends Migration
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
+            $table->foreignId('user_id')->nullable()->constrained()->index(); // Added foreign key constraint
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
