@@ -12,32 +12,22 @@
 <body>
     <div class="login-container">
         <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
-            <h1><img src="{{ asset('assets/geoprofs.png') }}" alt="Geoprofs logo"></h1>
+            <h1><img src="{{ asset('assets/geoprofs-blauw.png') }}" alt="Geoprofs logo"></h1>
         </div>
         <div class="formbg-outer">
             <div class="formbg">
                 <div class="formbg-inner padding-horizontal--48">
                     <span class="padding-bottom--15">Sign in to your account</span>
+
                     @if (session('error_message'))
                         <div class="error-message">
                             <p>{{ session('error_message') }}</p>
                         </div>
                     @endif
+
+                    <form action="{{ route('login.submit') }}" method="POST" class="login-form">
                         @csrf
-                        <form action="{{ route('login.submit') }}" method="POST" class="login-form">
-                            @csrf
-                            <input type="email" name="email" placeholder="Email" required>
-                            <input type="password" name="password" placeholder="Password" required>
-                            <button type="submit">LOGIN</button>
-                        </form>
-                        <a href="#" class="forgot-password">Wachtwoord vergeten?</a>
-                        @if ($errors->any())
-                            <div class="error-message">
-                                @foreach ($errors->all() as $error)
-                                    <p>{{ $error }}</p>
-                                @endforeach
-                            </div>
-                        @endif
+
                         <div class="field padding-bottom--24">
                             <label for="email">Email</label>
                             <input type="email" name="email" value="{{ old('email') }}" required>
@@ -63,6 +53,15 @@
                             <input type="submit" name="submit" value="Continue">
                         </div>
                     </form>
+
+                    @if ($errors->any())
+                        <div class="error-message">
+                            @foreach ($errors->all() as $error)
+                                <p>{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
+
                 </div>
             </div>
             <div class="footer-link padding-top--24">
