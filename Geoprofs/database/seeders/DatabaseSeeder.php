@@ -35,6 +35,8 @@ class DatabaseSeeder extends Seeder
         Team::firstOrCreate(['group_name' => 'GeoDECY']);
         Team::firstOrCreate(['group_name' => 'HRM']);
         Team::firstOrCreate(['group_name' => 'Finances']);
+        Team::firstOrCreate(['group_name' => 'ICT']);
+        Team::firstOrCreate(['group_name' => 'OM']);
     }
 
     private function createUsers()
@@ -44,6 +46,8 @@ class DatabaseSeeder extends Seeder
         $geoDECY = Team::where('group_name', 'GeoDECY')->first()->id;
         $hrm = Team::where('group_name', 'HRM')->first()->id;
         $finances = Team::where('group_name', 'Finances')->first()->id;
+        $ICT = Team::where('group_name', 'ICT')->first()->id;
+        $OM = Team::where('group_name', 'OM')->first()->id;
 
         // Create a user with the werknemer role in GeoICT
         User::factory()->create([
@@ -59,7 +63,7 @@ class DatabaseSeeder extends Seeder
         // Create a user with the manager role in GeoDECY
         User::factory()->create([
             'voornaam' => 'Damien',
-            'achternaam' => 'Doe',
+            'achternaam' => 'Dam',
             'telefoon' => '06123456789',
             'email' => 'damien@gmail.com',
             'password' => Hash::make('Damien'),
@@ -70,7 +74,7 @@ class DatabaseSeeder extends Seeder
         // Create a user with the officemanagement role in HRM
         User::factory()->create([
             'voornaam' => 'Wassem',
-            'achternaam' => 'Smith',
+            'achternaam' => 'gold',
             'telefoon' => '06234567890',
             'email' => 'wassem@gmail.com',
             'password' => Hash::make('Wassem'),
@@ -86,7 +90,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'testen@gmail.com',
             'password' => Hash::make('testen'),
             'role_id' => Role::where('roleName', 'officemanagement')->first()->id,
-            'team_id' => $finances, // Assign to Finances team
+            'team_id' => $OM, // Assign to Finances team
         ]);
     }
 }
