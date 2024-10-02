@@ -12,16 +12,26 @@
 <body>
     <div class="login-container">
         <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
-        <h1><img src="{{ asset('assets/geoprofs.png') }}" alt="Geoprofs logo"></h1>
+            <h1><img src="{{ asset('assets/geoprofs.png') }}" alt="Geoprofs logo"></h1>
         </div>
         <div class="formbg-outer">
             <div class="formbg">
                 <div class="formbg-inner padding-horizontal--48">
                     <span class="padding-bottom--15">Sign in to your account</span>
+
+                    @if (session('error_message'))
+                        <div class="error-message">
+                            <p>{{ session('error_message') }}</p>
+                        </div>
+                    @endif
+
                     <form action="{{ route('login.submit') }}" method="POST" class="login-form">
-                        @csrf <!-- CSRF protection -->
+                        @csrf
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1dc1389dd133eea908132a677e1c1732199882bc
         <form action="{{ route('login.submit') }}" method="POST" class="login-form">
             @csrf
             <input type="email" name="email" placeholder="Email" required>
@@ -29,6 +39,7 @@
             <button type="submit">LOGIN</button>
         </form>
         <a href="#" class="forgot-password">Wachtwoord vergeten?</a>
+<<<<<<< HEAD
 =======
                         @if ($errors->any())
                             <div class="error-message">
@@ -74,6 +85,8 @@
             </div>
         </div>
 >>>>>>> 4fb500fc6204823f3e75eaf25392a16fe3591328
+=======
+>>>>>>> 1dc1389dd133eea908132a677e1c1732199882bc
     </div>
 </body>
 
