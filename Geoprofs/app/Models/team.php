@@ -9,5 +9,11 @@ class team extends Model
 {
     use HasFactory;
 
-    
+    protected $fillable = ['group_name']; // Make sure group_name is fillable
+
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }
