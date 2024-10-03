@@ -17,8 +17,8 @@ return new class extends Migration
             $table->date('aanvraag_datum');
             $table->date('start_datum');
             $table->date('eind_datum');
-            $table->integer("verlof_dagen")->default(25);
-            $table->foreignId('verlof_soort')->constrained('statuses');
+            // $table->string('status')->default('pending');
+            $table->foreignId('verlof_soort')->constrained('types');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });

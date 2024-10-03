@@ -8,19 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class verlofaanvragen extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'verlof_reden',
+        'aanvraag_datum',
+        'start_datum',
+        'eind_datum',
+        'verlof_soort', // Foreign key
+        'user_id', // Foreign key
+    ];
 
-    protected $table = 'verlofaanvragens';
-
-    public function status()
+    // Relationship with Type (Leave Type)
+    public function type()
     {
-        return $this->belongsTo(Status::class, 'verlof_soort');
+        return $this->belongsTo(Type::class, 'verlof_soort');
     }
 
-    /**
-     * Relationship to the User model.
-     *
-     * A Verlofaanvragen belongs to one user.
-     */
+    // Relationship with User
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

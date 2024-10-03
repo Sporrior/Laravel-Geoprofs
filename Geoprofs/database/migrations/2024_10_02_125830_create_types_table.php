@@ -12,18 +12,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('statuses', function (Blueprint $table) {
+        Schema::create('types', function (Blueprint $table) {
             $table->id();
-            $table->string('status')->unique();
+            $table->string('type')->unique();
             $table->timestamps();
         });
 
-        // Insert predefined statuses
-        DB::table('statuses')->insert([ // Fixed table name here
-            ['status' => 'Ziekmelden'],
-            ['status' => 'Vakantie'],
-            ['status' => 'Personelijk'],
-            ['status' => 'Verlof'],
+        DB::table('types')->insert([
+            ['type' => 'Ziekmelden'],
+            ['type' => 'Vakantie'],
+            ['type' => 'Personelijk'],
+            ['type' => 'Verlof'],
         ]);
     }
 
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('statuses');
+        Schema::dropIfExists('types');
     }
 };

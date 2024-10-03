@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->integer("verlof_dagen")->default(25);
             $table->foreignId('role_id')->nullable()->constrained(); // Added foreign key constraint
             $table->foreignId('team_id')->nullable()->constrained();
             $table->rememberToken();
