@@ -12,10 +12,6 @@ of u have it installed u Dont need to innstall
 
     https://nodejs.org/en
 
-of it does not work Read this
-
-    https://laravel.com/docs/10.x/installation
-
 ## Installing the folder 
 
 Clone the repository/Folder
