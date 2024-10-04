@@ -11,41 +11,57 @@ class ProfielController extends Controller
 {
     public function show()
     {
-        return view('profiel');
+        $user = Auth::user();
+        return view('profiel', compact('user')); 
+    }
+
+    public function edit()
+    {
+        $user = Auth::user();
+        return view('profiel.edit', compact('user'));
     }
 
     public function update(Request $request)
     {
-        $user = Auth::user();
-
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'voornaam' => 'required|string|max:255',
+            'tussennaam' => 'nullable|string|max:255',
+            'achternaam' => 'required|string|max:255',
+            'profielFoto' => 'nullable|url',
+            'telefoon' => 'nullable|string|max:15',
+            'email' => 'required|string|email|max:255|unique:users,email,' . Auth::id(),
         ]);
 
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
+        $user = Auth::user();
+
+        $user->voornaam = $request->voornaam;
+        $user->tussennaam = $request->tussennaam;
+        $user->achternaam = $request->achternaam;
+        $user->profielFoto = $request->profielFoto;
+        $user->telefoon = $request->telefoon;
+        $user->email = $request->email;
+
         $user->save();
 
-        return redirect()->route('profiel.show')->with('success', 'Profiel succesvol bijgewerkt!');
+        return redirect()->back()->with('success', 'Profiel succesvol bijgewerkt');
     }
 
     public function changePassword(Request $request)
     {
-        $user = Auth::user();
-
         $request->validate([
-            'old_password' => 'required',
-            'new_password' => 'required|string|min:8|confirmed',
+            'huidigWachtwoord' => 'required',
+            'nieuwWachtwoord' => 'required|min:8|confirmed',
         ]);
 
-        if (!Hash::check($request->input('old_password'), $user->password)) {
-            return back()->withErrors(['old_password' => 'Het oude wachtwoord is onjuist.']);
+        $user = Auth::user();
+
+        if (!Hash::check($request->huidigWachtwoord, $user->password)) {
+            return back()->withErrors(['huidigWachtwoord' => 'Huidig wachtwoord is incorrect.']);
         }
 
-        $user->password = Hash::make($request->input('new_password'));
+        $user->password = Hash::make($request->nieuwWachtwoord);
         $user->save();
 
-        return redirect()->route('profiel.show')->with('success', 'Wachtwoord succesvol gewijzigd!');
+        return redirect()->back()->with('success', 'Wachtwoord succesvol gewijzigd');
     }
 }

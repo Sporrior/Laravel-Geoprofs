@@ -24,8 +24,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/profiel', [ProfielController::class, 'show'])->name('profiel.show');
-    Route::post('/profiel/update', [ProfielController::class, 'update'])->name('profiel.update');
-    Route::post('/profiel/wijzig-wachtwoord', [ProfielController::class, 'changePassword'])->name('profiel.changePassword');
+    Route::get('/profiel/bewerken', [ProfielController::class, 'edit'])->name('profiel.edit');
+    Route::put('/profiel/update', [ProfielController::class, 'update'])->name('profiel.update');
+    Route::put('/profiel/change-password', [ProfielController::class, 'changePassword'])->name('profiel.changePassword');
+
 });
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
