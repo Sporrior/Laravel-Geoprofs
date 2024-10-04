@@ -27,7 +27,9 @@
         </div>
 
         <div class="navbar-right">
-            <img src="{{ asset('images/profile-placeholder.jpg') }}" alt="User Profile" class="profile-pic">
+            <a href="{{ route('profiel.show') }}">
+                <img src="{{ asset('images/profile-placeholder.jpg') }}" alt="User Profile" class="profile-pic">
+            </a>
         </div>
     </nav>
 
