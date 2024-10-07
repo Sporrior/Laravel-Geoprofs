@@ -13,7 +13,7 @@
     <div class="container">
         <div class="profiel-kaart">
             <div class="profiel-header">
-                <img src="{{ $user->profielFoto ? asset('storage/' . $user->profielFoto) : asset('storage/default_profile_photo.jpg') }}"
+                <img src="{{ $user->profielFoto ? asset('storage/' . $user->profielFoto) : asset('storage/default_profile_photo.png') }}"
                     alt="User Profile" class="profile-pic">
             </div>
             <div class="profiel-info">
