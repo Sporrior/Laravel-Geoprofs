@@ -71,7 +71,6 @@ class DatabaseSeeder extends Seeder
             'team_id' => $geoDECY, // Assign to GeoDECY team
         ]);
 
-        // Create a user with the officemanagement role in HRM
         User::factory()->create([
             'voornaam' => 'Wassem',
             'achternaam' => 'gold',
@@ -82,7 +81,6 @@ class DatabaseSeeder extends Seeder
             'team_id' => $hrm, // Assign to HRM team
         ]);
 
-        // Additional test user in Finances
         User::factory()->create([
             'voornaam' => 'Testen',
             'achternaam' => 'Smith',
@@ -91,6 +89,46 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('testen'),
             'role_id' => Role::where('roleName', 'officemanagement')->first()->id,
             'team_id' => $OM, // Assign to Finances team
+        ]);
+
+        User::factory()->create([
+            'voornaam' => 'Karel',
+            'achternaam' => 'gold',
+            'telefoon' => '06234567890',
+            'email' => 'karel@gmail.com',
+            'password' => Hash::make('Karel'),
+            'role_id' => Role::where('roleName', 'werknemer')->first()->id,
+            'team_id' => $geoICT, // Assign to HRM team
+        ]);
+
+        User::factory()->create([
+            'voornaam' => 'Bob',
+            'achternaam' => 'Bouwer',
+            'telefoon' => '06234567890',
+            'email' => 'bob@gmail.com',
+            'password' => Hash::make('Bob'),
+            'role_id' => Role::where('roleName', 'werknemer')->first()->id,
+            'team_id' => $geoICT, // Assign to HRM team
+        ]);
+
+        User::factory()->create([
+            'voornaam' => 'Samet',
+            'achternaam' => 'Lahmacun',
+            'telefoon' => '06234567890',
+            'email' => 'samet@gmail.com',
+            'password' => Hash::make('Samet'),
+            'role_id' => Role::where('roleName', 'werknemer')->first()->id,
+            'team_id' => $geoICT, // Assign to HRM team
+        ]);
+
+        User::factory()->create([
+            'voornaam' => 'Kees',
+            'achternaam' => 'van der Veen',
+            'telefoon' => '06234567890',
+            'email' => 'kees@gmail.com',
+            'password' => Hash::make('Kees'),
+            'role_id' => Role::where('roleName', 'werknemer')->first()->id,
+            'team_id' => $geoICT, // Assign to HRM team
         ]);
     }
 }

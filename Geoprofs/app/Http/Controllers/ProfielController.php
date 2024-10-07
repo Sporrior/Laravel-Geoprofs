@@ -12,7 +12,13 @@ class ProfielController extends Controller
     public function show()
     {
         $user = Auth::user();
-        return view('profiel', compact('user')); 
+
+        // Fetch all users with the 'werknemer' role (assuming this is an employee role)
+        $users = User::whereHas('role', function ($query) {
+            $query->where('roleName', 'werknemer');
+        })->get();
+
+        return view('profiel', compact('user', 'users'));
     }
 
     public function edit()
@@ -33,15 +39,7 @@ class ProfielController extends Controller
         ]);
 
         $user = Auth::user();
-
-        $user->voornaam = $request->voornaam;
-        $user->tussennaam = $request->tussennaam;
-        $user->achternaam = $request->achternaam;
-        $user->profielFoto = $request->profielFoto;
-        $user->telefoon = $request->telefoon;
-        $user->email = $request->email;
-
-        $user->save();
+        $user->update($request->only(['voornaam', 'tussennaam', 'achternaam', 'profielFoto', 'telefoon', 'email']));
 
         return redirect()->back()->with('success', 'Profiel succesvol bijgewerkt');
     }
