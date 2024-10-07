@@ -13,8 +13,9 @@ class verlofaanvragen extends Model
         'aanvraag_datum',
         'start_datum',
         'eind_datum',
-        'verlof_soort', // Foreign key
-        'user_id', // Foreign key
+        'status',
+        'verlof_soort',
+        'user_id',
     ];
 
     // Relationship with Type (Leave Type)

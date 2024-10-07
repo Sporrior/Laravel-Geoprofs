@@ -48,30 +48,14 @@
                     <div>Werknemer</div>
                     <div>Status</div>
                 </li>
+                @foreach($verlofaanvragen as $aanvraag)
                 <li>
-                    <div data-label="Datum van aanvraag">15-12-2024</div>
-                    <div data-label="Datum">15-12-2024</div>
-                    <div data-label="Werknemer">Damien</div>
-                    <div data-label="Status" class="status">Goedgekeurd</div>
+                    <div data-label="Datum van aanvraag">{{ $aanvraag->aanvraag_datum }}</div>
+                    <div data-label="Datum">{{ $aanvraag->start_datum }} - {{ $aanvraag->eind_datum }}</div>
+                    <div data-label="Werknemer">{{ $aanvraag->user->voornaam }}</div>
+                    <div data-label="Status" class="status">{{ $aanvraag->status_label }}</div>
                 </li>
-                <li>
-                    <div data-label="Datum van aanvraag">15-12-2024</div>
-                    <div data-label="Datum">15-12-2024</div>
-                    <div data-label="Werknemer">Ahmed</div>
-                    <div data-label="Status" class="status">Geweigerd</div>
-                </li>
-                <li>
-                    <div data-label="Datum van aanvraag">15-12-2024</div>
-                    <div data-label="Datum">15-12-2024</div>
-                    <div data-label="Werknemer">John</div>
-                    <div data-label="Status" class="status">Goedgekeurd</div>
-                </li>
-                <li>
-                    <div data-label="Datum van aanvraag">15-12-2024</div>
-                    <div data-label="Datum">15-12-2024 - 25-12-2024</div>
-                    <div data-label="Werknemer">Karel</div>
-                    <div data-label="Status" class="status">Goedgekeurd</div>
-                </li>
+                @endforeach
             </ul>
         </div>
 
