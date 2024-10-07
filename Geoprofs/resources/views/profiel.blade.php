@@ -13,8 +13,8 @@
     <div class="container">
         <div class="profiel-kaart">
             <div class="profiel-header">
-                <img src="{{ $user->profielFoto ? asset($user->profielFoto) : asset('assets/default_profile_photo.png') }}"
-                    alt="User Profile" class="profile-pic"> 
+                <img src="{{ $user->profielFoto ? asset('storage/' . $user->profielFoto) : asset('storage/default_profile_photo.jpg') }}"
+                    alt="User Profile" class="profile-pic">
             </div>
             <div class="profiel-info">
                 <h4>Gebruiker: {{ Auth::user()->voornaam }}</h4>
