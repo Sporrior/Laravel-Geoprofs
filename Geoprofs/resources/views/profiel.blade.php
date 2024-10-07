@@ -14,8 +14,7 @@
         <div class="profiel-links">
             <div class="profiel-kaart">
                 <div class="profiel-header">
-                    <img src="{{ $user->profielFoto ? asset('storage/' . $user->profielFoto) : asset('storage/default_profile_photo.png') }}"
-                        alt="Gebruikersprofiel" class="profiel-foto">
+                    <img src="{{ asset('storage/' . $user->profielFoto) }}" alt="Gebruikersprofiel" class="profiel-foto">
                 </div>
                 <div class="profiel-info">
                     <h4>Gebruiker: {{ $user->voornaam }}</h4>
@@ -39,7 +38,7 @@
         <div class="profiel-rechts">
             <div class="profiel-bewerken">
                 <h3>Profiel bewerken</h3>
-                <form action="{{ route('profiel.update') }}" method="POST">
+                <form action="{{ route('profiel.update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
@@ -57,9 +56,8 @@
                             value="{{ old('achternaam', $user->achternaam) }}">
                     </div>
                     <div class="form-group">
-                        <label for="profielFoto">Profiel Foto URL:</label>
-                        <input type="text" id="profielFoto" name="profielFoto"
-                            value="{{ old('profielFoto', $user->profielFoto) }}">
+                        <label for="profielFoto">Profiel Foto:</label>
+                        <input type="file" id="profielFoto" name="profielFoto" accept="image/*">
                     </div>
                     <div class="form-group">
                         <label for="telefoon">Telefoon:</label>
