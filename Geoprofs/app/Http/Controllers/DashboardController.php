@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Verlofaanvragen;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -15,6 +17,7 @@ class DashboardController extends Controller
     public function index()
     {
 
+        $user = Auth::user();
         $verlofaanvragen = Verlofaanvragen::all();
         $verlofaanvragen = Verlofaanvragen::with('user')->get();
 
@@ -30,7 +33,10 @@ class DashboardController extends Controller
         }
 
 
+        return view('dashboard', [
+            'verlofaanvragen' => $verlofaanvragen,
+            'vakantiedagen' => $user->verlof_dagen
+        ]);
 
-        return view('dashboard', ['verlofaanvragen' => $verlofaanvragen]);
     }
 }

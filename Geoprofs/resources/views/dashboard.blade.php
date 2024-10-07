@@ -36,7 +36,7 @@
     <div class="widgets-container">
         <div class="widget-left">
             <h2>Vakantiedagen Over</h2>
-            <p>Je hebt nog <strong>10</strong> vakantiedagen over.</p>
+            <p>Je hebt nog <strong>{{ $vakantiedagen }}</strong> vakantiedagen over.</p>
         </div>
 
         <div class="widget-right">
