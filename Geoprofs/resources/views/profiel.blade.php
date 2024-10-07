@@ -14,7 +14,8 @@
         <div class="profiel-links">
             <div class="profiel-kaart">
                 <div class="profiel-header">
-                    <img src="{{ asset('storage/' . $user->profielFoto) }}" alt="Gebruikersprofiel" class="profiel-foto">
+                    <img src="{{ asset('storage/' . $user->profielFoto) }}" alt="Gebruikersprofiel"
+                        class="profiel-foto">
                 </div>
                 <div class="profiel-info">
                     <h4>Gebruiker: {{ $user->voornaam }}</h4>
@@ -25,14 +26,32 @@
 
             <div class="actieve-personnel">
                 <h3>Actieve personeelsleden</h3>
-                <ul>
-                    @foreach($users as $person)
-                        @if($person->role->roleName == 'werknemer')
-                            <li>{{ $person->voornaam }} {{ $person->achternaam }} - {{ $person->role->roleName }}</li>
-                        @endif
-                    @endforeach
-                </ul>
+                <table class="personnel-table">
+                    <thead>
+                        <tr>
+                            <th>Voornaam</th>
+                            <th>Achternaam</th>
+                            <th>Telefoonnummer</th>
+                            <th>Email</th>
+                            <th>Functie</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($users as $person)
+                            @if($person->role->roleName == 'werknemer')
+                                <tr>
+                                    <td>{{ $person->voornaam }}</td>
+                                    <td>{{ $person->achternaam }}</td>
+                                    <td>{{ $person->telefoon }}</td>
+                                    <td>{{ $person->email }}</td>
+                                    <td>{{ $person->role->roleName }}</td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
+
         </div>
 
         <div class="profiel-rechts">

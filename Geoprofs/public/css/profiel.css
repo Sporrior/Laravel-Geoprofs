@@ -5,14 +5,61 @@
 
 .profiel-links {
     width: 30%;
+    margin: 50px;
 }
 
 .profiel-rechts {
-    width: 65%;
+    width: 35%;
+    margin: 50px;
 }
 
-.profiel-kaart, .actieve-personnel, .profiel-bewerken, .wachtwoord-wijzigen {
+.profiel-kaart,
+.profiel-bewerken,
+.wachtwoord-wijzigen {
     margin-bottom: 20px;
+}
+
+.personnel-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1rem;
+    text-align: left;
+    background-color: #f9f9f9;
+}
+
+.personnel-table th,
+.personnel-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+.personnel-table thead th {
+    background-color: #EC5800;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.personnel-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.personnel-table tbody tr:hover {
+    background-color: #e9e9e9;
+}
+
+.personnel-table tbody td {
+    color: #333;
+}
+
+.personnel-table tbody td a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.personnel-table tbody td a:hover {
+    text-decoration: underline;
 }
 
 .profiel-foto {
