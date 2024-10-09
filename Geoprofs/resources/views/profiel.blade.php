@@ -39,14 +39,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($users as $person)
-                            @if($person->role->roleName == 'werknemer')
+                        @foreach($users as $persoon)
+                            @if($persoon->role->roleName == 'werknemer')
                                 <tr>
-                                    <td>{{ $person->voornaam }}</td>
-                                    <td>{{ $person->achternaam }}</td>
-                                    <td>{{ $person->telefoon }}</td>
-                                    <td>{{ $person->email }}</td>
-                                    <td>{{ $person->role->roleName }}</td>
+                                    <td>{{ $persoon->voornaam }}</td>
+                                    <td>{{ $persoon->achternaam }}</td>
+                                    <td>{{ $persoon->telefoon }}</td>
+                                    <td>{{ $persoon->email }}</td>
+                                    <td>{{ $persoon->role->roleName }}</td>
                                 </tr>
                             @endif
                         @endforeach
