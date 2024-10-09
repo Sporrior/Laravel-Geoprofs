@@ -72,10 +72,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory()->create([
-            'voornaam' => 'Wassem',
+            'voornaam' => 'Wessam',
             'achternaam' => 'gold',
             'telefoon' => '06234567890',
-            'email' => 'wassem@gmail.com',
+            'email' => 'wessam@gmail.com',
             'password' => Hash::make('wessam12345'),
             'role_id' => Role::where('roleName', 'officemanagement')->first()->id,
             'team_id' => $hrm, // Assign to HRM team
