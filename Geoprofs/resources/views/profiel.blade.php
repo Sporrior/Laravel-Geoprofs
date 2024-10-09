@@ -14,8 +14,8 @@
         <div class="profiel-links">
             <div class="profiel-kaart">
                 <div class="profiel-header">
-                    <img src="{{ asset('storage/' . $user->profielFoto) }}" alt="Gebruikersprofiel"
-                        class="profiel-foto">
+                    <img id="profielFotoDisplay" src="{{ asset('storage/' . $user->profielFoto) }}"
+                        alt="Gebruikersprofiel" class="profiel-foto">
                 </div>
                 <div class="profiel-info">
                     <h4>Gebruiker: {{ $user->voornaam }}</h4>
@@ -51,13 +51,13 @@
                     </tbody>
                 </table>
             </div>
-
         </div>
 
         <div class="profiel-rechts">
             <div class="profiel-bewerken">
                 <h3>Profiel bewerken</h3>
-                <form action="{{ route('profiel.update') }}" method="POST" enctype="multipart/form-data">
+                <form id="profileForm" action="{{ route('profiel.update') }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
@@ -92,7 +92,7 @@
 
             <div class="wachtwoord-wijzigen">
                 <h3>Wachtwoord wijzigen</h3>
-                <form action="{{ route('profiel.changePassword') }}" method="POST">
+                <form id="passwordForm" action="{{ route('profiel.changePassword') }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
@@ -104,12 +104,14 @@
                         <input type="password" id="nieuwWachtwoord" name="nieuwWachtwoord" required>
                     </div>
                     <div class="form-group">
-                        <label for="bevestigWachtwoord">Bevestig Wachtwoord:</label>
-                        <input type="password" id="bevestigWachtwoord" name="bevestigWachtwoord" required>
+                        <label for="nieuwWachtwoord_confirmation">Bevestig Nieuw Wachtwoord:</label>
+                        <input type="password" id="nieuwWachtwoord_confirmation" name="nieuwWachtwoord_confirmation"
+                            required>
                     </div>
                     <button type="submit" class="btn-primary">Wijzig Wachtwoord</button>
                 </form>
             </div>
+
         </div>
     </div>
 

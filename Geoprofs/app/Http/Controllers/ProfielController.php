@@ -1,11 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 class ProfielController extends Controller
@@ -17,6 +17,8 @@ class ProfielController extends Controller
         $users = User::whereHas('role', function ($query) {
             $query->where('roleName', 'werknemer');
         })->get();
+
+        Log::info('Profiel page viewed by user ID: ' . $user->id);
 
         return view('profiel', compact('user', 'users'));
     }
@@ -39,14 +41,17 @@ class ProfielController extends Controller
         ]);
 
         $user = Auth::user();
+        Log::info('Updating profile for user ID: ' . $user->id);
 
         if ($request->hasFile('profielFoto')) {
             if ($user->profielFoto) {
+                Log::info('Deleting old profile photo for user ID: ' . $user->id);
                 Storage::delete('public/' . $user->profielFoto);
             }
 
             $file = $request->file('profielFoto');
             $filename = time() . '_' . $file->getClientOriginalName();
+            Log::info('New profile photo uploaded for user ID: ' . $user->id . ' - Filename: ' . $filename);
 
             $file->storeAs('profile_pictures', $filename, 'public');
 
@@ -60,10 +65,10 @@ class ProfielController extends Controller
         $user->email = $request->email;
 
         $user->save();
+        Log::info('Profile updated for user ID: ' . $user->id);
 
         return redirect()->back()->with('success', 'Profiel succesvol bijgewerkt');
     }
-
 
     public function changePassword(Request $request)
     {
