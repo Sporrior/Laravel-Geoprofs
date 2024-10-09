@@ -4,6 +4,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfielController;
+use App\Http\Controllers\ZiekmeldingController; 
+use App\Http\Controllers\VerlofAanvraagController; 
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -27,6 +29,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profiel/bewerken', [ProfielController::class, 'edit'])->name('profiel.edit');
     Route::put('/profiel/update', [ProfielController::class, 'update'])->name('profiel.update');
     Route::put('/profiel/change-password', [ProfielController::class, 'changePassword'])->name('profiel.changePassword');
+
+    Route::get('/ziekmelding', [ZiekmeldingController::class, 'create'])->name('ziekmelding.create');  
+    Route::post('/ziekmelding', [ZiekmeldingController::class, 'store'])->name('ziekmelding.submit');
+
+    Route::get('/verlofaanvraag', [VerlofAanvraagController::class, 'create'])->name('verlofaanvraag.create');  
+    Route::post('/verlofaanvraag', [VerlofAanvraagController::class, 'store'])->name('verlofaanvraag.submit');
 
 });
 

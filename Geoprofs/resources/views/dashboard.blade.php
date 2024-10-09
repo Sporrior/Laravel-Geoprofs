@@ -9,8 +9,9 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 </head>
 
+@include('includes.header')
+
 <body>
-    @include('includes.header')
 
     <div class="widgets-container">
         <div class="widget-left">
