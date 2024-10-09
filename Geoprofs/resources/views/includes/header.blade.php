@@ -5,6 +5,15 @@
         object-fit: cover;
     }
 
+    .nav-profiel-foto {
+        width: 40%;
+        margin-left: 25%;
+    }
+
+    .navbar-right{
+        width: 10%;
+    }
+
     .navbar {
         display: flex;
         justify-content: space-between;
@@ -12,6 +21,7 @@
         padding: 10px 20px;
         background-color: #4158A6;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        height: 70px;
     }
 
     .navbar-left {
@@ -83,7 +93,7 @@
     <div class="navbar-right">
         <a href="{{ route('profiel.show') }}">
             <img id="profielFotoDisplay" src="{{ asset('storage/' . $user->profielFoto) }}" alt="Gebruikersprofiel"
-                class="profiel-foto">
+                class="nav-profiel-foto">
         </a>
     </div>
 </nav>
