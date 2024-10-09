@@ -26,8 +26,8 @@
                 </div>
             </div>
 
-            <div class="actieve-personnel">
-                <h3>Actieve personeelsleden</h3>
+            <div class="personeel">
+                <h3>Personeel</h3>
                 <table class="personnel-table">
                     <thead>
                         <tr>

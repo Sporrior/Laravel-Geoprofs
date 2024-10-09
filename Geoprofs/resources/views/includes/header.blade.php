@@ -82,7 +82,8 @@
 
     <div class="navbar-right">
         <a href="{{ route('profiel.show') }}">
-            <img src="{{ asset('images/profile-placeholder.jpg') }}" alt="User Profile" class="profile-pic">
+            <img id="profielFotoDisplay" src="{{ asset('storage/' . $user->profielFoto) }}" alt="Gebruikersprofiel"
+                class="profiel-foto">
         </a>
     </div>
 </nav>

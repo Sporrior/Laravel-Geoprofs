@@ -4,7 +4,6 @@
     box-sizing: border-box;
 }
 
-/* Algemene container styling */
 .container {
     display: flex;
     gap: 30px;
@@ -14,9 +13,9 @@
     padding: 20px;
     background-color: #f4f4f4;
     border-radius: 8px;
+    margin-top: 5%;
 }
 
-/* Profiel Kaart */
 .profiel-kaart {
     background-color: #fff;
     padding: 20px;
@@ -47,10 +46,13 @@
 
 .functie {
     font-weight: bold;
-    color: #007bff;
+    color: #FF7518;
 }
 
-/* Personeel tabel */
+.personeel {
+    margin-top: 5%;
+}
+
 .personnel-table {
     width: 100%;
     border-collapse: collapse;
@@ -68,7 +70,7 @@
 }
 
 .personnel-table th {
-    background-color: #007bff;
+    background-color: #4158A6;
     color: #fff;
     font-weight: bold;
 }
@@ -77,7 +79,6 @@
     border-bottom: 1px solid #eee;
 }
 
-/* Bewerken sectie */
 .profiel-bewerken,
 .wachtwoord-wijzigen {
     background-color: #fff;
@@ -115,7 +116,7 @@
 .btn-primary {
     display: block;
     width: 100%;
-    background-color: #007bff;
+    background-color: #4158A6;
     color: #fff;
     padding: 10px;
     font-size: 16px;
@@ -125,10 +126,9 @@
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+    background-color: #4158A6;
 }
 
-/* Alerts */
 .alert {
     margin-top: 20px;
     padding: 10px;
