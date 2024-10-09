@@ -76,7 +76,7 @@ class DatabaseSeeder extends Seeder
             'achternaam' => 'gold',
             'telefoon' => '06234567890',
             'email' => 'wassem@gmail.com',
-            'password' => Hash::make('Wassem'),
+            'password' => Hash::make('wessam12345'),
             'role_id' => Role::where('roleName', 'officemanagement')->first()->id,
             'team_id' => $hrm, // Assign to HRM team
         ]);
