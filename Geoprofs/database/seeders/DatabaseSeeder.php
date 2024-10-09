@@ -66,7 +66,7 @@ class DatabaseSeeder extends Seeder
             'achternaam' => 'Dam',
             'telefoon' => '06123456789',
             'email' => 'damien@gmail.com',
-            'password' => Hash::make('Damien'),
+            'password' => Hash::make('Damien12345'),
             'role_id' => Role::where('roleName', 'manager')->first()->id,
             'team_id' => $geoDECY, // Assign to GeoDECY team
         ]);
