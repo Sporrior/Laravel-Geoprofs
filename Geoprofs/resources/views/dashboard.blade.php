@@ -7,11 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Dashboard</title>
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/header.css') }}">
+    @include('includes.header')
+
 </head>
 
-@include('includes.header')
 
 <body>
+
 
     <div class="widgets-container">
         <div class="widget-left">
