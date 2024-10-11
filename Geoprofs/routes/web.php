@@ -9,6 +9,8 @@ use App\Http\Controllers\ZiekmeldingController;
 use App\Http\Controllers\VerlofAanvraagController;
 use App\Http\Controllers\KeuringController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ZiekmeldenController;
+
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -40,8 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/profiel/change-password', [ProfielController::class, 'changePassword'])->name('profiel.changePassword');
 
     // Ziekmelding routes
-    Route::get('/ziekmelding', [ZiekmeldingController::class, 'create'])->name('ziekmelding.create');
-    Route::post('/ziekmelding', [ZiekmeldingController::class, 'store'])->name('ziekmelding.submit');
+    Route::get('/ziekmelden', [ZiekmeldenController::class, 'index'])->name('ziekmelden.index');
+    Route::post('/ziekmelden', [ZiekmeldenController::class, 'store'])->name('ziekmelden.store');
 
     // Verlofaanvraag routes
     Route::get('/verlofaanvragen', [VerlofAanvraagController::class, 'create'])->name('verlofaanvragen.create');
