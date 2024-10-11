@@ -120,8 +120,47 @@ body {
     border-radius: 8px;
 }
 
+.quick-access-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.quick-access-item {
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    width: 50%;
+    margin-left: 20%;
+}
+
+.quick-access-item img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.quick-access-item p {
+    font-size: 1.1rem;
+    color: #333;
+    margin: 0;
+}
+
+.quick-access-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.quick-access-item a {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    width: 100%;
+}
+
 @media (max-width: 768px) {
-    .rij {
-        flex-direction: column;
+    .quick-access-grid {
+        grid-template-columns: 1fr;
     }
 }

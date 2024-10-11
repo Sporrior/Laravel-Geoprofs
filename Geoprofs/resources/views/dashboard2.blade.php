@@ -6,17 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medewerkerbeheer</title>
     <link rel="stylesheet" href="{{ asset('css/dashboard2.css') }}">
-    @include('includes.header')
-
 </head>
 
 <body>
-
     <div class="container-vloeistof">
         <div class="rij">
             <div class="kolom-zijbalk">
                 <div class="profiel-sectie">
-                    <h4>Hallo, {{ $user->voornaam }} {{ $user->achternaam }}</h4>
+                    <h4>Hallo, {{ $user->voornaam }}</h4>
                     <p>{{ $user->role->roleName }}</p>
                 </div>
                 <nav>
@@ -24,7 +21,6 @@
                     <a class="navigatie-link" href="#">Verlof</a>
                     <a class="navigatie-link" href="#">Verlofkalender</a>
                     <a class="navigatie-link" href="#">Settings</a>
-
                 </nav>
             </div>
 
@@ -33,30 +29,30 @@
                     <div class="kolom">
                         <div class="kaart">
                             <div class="kaart-kop">Snelle Toegang</div>
-                            <div class="d-flex flex-wrap justify-content-between">
-                                <div class="snelle-toegang-item">
-                                    <img src="icoon1_url" alt="Icoon">
-                                    <p>Lindas Beoordeling</p>
+                            <div class="quick-access-grid">
+                                <div class="quick-access-item">
+                                    <a href="#">
+                                        <i class="ph-bold ph-calendar"></i>
+                                        <p>Agenda</p>
+                                    </a>
                                 </div>
-                                <div class="snelle-toegang-item">
-                                    <img src="icoon2_url" alt="Icoon">
-                                    <p>Verlof Toewijzen</p>
+                                <div class="quick-access-item">
+                                    <a href="#">
+                                        <i class="ph-bold ph-user-plus"></i>
+                                        <p>Verlof Toewijzen</p>
+                                    </a>
                                 </div>
-                                <div class="snelle-toegang-item">
-                                    <img src="icoon3_url" alt="Icoon">
-                                    <p>Verlofkalendar</p>
+                                <div class="quick-access-item">
+                                    <a href="#">
+                                        <i class="ph-bold ph-calendar-blank"></i>
+                                        <p>Verlofkalendar</p>
+                                    </a>
                                 </div>
-                                <div class="snelle-toegang-item">
-                                    <img src="icoon4_url" alt="Icoon">
-                                    <p>Timesheets</p>
-                                </div>
-                                <div class="snelle-toegang-item">
-                                    <img src="icoon5_url" alt="Icoon">
-                                    <p>Mijn Verlof</p>
-                                </div>
-                                <div class="snelle-toegang-item">
-                                    <img src="icoon6_url" alt="Icoon">
-                                    <p>Mijn Timesheet</p>
+                                <div class="quick-access-item">
+                                    <a href="#">
+                                        <i class="ph ph-user-focus"></i>
+                                        <p>Mijn Verlof</p>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -79,7 +75,7 @@
                                     <div class="kaart-body">
                                         <ul class="lijst-ongedecoreerd">
                                             <li><a href="#">ISO 20071 Certificering</a></li>
-                                            <li><a href="#">Verlenging Verzekering Werknemers</a></li>
+                                            <li><a href="#">opvulling</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -126,7 +122,8 @@
             </div>
         </div>
     </div>
-
 </body>
+
+<script src="https://unpkg.com/phosphor-icons"></script>
 
 </html>
