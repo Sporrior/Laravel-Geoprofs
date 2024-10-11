@@ -18,8 +18,8 @@
                 </div>
                 <nav>
                     <a class="navigatie-link actief" href="#">HR Administratie</a>
-                    <a class="navigatie-link" href="#">Verlof</a>
-                    <a class="navigatie-link" href="#">Verlofkalender</a>
+                    <a class="navigatie-link" href="/verlofaanvragen">Verlof</a>
+                    <a class="navigatie-link" href="/ziekmelden">Ziekmelden</a>
                     <a class="navigatie-link" href="#">Settings</a>
                 </nav>
             </div>

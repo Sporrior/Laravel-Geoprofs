@@ -4,27 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ziekmelden</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ asset('css/ziekmelden.css') }}">
+
 </head>
 <body>
 
-<h1>Ziekmelden</h1>
+<div class="container">
+    <h1>Ziekmelden</h1>
 
-<!-- Success Message -->
-@if(session('success'))
-    <p style="color: green;">{{ session('success') }}</p>
-@endif
+    @if(session('success'))
+        <p class="success-message">{{ session('success') }}</p>
+    @endif
 
-<!-- Ziekmelding Form -->
-<form action="{{ route('ziekmelden.store') }}" method="POST">
-    @csrf
+    <form action="{{ route('ziekmelden.store') }}" method="POST" class="sick-form">
+        @csrf
 
-    <!-- Fixed reason input -->
-    <input type="hidden" name="verlof_reden" value="ziek">
+        <input type="hidden" name="verlof_reden" value="ziek">
 
-    <p>U meldt zich ziek voor 1 dag.</p>
+        <p class="info-text">U meldt zich ziek voor 1 dag.</p>
 
-    <button type="submit">Ziekmelden</button>
-</form>
+        <button type="submit" class="submit-button">Ziekmelden</button>
+    </form>
+</div>
 
 </body>
 </html>
