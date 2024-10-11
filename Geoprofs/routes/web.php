@@ -7,6 +7,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfielController;
 use App\Http\Controllers\ZiekmeldingController;
 use App\Http\Controllers\VerlofAanvraagController;
+use App\Http\Controllers\KeuringController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -44,6 +46,11 @@ Route::middleware('auth')->group(function () {
     // Verlofaanvraag routes
     Route::get('/verlofaanvragen', [VerlofAanvraagController::class, 'create'])->name('verlofaanvragen.create');
     Route::post('/verlofaanvragen', [VerlofAanvraagController::class, 'store'])->name('verlofaanvragen.store');
+
+    Route::middleware('auth')->group(function () {
+        Route::get('/keuring', [KeuringController::class, 'index'])->name('keuring.index');
+        Route::post('/keuring/update-status/{id}', [KeuringController::class, 'updateStatus'])->name('keuring.updateStatus');
+    });
 
 });
 
