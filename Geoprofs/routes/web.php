@@ -5,8 +5,12 @@ use App\Http\Controllers\Dashboard2Controller;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfielController;
-use App\Http\Controllers\ZiekmeldingController; 
-use App\Http\Controllers\VerlofAanvraagController; 
+use App\Http\Controllers\ZiekmeldingController;
+use App\Http\Controllers\VerlofAanvraagController;
+use App\Http\Controllers\KeuringController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ZiekmeldenController;
+
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -38,12 +42,17 @@ Route::middleware('auth')->group(function () {
     Route::put('/profiel/change-password', [ProfielController::class, 'changePassword'])->name('profiel.changePassword');
 
     // Ziekmelding routes
-    Route::get('/ziekmelding', [ZiekmeldingController::class, 'create'])->name('ziekmelding.create');  
-    Route::post('/ziekmelding', [ZiekmeldingController::class, 'store'])->name('ziekmelding.submit');
+    Route::get('/ziekmelden', [ZiekmeldenController::class, 'index'])->name('ziekmelden.index');
+    Route::post('/ziekmelden', [ZiekmeldenController::class, 'store'])->name('ziekmelden.store');
 
     // Verlofaanvraag routes
-    Route::get('/verlofaanvraag', [VerlofAanvraagController::class, 'create'])->name('verlofaanvraag.create');  
-    Route::post('/verlofaanvraag', [VerlofAanvraagController::class, 'store'])->name('verlofaanvraag.submit');
+    Route::get('/verlofaanvragen', [VerlofAanvraagController::class, 'create'])->name('verlofaanvragen.create');
+    Route::post('/verlofaanvragen', [VerlofAanvraagController::class, 'store'])->name('verlofaanvragen.store');
+
+    Route::middleware('auth')->group(function () {
+        Route::get('/keuring', [KeuringController::class, 'index'])->name('keuring.index');
+        Route::post('/keuring/update-status/{id}', [KeuringController::class, 'updateStatus'])->name('keuring.updateStatus');
+    });
 
 });
 
