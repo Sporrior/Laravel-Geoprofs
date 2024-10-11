@@ -5,12 +5,11 @@
         align-items: center;
         padding: 10px 20px;
         background-color: #4158A6;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         height: 70px;
-        position: fixed;
+        position: relative !important;
         top: 0;
         left: 0;
-        width: 100%;
+        width: 98%;
         z-index: 999;
     }
 
@@ -25,34 +24,70 @@
         height: auto;
     }
 
-    .search-container {
-        position: relative;
+    .searchBox {
+        top: 50%;
+        left: 50%;
+        background: #2f3640;
+        height: 40px;
+        border-radius: 40px;
+        padding: 10px;
+
     }
 
-    .search-bar {
-        padding: 8px 12px;
-        border-radius: 20px;
-        border: 1px solid #ddd;
-        width: 250px;
-        background-color: #f0f0f7;
-        font-size: 14px;
+    .searchBox:hover>.searchInput {
+        width: 240px;
+        padding: 0 6px;
     }
 
-    .nav-link h4 {
+    .searchBox:hover>.searchButton {
+        background: white;
+        color: #2f3640;
+    }
+
+    .searchButton {
+        color: white;
+        float: right;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #2f3640;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: 0.4s;
+    }
+
+    .searchInput {
+        border: none;
+        background: none;
+        outline: none;
+        float: left;
+        padding: 0;
+        color: white;
+        font-size: 16px;
+        transition: 0.4s;
+        line-height: 40px;
+        width: 0px;
+
+    }
+
+    .nav-link {
         color: white;
         text-decoration: none;
         white-space: nowrap;
+        font-size: 1.1rem;
     }
 
-    .nav-link.active h4 {
+    .nav-link.active {
         color: #FF8343;
-        font-weight: bold;
+        font-size: 1.1rem;
     }
 
     .navbar-right {
         display: flex;
         align-items: center;
         position: relative;
+        margin-right: 60px;
     }
 
     .profiel-dropdown {
@@ -60,12 +95,15 @@
         align-items: center;
         cursor: pointer;
         gap: 12px;
+        margin-right: 75px;
     }
 
-    .profiel-dropdown h4 {
+    .profiel-dropdown {
         line-height: 1;
         margin: 0;
         color: white;
+        font-size: 1.1rem;
+        margin-right: 15px;
     }
 
     .nav-profiel-foto {
@@ -93,6 +131,8 @@
         opacity: 1;
         transform: translateY(0);
         visibility: visible;
+        margin-right: 75px;
+        margin-top: 10px;
     }
 
     .menu ul {
@@ -141,29 +181,42 @@
         <div class="logo">
             <img src="{{ asset('assets/geoprofs-oranje.png') }}" alt="Logo" class="logo-icon">
         </div>
-        <div class="search-container">
-            <input type="text" placeholder="Search for anything..." class="search-bar">
+        <div class="searchBox">
+
+            <input class="searchInput" type="text" name="" placeholder="Zoeken">
+            <button class="searchButton" href="#">
+                <i class="material-icons">
+                    Zoeken
+                </i>
+            </button>
         </div>
-        <a href="#" class="nav-link active"><h4>Verlof</h4></a>
-        <a href="#" class="nav-link"><h4>Ziekmelden</h4></a>
-        <a href="#" class="nav-link"><h4>Goedkeuring</h4></a>
+        <a href="#" class="nav-link active">
+            Verlof
+        </a>
+        <a href="#" class="nav-link">
+            Ziekmelden
+        </a>
+        <a href="#" class="nav-link">
+            Goedkeuring
+        </a>
     </div>
 
     <div class="navbar-right">
         <div class="profiel-dropdown">
-            <h4>Katherine Cooper</h4>
-            <div class="img-box">
-                <img id="profielFotoDisplay" src="{{ asset('storage/' . $user->profielFoto) }}" alt="Profielfoto"
-                    class="nav-profiel-foto">
-            </div>
+            <p>{{ $user->voornaam }} {{ $user->achternaam }}</p>
         </div>
-        <div class="menu">
-            <ul>
-                <li><a href="#"><i class="ph-bold ph-user"></i>Profile</a></li>
-                <li><a href="#"><i class="ph-bold ph-gear-six"></i>Settings</a></li>
-                <li><a href="#"><i class="ph-bold ph-sign-out"></i>Sign Out</a></li>
-            </ul>
+        <div class="img-box">
+            <img id="profielFotoDisplay" src="{{ asset('storage/' . $user->profielFoto) }}" alt="Profielfoto"
+                class="nav-profiel-foto">
         </div>
+    </div>
+    <div class="menu">
+        <ul>
+            <li><a href="/profiel"><i class="ph-bold ph-user"></i>Profile</a></li>
+            <li><a href="/instellingen"><i class="ph-bold ph-gear-six"></i>Settings</a></li>
+            <li><a href="/logout"><i class="ph-bold ph-sign-out"></i>Sign Out</a></li>
+        </ul>
+    </div>
     </div>
 </nav>
 
