@@ -34,7 +34,6 @@
             <li><a href="/logout"><i class="ph-bold ph-sign-out"></i>Sign Out</a></li>
         </ul>
     </div>
-    </div>
 </nav>
 
 <script src="https://unpkg.com/phosphor-icons"></script>
