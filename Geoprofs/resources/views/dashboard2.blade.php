@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medewerkerbeheer</title>
     <link rel="stylesheet" href="{{ asset('css/dashboard2.css') }}">
+
 </head>
 
 <body>
@@ -98,7 +99,6 @@
                                 <div class="bericht">
                                     <p><strong>Brody Alan</strong></p>
                                     <p>Ondersteuningsteam Herstructurering</p>
-                                    <img src="buzz_afbeelding_url" alt="Buzz Afbeelding">
                                 </div>
                                 <div class="bericht">
                                     <p><strong>Andrew Keller</strong></p>
