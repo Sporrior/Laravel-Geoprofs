@@ -6,6 +6,8 @@
     <title>Ziekmelden</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="{{ asset('css/ziekmelden.css') }}">
+    @include('includes.header')
+
 
 </head>
 <body>

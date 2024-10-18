@@ -59,7 +59,7 @@ class LoginController extends Controller
 
         if ($request->input('2fa_code') == $storedCode) {
             $request->session()->forget(['2fa_code', '2fa_attempts']);
-            return redirect()->route('dashboard2');
+            return redirect()->route('dashboard');
         }
 
         $attempts++;

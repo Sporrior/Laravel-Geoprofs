@@ -32,9 +32,6 @@ Route::middleware('auth')->group(function () {
     // Dashboard routes
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Dashboard 2 route (for testing)
-    Route::get('/dashboard2', [Dashboard2Controller::class, 'index'])->name('dashboard2');
-
     // Profiel routes
     Route::get('/profiel', [ProfielController::class, 'show'])->name('profiel.show');
     Route::get('/profiel/bewerken', [ProfielController::class, 'edit'])->name('profiel.edit');
