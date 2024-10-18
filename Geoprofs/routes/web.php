@@ -5,7 +5,7 @@ use App\Http\Controllers\Dashboard2Controller;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfielController;
-use App\Http\Controllers\ZiekmeldingController;
+use App\Http\Controllers\UserCreateController;
 use App\Http\Controllers\VerlofAanvraagController;
 use App\Http\Controllers\KeuringController;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +41,10 @@ Route::middleware('auth')->group(function () {
     // Ziekmelding routes
     Route::get('/ziekmelden', [ZiekmeldenController::class, 'index'])->name('ziekmelden.index');
     Route::post('/ziekmelden', [ZiekmeldenController::class, 'store'])->name('ziekmelden.store');
+
+    // Add users routes
+    Route::get('/addusers', [UserCreateController::class, 'index'])->name('addusers.index');
+    Route::post('/addusers', [UserCreateController::class, 'store'])->name('addusers.store');
 
     // Verlofaanvraag routes
     Route::get('/verlofaanvragen', [VerlofAanvraagController::class, 'create'])->name('verlofaanvragen.create');
