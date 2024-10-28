@@ -12,7 +12,7 @@
 <body>
     <div class="login-container">
         <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
-            <h1><img src="{{ asset('assets/geoprofs-blauw.png') }}" alt="Geoprofs logo"></h1>
+            <h1><img src="{{ asset('assets/geoprofs-oranje.png') }}" alt="Geoprofs logo"></h1>
         </div>
         <div class="formbg-outer">
             <div class="formbg">

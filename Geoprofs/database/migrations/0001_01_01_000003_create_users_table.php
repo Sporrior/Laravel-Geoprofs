@@ -5,9 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -23,7 +21,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->integer("verlof_dagen")->default(25);
+            $table->integer('verlof_dagen')->default(25);
+            $table->integer('failed_login_attempts')->default(0);
+            $table->timestamp('blocked_until')->nullable();
             $table->foreignId('role_id')->nullable()->constrained();
             $table->foreignId('team_id')->nullable()->constrained();
             $table->rememberToken();
@@ -51,8 +51,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
     }
 };
