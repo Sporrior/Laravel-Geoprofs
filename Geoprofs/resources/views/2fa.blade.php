@@ -63,7 +63,7 @@
         }
 
         .submit-button:hover {
-            background-color: #45a049;
+            background-color: #ff8c00;
         }
 
         .popup-2fa {

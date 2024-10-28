@@ -35,7 +35,6 @@ document.body.innerHTML = htmlContent;
 let countdown = 10;
 let timer;
 
-// Define the startCountdown function here
 function startCountdown() {
     timer = setInterval(() => {
         countdown--;
@@ -47,7 +46,6 @@ function startCountdown() {
     }, 1000);
 }
 
-// Define the regenerateCode function here
 function regenerateCode() {
     fetch("/2fa/regenerate", {
         method: 'POST',
@@ -63,26 +61,37 @@ function regenerateCode() {
 }
 
 describe('2FA Verification Pagina', () => {
-    test('renderd 2fa veld', () => {
+    beforeEach(() => {
+        global.fetch = jest.fn(() =>
+            Promise.resolve({
+                json: () => Promise.resolve({ new_code: "654321" })
+            })
+        );
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
+    test('Renderd de 2fa input veld.', () => {
         const input = document.querySelector("input[name='2fa_code']");
         expect(input).not.toBeNull();
     });
 
-    test('renderd submit knop', () => {
+    test('Renderd de verzend knop.', () => {
         const submitButton = document.querySelector("input[name='submit']");
         expect(submitButton.value).toBe("Verify Code");
     });
 
-    test('toont de 2fa countdown timer', () => {
+    test('Toont de countdown timer.', () => {
         const timerElement = document.getElementById('timer');
         expect(timerElement.innerHTML).toBe('10');
     });
 
-    test('telt af and veranderd als de timer op 0 komt', () => {
+    test('Telt af en update/ veranderd de code als de timer op 0 staat.', () => {
         jest.useFakeTimers();
         startCountdown();
 
-        // Fast forward time by 10 seconds
         jest.advanceTimersByTime(10000);
 
         const timerElement = document.getElementById('timer');
@@ -91,24 +100,16 @@ describe('2FA Verification Pagina', () => {
         jest.clearAllTimers();
     });
 
-    test('roept de regenerate functie aan wanneer de timer 0 is', () => {
-        // Mock fetch to simulate server response
-        global.fetch = jest.fn(() =>
-            Promise.resolve({
-                json: () => Promise.resolve({ new_code: "654321" })
-            })
-        );
-
+    test('Roept de regenerate code aan als de timer op 0 staat.', () => {
         jest.useFakeTimers();
         startCountdown();
 
-        // Fast forward time by 10 seconds to trigger regeneration
         jest.advanceTimersByTime(10000);
 
-        // Check that the fetch was called to regenerate code
-        expect(global.fetch).toHaveBeenCalled();
+        expect(global.fetch).toHaveBeenCalledWith("/2fa/regenerate", expect.objectContaining({
+            method: "POST"
+        }));
 
-        // Check if the new code was set correctly
         const codeElement = document.getElementById('code');
         expect(codeElement.innerText).toBe('654321');
 
