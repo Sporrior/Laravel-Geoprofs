@@ -2,68 +2,62 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use App\Models\VerlofAanvragen;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
-class ZiekmeldenIntegrationTest extends TestCase
+class RegisterIntegrationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_user_can_create_sick_leave_request()
+    public function test_user_can_register_successfully()
     {
-        // Arrange: Create and authenticate a user with all necessary fields
-        $user = User::factory()->create([
-            'voornaam' => 'Jane',
-            'achternaam' => 'Doe',
-            'email' => 'jane@example.com',
-            'verlof_dagen' => 10,
-            'telefoon' => '0612345678',
-            'password' => Hash::make('password123'),
+        // Arrange: Definieer registratiegegevens
+        $data = [
+            'name'                  => 'Jane Doe',
+            'email'                 => 'jane@example.com',
+            'password'              => 'securepassword',
+            'password_confirmation' => 'securepassword',
+            'telefoon'              => '0612345678', // Voeg 'telefoon' toe
+        ];
+
+        // Act: Verstuur een POST-aanvraag naar de register route
+        $response = $this->post(route('register'), $data);
+
+        // Extract 'voornaam' en 'achternaam' zoals de controller dat doet
+        $nameParts = explode(' ', $data['name']);
+        $voornaam = $nameParts[0];
+        $tussennaam = count($nameParts) === 3 ? $nameParts[1] : null;
+        $achternaam = count($nameParts) > 1 ? end($nameParts) : '';
+
+        // Assert: Controleer of de gebruiker in de database is aangemaakt
+        $this->assertDatabaseHas('users', [
+            'email'     => 'jane@example.com',
+            'voornaam'  => $voornaam,
+            'achternaam'=> $achternaam,
+            'telefoon'  => '0612345678',
         ]);
 
-        $this->actingAs($user);
-
-        // Act: Send a POST request to create a sick leave request
-        $response = $this->post(route('ziekmelden.store'), [
-            'verlof_reden' => 'Flu',
-        ]);
-
-        // Assert: Check that the sick leave request was created successfully in the database
-        $this->assertDatabaseHas('verlofaanvragens', [
-            'verlof_reden' => 'Flu',
-            'user_id' => $user->id,
-            'status' => 1,
-        ]);
-
-        // Assert: Check for the redirect and the session message
-        $response->assertRedirect(route('ziekmelden.index'));
-        $response->assertSessionHas('success', 'Ziekmelding succesvol ingediend.');
+        // Assert: Controleer of de gebruiker is geauthenticeerd en doorverwezen
+        $response->assertRedirect('/dashboard');
+        $this->assertAuthenticated();
     }
 
-    public function test_validation_fails_without_reason_for_sick_leave_request()
+    public function test_register_fails_when_password_is_too_short()
     {
-        // Arrange: Create and authenticate a user
-        $user = User::factory()->create([
-            'voornaam' => 'John',
-            'achternaam' => 'Smith',
-            'email' => 'john@example.com',
-            'verlof_dagen' => 15,
-            'telefoon' => '0698765432',
-            'password' => Hash::make('password123'),
-        ]);
+        // Arrange: Definieer registratiegegevens met een te kort wachtwoord
+        $data = [
+            'name'                  => 'Jane Doe',
+            'email'                 => 'jane@example.com',
+            'password'              => 'short',
+            'password_confirmation' => 'short',
+            'telefoon'              => '0612345678', // Voeg 'telefoon' toe
+        ];
 
-        $this->actingAs($user);
+        // Act: Verstuur een POST-aanvraag naar de register route
+        $response = $this->post(route('register'), $data);
 
-        // Act: Attempt to create a sick leave request without a reason
-        $response = $this->post(route('ziekmelden.store'), [
-            // 'verlof_reden' is missing
-        ]);
-
-        // Assert: Check that the validation fails
-        $response->assertSessionHasErrors(['verlof_reden']);
-        $this->assertDatabaseMissing('verlofaanvragens', ['user_id' => $user->id]);
+        // Assert: Controleer of de validatie faalt voor het wachtwoord
+        $response->assertSessionHasErrors(['password']);
+        $this->assertDatabaseMissing('users', ['email' => 'jane@example.com']);
     }
 }

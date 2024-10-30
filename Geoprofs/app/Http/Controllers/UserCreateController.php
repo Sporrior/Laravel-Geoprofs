@@ -37,7 +37,6 @@ class UserCreateController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Create a new user instance
         User::create([
             'voornaam' => $request->voornaam,
             'tussennaam' => $request->tussennaam,
