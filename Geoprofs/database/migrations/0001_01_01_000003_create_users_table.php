@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('voornaam');
             $table->string('tussennaam')->nullable();
             $table->string('achternaam');
-            $table->string('profielFoto')->default('profile_pictures/default_profile_photo.png');
+            $table->string('profielFoto')->nullable()->default('profile_pictures/default_profile_photo.png');
             $table->string('telefoon');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
