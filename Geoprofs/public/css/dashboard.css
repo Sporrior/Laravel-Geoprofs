@@ -5,14 +5,6 @@ body {
     padding: 0;
 }
 
-.container-admin {
-    padding: 20px;
-}
-
-.rij {
-    display: flex;
-    flex-wrap: wrap;
-}
 
 .kolom,
 .kolom,
@@ -21,12 +13,6 @@ body {
     padding: 15px;
 }
 
-.zijbalk {
-    background-color: #fff;
-    min-height: 100vh;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
 
 .profiel-sectie {
     text-align: center;

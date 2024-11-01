@@ -8,23 +8,19 @@ use Illuminate\Support\Facades\Cache;
 
 class CodeController extends Controller
 {
-    // Endpoint to store the generated code sent from Flutter
     public function storeCode(Request $request): JsonResponse
     {
-        $code = $request->query('code'); // Get code from Flutter as a query parameter
+        $code = $request->query('code');
 
-        // Store the code in cache with a 10-second expiration time
-        Cache::put('generated_code', $code, 10); // 10 seconds
+        Cache::put('generated_code', $code, 10); 
 
         return response()->json(['status' => 'success', 'message' => 'Code stored successfully']);
     }
 
-    // Endpoint to check the code entered on the website
     public function checkCode(Request $request): JsonResponse
     {
-        $inputCode = $request->query('code'); // Code entered on the website
+        $inputCode = $request->query('code');
 
-        // Retrieve the code from cache
         $storedCode = Cache::get('generated_code');
 
         if ($inputCode === $storedCode) {
