@@ -12,24 +12,20 @@ class VerlofAanvraagController extends Controller
 {
     public function create()
     {
-        // Fetch all leave types from the database
         $types = Type::all();
 
-        // Pass the types to the view
         return view('verlofaanvragen', compact('types'));
     }
 
     public function store(Request $request)
     {
-        // Validate the form input
         $request->validate([
             'startDatum' => 'required|date',
             'eindDatum' => 'required|date|after_or_equal:startDatum',
             'verlof_reden' => 'required|string|max:1000',
-            'verlof_soort' => 'required|exists:types,id', // Validate that the type exists
+            'verlof_soort' => 'required|exists:types,id',
         ]);
 
-        // Create a new VerlofAanvragen instance
         $verlofAanvraag = new Verlofaanvragen();
         $verlofAanvraag->user_id = Auth::id();
         $verlofAanvraag->start_datum = $request->startDatum;
@@ -39,7 +35,6 @@ class VerlofAanvraagController extends Controller
         $verlofAanvraag->aanvraag_datum = Carbon::now();
         $verlofAanvraag->save();
 
-        // Log the action and redirect back with a success message
         Log::info('Nieuwe verlofaanvraag van gebruiker ID: ' . Auth::id());
 
         return redirect()->back()->with('success', 'Verlofaanvraag succesvol verzonden.');

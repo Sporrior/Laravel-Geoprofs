@@ -5,107 +5,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HR Administratie</title>
-    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-    @include('includes.header')
 </head>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    .container-admin {
+        display: flex;
+        width: 100%;
+    }
+
+    .main-content {
+        flex: 1;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .kaart {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .kaart-kop {
+        font-weight: bold;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 10px;
+        font-size: 18px;
+    }
+
+    .quick-access-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .quick-access-item {
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .quick-access-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        .container-admin {
+            flex-direction: column;
+        }
+
+        .quick-access-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
 
 <body>
     <div class="container-admin">
-        <div class="rij">
-            @include('includes.admin-menu')
-            <div class="kolom">
-                <div class="rij">
-                    <div class="kolom">
-                        <div class="kaart">
-                            <div class="kaart-kop">Snelle Toegang</div>
-                            <div class="quick-access-grid">
-                                <div class="quick-access-item">
-                                    <a href="#">
-                                        <i class="ph-bold ph-calendar"></i>
-                                        <p>Agenda</p>
-                                    </a>
-                                </div>
-                                <div class="quick-access-item">
-                                    <a href="#">
-                                        <i class="ph-bold ph-user-plus"></i>
-                                        <p>Verlof Toewijzen</p>
-                                    </a>
-                                </div>
-                                <div class="quick-access-item">
-                                    <a href="#">
-                                        <i class="ph-bold ph-calendar-blank"></i>
-                                        <p>Verlofkalendar</p>
-                                    </a>
-                                </div>
-                                <div class="quick-access-item">
-                                    <a href="#">
-                                        <i class="ph ph-user-focus"></i>
-                                        <p>Mijn Verlof</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+        @include('includes.admin-menu')
 
-                        <div class="rij">
-                            <div class="kolom">
-                                <div class="kaart">
-                                    <div class="kaart-kop">Laatste Documenten</div>
-                                    <div class="kaart-body">
-                                        <ul class="lijst-ongedecoreerd">
-                                            <li><a href="#">Gezondheids- en Veiligheidsrichtlijnen</a></li>
-                                            <li><a href="#">Ziektekostenverzekering in de VS</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="kolom">
-                                <div class="kaart">
-                                    <div class="kaart-kop">Laatste Nieuws</div>
-                                    <div class="kaart-body">
-                                        <ul class="lijst-ongedecoreerd">
-                                            <li><a href="#">ISO 20071 Certificering</a></li>
-                                            <li><a href="#">opvulling</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <div class="main-content">
+            <div class="kaart">
+                <div class="kaart-kop">Snelle Toegang</div>
+                <div class="quick-access-grid">
+                    <div class="quick-access-item">
+                        <a href="#">
+                            <i class="ph-bold ph-calendar"></i>
+                            <p>Agenda</p>
+                        </a>
                     </div>
-
-                    <div class="kolom">
-                        <div class="kaart">
-                            <div class="kaart-kop">Mijn Acties</div>
-                            <div class="kaart-body">
-                                <p><strong>(3)</strong> Verlofaanvragen Goedkeuren</p>
-                                <p><strong>(7)</strong> Presentiebladen Goedkeuren</p>
-                            </div>
-                        </div>
-
-                        <div class="kaart">
-                            <div class="kaart-kop">Buzz Laatste Berichten</div>
-                            <div class="kaart-body">
-                                <div class="bericht">
-                                    <p><strong>Brody Alan</strong></p>
-                                    <p>Ondersteuningsteam Herstructurering</p>
-                                </div>
-                                <div class="bericht">
-                                    <p><strong>Andrew Keller</strong></p>
-                                    <p>Uitbreiding Ondersteuningsteam</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="kaart">
-                            <div class="kaart-kop">Werknemers Vandaag met Verlof</div>
-                            <div class="kaart-body">
-                                <ul class="lijst-ongedecoreerd">
-                                    <li>Aaliyah Haq (FMLA - VS)</li>
-                                    <li>Cec Bonaparte (Ouderschapsverlof - VK)</li>
-                                    <li>Fiona Grace (FMLA - VS)</li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div class="quick-access-item">
+                        <a href="#">
+                            <i class="ph-bold ph-user-plus"></i>
+                            <p>Verlof Toewijzen</p>
+                        </a>
                     </div>
+                    <div class="quick-access-item">
+                        <a href="#">
+                            <i class="ph-bold ph-calendar-blank"></i>
+                            <p>Verlofkalendar</p>
+                        </a>
+                    </div>
+                    <div class="quick-access-item">
+                        <a href="#">
+                            <i class="ph ph-user-focus"></i>
+                            <p>Mijn Verlof</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kaart">
+                <div class="kaart-kop">Mijn Acties</div>
+                <div class="kaart-body">
+                    <p><strong>(3)</strong> Verlofaanvragen Goedkeuren</p>
+                    <p><strong>(7)</strong> Presentiebladen Goedkeuren</p>
                 </div>
             </div>
         </div>
@@ -113,25 +124,5 @@
 </body>
 
 <script src="https://unpkg.com/phosphor-icons"></script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const quickAccessItems = document.querySelectorAll('.quick-access-item');
-
-        quickAccessItems.forEach(item => {
-            item.addEventListener('mouseover', () => {
-                item.style.transform = 'translateY(-5px)';
-                item.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.2)';
-                item.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
-            });
-
-            item.addEventListener('mouseout', () => {
-                item.style.transform = 'translateY(0)';
-                item.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
-                item.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
-            });
-        });
-    });
-</script>
 
 </html>
