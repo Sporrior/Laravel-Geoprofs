@@ -20,4 +20,5 @@ yarn-error.log
 /.vscode
 /.zed
 composer.json
+.idea
 
