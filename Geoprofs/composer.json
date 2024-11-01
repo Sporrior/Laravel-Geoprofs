@@ -7,7 +7,8 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.26",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "pragmarx/google2fa-laravel": "^2.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
