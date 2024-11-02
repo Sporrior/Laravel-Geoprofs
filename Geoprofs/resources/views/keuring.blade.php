@@ -11,6 +11,8 @@
             background-color: #f5f5f5;
             margin: 0;
             padding: 0;
+            height: 100vh;
+            overflow: hidden;
             display: flex;
         }
 
@@ -22,15 +24,29 @@
         .main-content {
             flex: 1;
             padding: 20px;
+            margin-top: -20px;
             display: flex;
             flex-direction: column;
+            overflow-y: auto;
+            max-height: 100vh;
+            box-sizing: border-box;
         }
 
+
         .success-message {
-            color: #4caf50;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-align: center;
+            background-color: #4caf50;
+            color: #fff;
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: none;
+            font-size: 14px;
+            transition: opacity 0.5s ease, transform 0.3s ease;
+            transform: translateY(-20px);
         }
 
         table {
@@ -38,31 +54,35 @@
             border-collapse: collapse;
             margin-top: 20px;
             background-color: #fff;
-            border: 1px solid #ddd;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         thead th {
             background-color: #ff8c00;
             color: #fff;
-            padding: 12px;
+            padding: 14px;
             text-align: left;
             font-size: 16px;
+            font-weight: bold;
+        }
+
+        tbody tr {
+            transition: background-color 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
         }
 
         tbody tr:nth-child(even) {
             background-color: #f9f9f9;
         }
 
-        tbody tr:nth-child(odd) {
-            background-color: #fff;
-        }
-
         td,
         th {
-            padding: 12px;
+            padding: 14px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
@@ -71,28 +91,39 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            margin: 0;
         }
 
         select {
-            padding: 6px 10px;
+            padding: 8px 12px;
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus {
+            border-color: #007bff;
         }
 
         button {
-            padding: 6px 12px;
+            padding: 8px 14px;
             background-color: #007bff;
             color: #fff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
-            transition: background-color 0.3s ease;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         button:hover {
             background-color: #0056b3;
+        }
+
+        button:active {
+            transform: scale(0.98);
         }
     </style>
 </head>
@@ -102,9 +133,8 @@
         @include('includes.admin-menu')
 
         <div class="main-content">
-
             @if(session('success'))
-                <p class="success-message">{{ session('success') }}</p>
+                <div class="success-message" id="successMessage">{{ session('success') }}</div>
             @endif
 
             <table>
@@ -131,7 +161,7 @@
                                     <form action="{{ route('keuring.updateStatus', $aanvraag->id) }}" method="POST">
                                         @csrf
                                         <select name="status">
-                                            <option value="">Selecteer status</option>
+                                            <option value="">status</option>
                                             <option value="1">Goedkeuren</option>
                                             <option value="0">Weigeren</option>
                                         </select>
@@ -145,6 +175,25 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const successMessage = document.getElementById('successMessage');
+            if (successMessage) {
+                successMessage.style.display = 'block';
+                successMessage.style.opacity = '1';
+
+                setTimeout(() => {
+                    successMessage.style.opacity = '0';
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 500);
+                }, 3000);
+            }
+        });
+    </script>
 </body>
 
 </html>

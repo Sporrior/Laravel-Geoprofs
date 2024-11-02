@@ -7,13 +7,13 @@
     <title>Ziekmelden</title>
 
     <style>
-
         body {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
             margin: 0;
             padding: 0;
             display: flex;
+            height: 100vh;
         }
 
         .container-admin {
@@ -25,6 +25,8 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .container {
@@ -35,25 +37,28 @@
             max-width: 400px;
             width: 100%;
             text-align: center;
-            margin-top: 20px;
         }
 
         h1 {
             font-size: 24px;
             color: #444;
             margin-bottom: 20px;
-            text-align: center;
         }
 
         .success-message {
-            color: #4caf50;
-            background-color: #e8f5e9;
-            padding: 10px;
-            border: 1px solid #4caf50;
+            background-color: #4caf50;
+            color: #fff;
+            padding: 15px 20px;
             border-radius: 5px;
-            margin-bottom: 15px;
-            font-weight: bold;
-            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: none;
+            /* Initially hidden */
+            font-size: 14px;
+            transition: opacity 0.5s ease;
         }
 
         .info-text {
@@ -70,10 +75,6 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-        }
-
-        .form-wrapper {
-            min-height: 100vh;
         }
 
         .submit-button {
@@ -114,26 +115,42 @@
         @include('includes.admin-menu')
 
         <div class="main-content">
-            <div class="form-wrapper">
-                <div class="container">
-                    <h1>Ziekmelden</h1>
+            <div class="container">
+                <h1>Ziekmelden</h1>
 
-                    @if(session('success'))
-                        <p class="success-message">{{ session('success') }}</p>
-                    @endif
+                @if(session('success'))
+                    <div class="success-message" id="successMessage">{{ session('success') }}</div>
+                @endif
 
-                    <form action="{{ route('ziekmelden.store') }}" method="POST" class="sick-form">
-                        @csrf
+                <form action="{{ route('ziekmelden.store') }}" method="POST" class="sick-form">
+                    @csrf
 
-                        <input type="hidden" name="verlof_reden" value="ziek">
+                    <input type="hidden" name="verlof_reden" value="ziek">
 
-                        <p class="info-text">U meldt zich ziek voor 1 dag.</p>
+                    <p class="info-text">U meldt zich ziek voor 1 dag.</p>
 
-                        <button type="submit" class="submit-button">Ziekmelden</button>
-                    </form>
-                </div>
+                    <button type="submit" class="submit-button">Ziekmelden</button>
+                </form>
             </div>
+        </div>
+    </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const successMessage = document.getElementById('successMessage');
+            if (successMessage) {
+                successMessage.style.display = 'block';
+                successMessage.style.opacity = '1';
+
+                setTimeout(() => {
+                    successMessage.style.opacity = '0';
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 500);
+                }, 3000);
+            }
+        });
+    </script>
 </body>
 
 </html>

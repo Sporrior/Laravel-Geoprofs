@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verlofaanvraag</title>
-    <!-- <link rel="stylesheet" href="{{ asset('css/verlofaanvragen.css') }}"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     <style>
@@ -15,6 +14,7 @@
             margin: 0;
             padding: 0;
             display: flex;
+            height: 100vh;
         }
 
         .container-admin {

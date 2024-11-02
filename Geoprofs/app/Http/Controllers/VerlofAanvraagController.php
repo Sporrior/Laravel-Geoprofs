@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -10,14 +11,45 @@ use Carbon\Carbon;
 
 class VerlofAanvraagController extends Controller
 {
-    public function create()
+    public function create(): \Illuminate\View\View
     {
         $types = Type::all();
-
         return view('verlofaanvragen', compact('types'));
     }
 
-    public function store(Request $request)
+    public function showDashboard(): \Illuminate\View\View
+    {
+        $startOfWeek = Carbon::now()->startOfWeek();
+        $endOfWeek = Carbon::now()->endOfWeek();
+
+        // Fetch leave applications for the current week along with the type name
+        $verlofaanvragen = VerlofAanvragen::whereBetween('start_datum', [$startOfWeek, $endOfWeek])
+            ->orWhereBetween('eind_datum', [$startOfWeek, $endOfWeek])
+            ->leftJoin('types', 'verlofaanvragens.verlof_soort', '=', 'types.id')
+            ->select('verlofaanvragens.*', 'types.type as type_name') // Select type name from types table
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'start_datum' => $item->start_datum->format('Y-m-d'),
+                    'eind_datum' => $item->eind_datum->format('Y-m-d'),
+                    'status' => $item->status ? 'Ziek' : 'Vrij',
+                    'type_name' => $item->type_name ?? 'Onbekend', // Use 'Onbekend' as fallback if type_name is null
+                ];
+            });
+
+        // Log the data for debugging
+        Log::info('Verlofaanvragen data:', ['verlofaanvragen' => $verlofaanvragen->toArray()]);
+
+        return view('dashboard', [
+            'verlofaanvragen' => $verlofaanvragen,
+        ]);
+    }
+
+
+
+
+
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
             'startDatum' => 'required|date',
@@ -26,17 +58,21 @@ class VerlofAanvraagController extends Controller
             'verlof_soort' => 'required|exists:types,id',
         ]);
 
-        $verlofAanvraag = new Verlofaanvragen();
-        $verlofAanvraag->user_id = Auth::id();
-        $verlofAanvraag->start_datum = $request->startDatum;
-        $verlofAanvraag->eind_datum = $request->eindDatum;
-        $verlofAanvraag->verlof_reden = $request->verlof_reden;
-        $verlofAanvraag->verlof_soort = $request->verlof_soort;
-        $verlofAanvraag->aanvraag_datum = Carbon::now();
-        $verlofAanvraag->save();
+        try {
+            $verlofAanvraag = new VerlofAanvragen();
+            $verlofAanvraag->user_id = Auth::id();
+            $verlofAanvraag->start_datum = $request->startDatum;
+            $verlofAanvraag->eind_datum = $request->eindDatum;
+            $verlofAanvraag->verlof_reden = $request->verlof_reden;
+            $verlofAanvraag->verlof_soort = $request->verlof_soort;
+            $verlofAanvraag->aanvraag_datum = Carbon::now();
+            $verlofAanvraag->save();
 
-        Log::info('Nieuwe verlofaanvraag van gebruiker ID: ' . Auth::id());
-
-        return redirect()->back()->with('success', 'Verlofaanvraag succesvol verzonden.');
+            Log::info('Nieuwe verlofaanvraag van gebruiker ID: ' . Auth::id());
+            return redirect()->back()->with('success', 'Verlofaanvraag succesvol verzonden.');
+        } catch (\Exception $e) {
+            Log::error('Failed to store leave request', ['error' => $e->getMessage()]);
+            return redirect()->back()->with('error', 'Er is iets misgegaan bij het verzenden van de verlofaanvraag.');
+        }
     }
 }
