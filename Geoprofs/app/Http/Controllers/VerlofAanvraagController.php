@@ -51,6 +51,17 @@ class VerlofAanvraagController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
+        // Convert the date format from d-m-Y to Y-m-d for validation and saving
+        $startDatum = Carbon::createFromFormat('d-m-Y', $request->startDatum)->format('Y-m-d');
+        $eindDatum = Carbon::createFromFormat('d-m-Y', $request->eindDatum)->format('Y-m-d');
+
+        // Replace the original input with the converted dates
+        $request->merge([
+            'startDatum' => $startDatum,
+            'eindDatum' => $eindDatum,
+        ]);
+
+        // Now validate the converted dates
         $request->validate([
             'startDatum' => 'required|date',
             'eindDatum' => 'required|date|after_or_equal:startDatum',
@@ -61,8 +72,8 @@ class VerlofAanvraagController extends Controller
         try {
             $verlofAanvraag = new VerlofAanvragen();
             $verlofAanvraag->user_id = Auth::id();
-            $verlofAanvraag->start_datum = $request->startDatum;
-            $verlofAanvraag->eind_datum = $request->eindDatum;
+            $verlofAanvraag->start_datum = $startDatum;
+            $verlofAanvraag->eind_datum = $eindDatum;
             $verlofAanvraag->verlof_reden = $request->verlof_reden;
             $verlofAanvraag->verlof_soort = $request->verlof_soort;
             $verlofAanvraag->aanvraag_datum = Carbon::now();

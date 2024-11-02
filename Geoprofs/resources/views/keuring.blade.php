@@ -147,6 +147,8 @@
         .status-form button:active {
             transform: scale(0.98);
         }
+
+        
     </style>
 </head>
 
@@ -199,11 +201,9 @@
             if (successMessage) {
                 successMessage.style.display = 'block';
                 successMessage.style.opacity = '1';
-                successMessage.style.transform = 'translateY(0)';
 
                 setTimeout(() => {
                     successMessage.style.opacity = '0';
-                    successMessage.style.transform = 'translateY(-20px)';
                     setTimeout(() => {
                         successMessage.style.display = 'none';
                     }, 500);

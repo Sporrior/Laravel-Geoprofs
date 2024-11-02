@@ -169,7 +169,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('verlofaanvragen.store') }}" method="POST" class="leave-form">
+                    <form id="leaveForm" action="{{ route('verlofaanvragen.store') }}" method="POST">
                         @csrf
 
                         <div class="form-group">
@@ -209,15 +209,27 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                flatpickr("#startDatum", { dateFormat: "d/m/Y" });
-                flatpickr("#eindDatum", { dateFormat: "d/m/Y" });
-            });
-        </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        flatpickr("#startDatum", {
+            dateFormat: "d-m-Y", // Display date as d-m-Y
+            onChange: function(selectedDates, dateStr, instance) {
+                // Set min date on end date when a start date is selected
+                if (selectedDates.length > 0) {
+                    endInput.set('minDate', selectedDates[0]);
+                }
+            }
+        });
+        
+        const endInput = flatpickr("#eindDatum", {
+            dateFormat: "d-m-Y", // Display date as d-m-Y
+            minDate: "today"
+        });
+    });
+</script>
 </body>
 
 </html>
