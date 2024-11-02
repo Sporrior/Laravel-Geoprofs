@@ -8,12 +8,12 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            background-color: #f9f9f9;
             margin: 0;
             padding: 0;
-            height: 100vh;
-            overflow: hidden;
             display: flex;
+            overflow-y: auto;
+            height: 100vh;
         }
 
         .container-admin {
@@ -24,20 +24,17 @@
         .main-content {
             flex: 1;
             padding: 20px;
-            margin-top: -20px;
             display: flex;
             flex-direction: column;
+            gap: 15px;
             overflow-y: auto;
-            max-height: 100vh;
-            box-sizing: border-box;
         }
-
 
         .success-message {
             background-color: #4caf50;
             color: #fff;
             padding: 15px 20px;
-            border-radius: 5px;
+            border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             position: fixed;
             top: 20px;
@@ -49,80 +46,105 @@
             transform: translateY(-20px);
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+        .leave-card {
             background-color: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        thead th {
-            background-color: #ff8c00;
-            color: #fff;
-            padding: 14px;
-            text-align: left;
-            font-size: 16px;
+        .leave-card:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .leave-card h3 {
+            font-size: 18px;
+            color: #333;
+            margin: 0;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .leave-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .leave-detail {
+            flex: 1 1 50%;
+            border-left: 4px solid #ff8c00;
+            padding-left: 8px;
+            margin-bottom: 8px;
+        }
+
+        .leave-detail strong {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .status {
             font-weight: bold;
+            color: #4caf50;
         }
 
-        tbody tr {
-            transition: background-color 0.3s ease;
+        .status.pending {
+            color: #ffa000;
         }
 
-        tbody tr:hover {
-            background-color: #f1f1f1;
+        .status.approved {
+            color: #4caf50;
         }
 
-        tbody tr:nth-child(even) {
-            background-color: #f9f9f9;
+        .status.rejected {
+            color: #f44336;
         }
 
-        td,
-        th {
-            padding: 14px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        form {
+        .status-form {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin: 0;
+            gap: 10px;
+            margin-top: 10px;
         }
 
-        select {
-            padding: 8px 12px;
+        .status-form select {
+            padding: 6px 10px;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 5px;
             font-size: 14px;
+            background-color: #f8f8f8;
+            cursor: pointer;
             transition: border-color 0.3s ease;
         }
 
-        select:focus {
+        .status-form select:focus {
             border-color: #007bff;
+            outline: none;
         }
 
-        button {
+        .status-form button {
             padding: 8px 14px;
             background-color: #007bff;
             color: #fff;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
             font-weight: bold;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
-        button:hover {
+        .status-form button:hover {
             background-color: #0056b3;
         }
 
-        button:active {
+        .status-form button:active {
             transform: scale(0.98);
         }
     </style>
@@ -137,44 +159,37 @@
                 <div class="success-message" id="successMessage">{{ session('success') }}</div>
             @endif
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Werknemer</th>
-                        <th>Reden</th>
-                        <th>Start Datum</th>
-                        <th>Eind Datum</th>
-                        <th>Type Verlof</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($verlofaanvragens as $aanvraag)
-                        <tr>
-                            <td>{{ optional($aanvraag->user)->voornaam }}</td>
-                            <td>{{ $aanvraag->verlof_reden }}</td>
-                            <td>{{ $aanvraag->start_datum }}</td>
-                            <td>{{ $aanvraag->eind_datum }}</td>
-                            <td>{{ optional($aanvraag->type)->type }}</td>
-                            <td>
-                                @if(is_null($aanvraag->status))
-                                    <form action="{{ route('keuring.updateStatus', $aanvraag->id) }}" method="POST">
-                                        @csrf
-                                        <select name="status">
-                                            <option value="">status</option>
-                                            <option value="1">Goedkeuren</option>
-                                            <option value="0">Weigeren</option>
-                                        </select>
-                                        <button type="submit">Verstuur</button>
-                                    </form>
-                                @else
-                                    {{ $aanvraag->status == 1 ? 'Goedgekeurd' : 'Weigeren' }}
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            @foreach($verlofaanvragens->sortByDesc('aanvraag_datum') as $aanvraag)
+                <div class="leave-card">
+                    <h3>{{ optional($aanvraag->user)->voornaam }}'s Verlofaanvraag</h3>
+                    <div class="leave-details">
+                        <div class="leave-detail"><strong>Reden:</strong> {{ $aanvraag->verlof_reden }}</div>
+                        <div class="leave-detail"><strong>Start Datum:</strong> {{ $aanvraag->start_datum }}</div>
+                        <div class="leave-detail"><strong>Eind Datum:</strong> {{ $aanvraag->eind_datum }}</div>
+                        <div class="leave-detail"><strong>Type Verlof:</strong> {{ optional($aanvraag->type)->type }}</div>
+                        <div class="leave-detail">
+                            <strong>Status:</strong>
+                            <span
+                                class="status 
+                                    {{ is_null($aanvraag->status) ? 'pending' : ($aanvraag->status == 1 ? 'approved' : 'rejected') }}">
+                                {{ is_null($aanvraag->status) ? 'Pending' : ($aanvraag->status == 1 ? 'Goedgekeurd' : 'Weigeren') }}
+                            </span>
+                        </div>
+                    </div>
+
+                    @if(is_null($aanvraag->status))
+                        <form action="{{ route('keuring.updateStatus', $aanvraag->id) }}" method="POST" class="status-form">
+                            @csrf
+                            <select name="status">
+                                <option value="">Selecteer status</option>
+                                <option value="1">Goedkeuren</option>
+                                <option value="0">Weigeren</option>
+                            </select>
+                            <button type="submit">Verstuur</button>
+                        </form>
+                    @endif
+                </div>
+            @endforeach
         </div>
     </div>
 
@@ -184,9 +199,11 @@
             if (successMessage) {
                 successMessage.style.display = 'block';
                 successMessage.style.opacity = '1';
+                successMessage.style.transform = 'translateY(0)';
 
                 setTimeout(() => {
                     successMessage.style.opacity = '0';
+                    successMessage.style.transform = 'translateY(-20px)';
                     setTimeout(() => {
                         successMessage.style.display = 'none';
                     }, 500);

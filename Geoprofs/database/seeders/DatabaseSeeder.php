@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Team;
-use App\Models\Verlofaanvragen; // Ensure this matches the model name
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -63,12 +62,12 @@ class DatabaseSeeder extends Seeder
         // Create a user with the manager role in GeoDECY
         User::factory()->create([
             'voornaam' => 'Damien',
-            'achternaam' => 'Dam',
+            'achternaam' => 'Engelen',
             'telefoon' => '06123456789',
             'email' => 'damien@gmail.com',
             'password' => Hash::make('Damien12345'),
-            'role_id' => Role::where('roleName', 'manager')->first()->id,
-            'team_id' => $geoDECY, // Assign to GeoDECY team
+            'role_id' => Role::where('roleName', 'officemanagement')->first()->id,
+            'team_id' => $hrm, // Assign to GeoDECY team
         ]);
 
         User::factory()->create([

@@ -103,6 +103,7 @@
                 </a>
                 <h4>Hallo, {{ $user->voornaam }}</h4>
                 <p>{{ $user->role->roleName }}</p>
+                <p>{{ $user->team->group_name }}</p>
             </div>
             <ul class="navigatie">
                 <li><a href="/" class="navigatie-link {{ request()->is('/') ? 'actief' : '' }}">HR Administratie</a>
