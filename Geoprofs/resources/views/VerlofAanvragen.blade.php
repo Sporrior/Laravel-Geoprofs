@@ -215,9 +215,8 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         flatpickr("#startDatum", {
-            dateFormat: "d-m-Y", // Display date as d-m-Y
+            dateFormat: "d-m-Y",
             onChange: function(selectedDates, dateStr, instance) {
-                // Set min date on end date when a start date is selected
                 if (selectedDates.length > 0) {
                     endInput.set('minDate', selectedDates[0]);
                 }
@@ -225,7 +224,7 @@
         });
         
         const endInput = flatpickr("#eindDatum", {
-            dateFormat: "d-m-Y", // Display date as d-m-Y
+            dateFormat: "d-m-Y", 
             minDate: "today"
         });
     });
