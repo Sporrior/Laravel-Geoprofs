@@ -55,8 +55,8 @@ class DatabaseSeeder extends Seeder
             'telefoon' => '06123123123',
             'email' => 'ahmad@gmail.com',
             'password' => Hash::make('Ahmad'),
-            'role_id' => Role::where('roleName', 'werknemer')->first()->id,
-            'team_id' => $geoICT, // Assign to GeoICT team
+            'role_id' => Role::where('roleName', 'OM')->first()->id,
+            'team_id' => $hrm, // Assign to GeoICT team
         ]);
 
         // Create a user with the manager role in GeoDECY

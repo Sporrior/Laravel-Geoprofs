@@ -1,9 +1,3 @@
-@if($user->role->id == 2 || $user->role->id == 3)
-    {{ 'Page' }}
-@elseif($user->role->id == 1)
-    <script>window.location = "/dashboard";</script>
-@endif
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -176,23 +170,22 @@
                         <div class="leave-detail">
                             <strong>Status:</strong>
                             <span class="status
-                        {{ is_null($aanvraag->status) ? 'pending' : ($aanvraag->status == 1 ? 'approved' : 'rejected') }}">
+                            {{ is_null($aanvraag->status) ? 'pending' : ($aanvraag->status == 1 ? 'approved' : 'rejected') }}">
                                 {{ is_null($aanvraag->status) ? 'Pending' : ($aanvraag->status == 1 ? 'Goedgekeurd' : 'Weigeren') }}
                             </span>
                         </div>
                     </div>
 
-                    @if(is_null($aanvraag->status))
-                        <form action="{{ route('keuring.updateStatus', $aanvraag->id) }}" method="POST" class="status-form">
-                            @csrf
-                            <select name="status">
-                                <option value="">Selecteer status</option>
-                                <option value="1">Goedkeuren</option>
-                                <option value="0">Weigeren</option>
-                            </select>
-                            <button type="submit">Verstuur</button>
-                        </form>
-                    @endif
+                    <!-- Status update form, available for all statuses -->
+                    <form action="{{ route('keuring.updateStatus', $aanvraag->id) }}" method="POST" class="status-form">
+                        @csrf
+                        <select name="status">
+                            <option value="">Selecteer status</option>
+                            <option value="1" {{ $aanvraag->status === 1 ? 'selected' : '' }}>Goedkeuren</option>
+                            <option value="0" {{ $aanvraag->status === 0 ? 'selected' : '' }}>Weigeren</option>
+                        </select>
+                        <button type="submit">{{ is_null($aanvraag->status) ? 'Verstuur' : 'Wijzigen' }}</button>
+                    </form>
                 </div>
             @endforeach
         </div>
