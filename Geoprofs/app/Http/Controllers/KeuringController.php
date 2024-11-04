@@ -31,25 +31,28 @@ class KeuringController extends Controller
         $currentStatus = $verlofAanvraag->status;
         $newStatus = $request->input('status');
 
-        // Retrieve the user associated with the leave request
-        $user = $verlofAanvraag->user;
+        // Check if the verlof_soort (leave type) is 2; only then update verlof_dagen
+        if ($verlofAanvraag->verlof_soort == 2) {
+            // Retrieve the user associated with the leave request
+            $user = $verlofAanvraag->user;
 
-        // Calculate the number of requested days
-        $startDatum = Carbon::parse($verlofAanvraag->start_datum);
-        $eindDatum = Carbon::parse($verlofAanvraag->eind_datum);
-        $requestedDays = $startDatum->diffInDays($eindDatum) + 1;
+            // Calculate the number of requested days
+            $startDatum = Carbon::parse($verlofAanvraag->start_datum);
+            $eindDatum = Carbon::parse($verlofAanvraag->eind_datum);
+            $requestedDays = $startDatum->diffInDays($eindDatum) + 1;
 
-        // Check if the status is being updated from approved to rejected
-        if ($currentStatus === 1 && $newStatus == 0) {
-            // Add the days back to the user's available leave days
-            $user->verlof_dagen += $requestedDays;
-            $user->save();
-        }
-        // Check if the status is being updated to approved from any other status
-        elseif ($newStatus == 1 && $currentStatus !== 1) {
-            // Subtract the requested days from the user's available leave days
-            $user->verlof_dagen -= $requestedDays;
-            $user->save();
+            // Check if the status is being updated from approved to rejected
+            if ($currentStatus === 1 && $newStatus == 0) {
+                // Add the days back to the user's available leave days
+                $user->verlof_dagen += $requestedDays;
+                $user->save();
+            }
+            // Check if the status is being updated to approved from any other status
+            elseif ($newStatus == 1 && $currentStatus !== 1) {
+                // Subtract the requested days from the user's available leave days
+                $user->verlof_dagen -= $requestedDays;
+                $user->save();
+            }
         }
 
         // Update the status on the leave request
