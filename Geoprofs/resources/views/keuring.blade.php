@@ -1,3 +1,9 @@
+@if($user->role->id == 2 || $user->role->id == 3)
+    {{ 'Page' }}
+@elseif($user->role->id == 1)
+    <script>window.location = "/dashboard";</script>
+@endif
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -169,7 +175,7 @@
                         <div class="leave-detail"><strong>Type Verlof:</strong> {{ optional($aanvraag->type)->type }}</div>
                         <div class="leave-detail">
                             <strong>Status:</strong>
-                            <span class="status 
+                            <span class="status
                         {{ is_null($aanvraag->status) ? 'pending' : ($aanvraag->status == 1 ? 'approved' : 'rejected') }}">
                                 {{ is_null($aanvraag->status) ? 'Pending' : ($aanvraag->status == 1 ? 'Goedgekeurd' : 'Weigeren') }}
                             </span>
