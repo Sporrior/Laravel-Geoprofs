@@ -28,29 +28,32 @@ class KeuringController extends Controller
     {
         // Find the leave request by ID
         $verlofAanvraag = VerlofAanvragen::findOrFail($id);
+        $currentStatus = $verlofAanvraag->status;
+        $newStatus = $request->input('status');
 
-        // Retrieve the new status from the request
-        $status = $request->input('status');
+        // Retrieve the user associated with the leave request
+        $user = $verlofAanvraag->user;
 
-        // Check if the new status is 'approved' (1) and if it wasn't approved before
-        if ($status == 1 && $verlofAanvraag->status !== 1) {
-            // Convert start and end dates to Carbon instances
-            $startDatum = Carbon::parse($verlofAanvraag->start_datum);
-            $eindDatum = Carbon::parse($verlofAanvraag->eind_datum);
+        // Calculate the number of requested days
+        $startDatum = Carbon::parse($verlofAanvraag->start_datum);
+        $eindDatum = Carbon::parse($verlofAanvraag->eind_datum);
+        $requestedDays = $startDatum->diffInDays($eindDatum) + 1;
 
-            // Calculate the number of requested days
-            $requestedDays = $startDatum->diffInDays($eindDatum) + 1;
-
-            // Retrieve the user associated with the leave request
-            $user = $verlofAanvraag->user;
-
+        // Check if the status is being updated from approved to rejected
+        if ($currentStatus === 1 && $newStatus == 0) {
+            // Add the days back to the user's available leave days
+            $user->verlof_dagen += $requestedDays;
+            $user->save();
+        }
+        // Check if the status is being updated to approved from any other status
+        elseif ($newStatus == 1 && $currentStatus !== 1) {
             // Subtract the requested days from the user's available leave days
             $user->verlof_dagen -= $requestedDays;
             $user->save();
         }
 
         // Update the status on the leave request
-        $verlofAanvraag->status = $status;
+        $verlofAanvraag->status = $newStatus;
         $verlofAanvraag->save();
 
         // Redirect back to the keuring page with a success message
