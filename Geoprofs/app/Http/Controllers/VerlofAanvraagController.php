@@ -22,22 +22,20 @@ class VerlofAanvraagController extends Controller
         $startOfWeek = Carbon::now()->startOfWeek();
         $endOfWeek = Carbon::now()->endOfWeek();
 
-        // Fetch leave applications for the current week along with the type name
         $verlofaanvragen = VerlofAanvragen::whereBetween('start_datum', [$startOfWeek, $endOfWeek])
             ->orWhereBetween('eind_datum', [$startOfWeek, $endOfWeek])
             ->leftJoin('types', 'verlofaanvragens.verlof_soort', '=', 'types.id')
-            ->select('verlofaanvragens.*', 'types.type as type_name') // Select type name from types table
+            ->select('verlofaanvragens.*', 'types.type as type_name')
             ->get()
             ->map(function ($item) {
                 return [
                     'start_datum' => $item->start_datum->format('Y-m-d'),
                     'eind_datum' => $item->eind_datum->format('Y-m-d'),
                     'status' => $item->status ? 'Ziek' : 'Vrij',
-                    'type_name' => $item->type_name ?? 'Onbekend', // Use 'Onbekend' as fallback if type_name is null
+                    'type_name' => $item->type_name ?? 'Geen Type', // Fallback if type_name is null
                 ];
             });
 
-        // Log the data for debugging
         Log::info('Verlofaanvragen data:', ['verlofaanvragen' => $verlofaanvragen->toArray()]);
 
         return view('dashboard', [
@@ -46,22 +44,16 @@ class VerlofAanvraagController extends Controller
     }
 
 
-
-
-
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
-        // Convert the date format from d-m-Y to Y-m-d for validation and saving
         $startDatum = Carbon::createFromFormat('d-m-Y', $request->startDatum)->format('Y-m-d');
         $eindDatum = Carbon::createFromFormat('d-m-Y', $request->eindDatum)->format('Y-m-d');
 
-        // Replace the original input with the converted dates
         $request->merge([
             'startDatum' => $startDatum,
             'eindDatum' => $eindDatum,
         ]);
 
-        // Now validate the converted dates
         $request->validate([
             'startDatum' => 'required|date',
             'eindDatum' => 'required|date|after_or_equal:startDatum',
