@@ -159,31 +159,9 @@
                 </div>
             </div>
 
-
-            <div class="kaart">
-                <div class="kaart-kop">Mijn aanvragen</div>
-                <div class="kaart-body">
-                    @if($mijnAanvragen->isEmpty())
-                        <p><strong>(0)</strong> Geen aanvragen gevonden.</p>
-                    @else
-                        <p><strong>({{ $mijnAanvragen->count() }})</strong> aanvragen gevonden:</p>
-                        <ul>
-                            @foreach($mijnAanvragen as $aanvraag)
-                                <li>{{ $aanvraag->type->naam }} - Status: @if($aanvraag->status == 1) Goedgekeurd @elseif($aanvraag->status == 2) Gewijgerd @else In Afwachting @endif
-                                    <br> - Start Datum: {{$aanvraag->start_datum}} <br> - Eind Datum: {{$aanvraag->eind_datum}}
-                                </li><br>
-{{--                                <li>{{ $aanvraag->start_datum }}</li>--}}
-                            @endforeach
-                        </ul>
-                    @endif
-                </div>
-            </div>
-
-
             <div class="kaart">
                 <div class="kaart-kop">Verlofkalender</div>
                 <div class="calendar-container" id="calendar">
-                    <!-- Calendar days will be rendered by JavaScript -->
                 </div>
             </div>
         </div>
@@ -191,9 +169,7 @@
 </body>
 
 <script src="https://unpkg.com/phosphor-icons"></script>
-
 <script>
-
     const leaveData = @json($verlofaanvragen);
 
     const today = new Date();
@@ -201,7 +177,7 @@
     const startOfWeek = new Date(today);
     startOfWeek.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
 
-    const daysOfWeek = ["Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"];
+    const daysOfWeek = ["Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vridag", "Zaterdag", "Zondag"];
     const calendarContainer = document.getElementById("calendar");
 
     daysOfWeek.forEach((day, index) => {
@@ -218,14 +194,16 @@
         }
 
         const leaveStatus = leaveData.find(item => {
+            const startDate = new Date(item.start_datum);
+            const endDate = new Date(item.eind_datum);
+
             return formattedDate >= item.start_datum && formattedDate <= item.eind_datum;
         });
 
         const status = document.createElement("div");
         status.classList.add("status");
 
-        // Ensure leave type is correctly displayed or fallback to "Geen Type"
-        status.innerText = leaveStatus && leaveStatus.type_name ? leaveStatus.type_name : "Geen Type";
+        status.innerText = leaveStatus ? leaveStatus.verlof_reden : "";
 
         dayDiv.innerHTML = `<div>${day}</div><div>${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'short' })}</div>`;
         dayDiv.appendChild(status);
@@ -233,10 +211,4 @@
         calendarContainer.appendChild(dayDiv);
     });
 </script>
-<<<<<<< Updated upstream
 </html>
-=======
-
-
-</html>
->>>>>>> Stashed changes

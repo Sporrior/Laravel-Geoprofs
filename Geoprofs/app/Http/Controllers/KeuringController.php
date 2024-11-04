@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\VerlofAanvragen;
 use Illuminate\Support\Facades\DB;
 
-
 class KeuringController extends Controller
 {
 
@@ -15,32 +14,13 @@ class KeuringController extends Controller
         $this->middleware('auth');
     }
 
-    // In KeuringController.php
     public function index()
     {
-        // Haal alle verlofaanvragen op met de gebruikers- en type-relaties
+        // Fetch all leave requests (verlofaanvragens)
         $verlofaanvragens = VerlofAanvragen::with('user', 'type')->get();
 
-        // Pass de variabele naar de view
+        // Pass them to the view
         return view('keuring', compact('verlofaanvragens'));
-    }
-    public function getUserVerlofaanvragen()
-    {
-        $userId = auth()->user()->id; // Haal het ID van de ingelogde gebruiker op
-        return VerlofAanvragen::with('type')
-            ->where('user_id', $userId)
-            ->get();
-    }
-
-    public function mijnAanvragen()
-    {
-        $user = auth()->user();
-        $mijnAanvragen = VerlofAanvragen::where('user_id', (int) $user->id)->get();
-
-        // Voeg $verlofaanvragens hier toe als je die ook nodig hebt in de view
-        $verlofaanvragens = VerlofAanvragen::with('user', 'type')->get();
-
-        return view('dashboard', compact('mijnAanvragen', 'verlofaanvragens'));
     }
 
     public function updateStatus(Request $request, $id)
