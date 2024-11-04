@@ -63,6 +63,19 @@ class VerlofAanvraagController extends Controller
             'verlof_soort' => 'required|exists:types,id',
         ]);
 
+        // Calculate requested days
+        $requestedDays = Carbon::parse($startDatum)->diffInDays(Carbon::parse($eindDatum)) + 1;
+
+        // Fetch the user's available leave days
+        $user = Auth::user();
+        $availableDays = $user->verlof_dagen;
+
+        // Check if the requested days exceed available leave days
+        if ($requestedDays > $availableDays) {
+            Log::info('Verlofaanvraag geweigerd: aangevraagde dagen overschrijden beschikbare verlofdagen.');
+            return redirect()->back()->with('error', 'Verlofaanvraag geweigerd: Aangevraagde dagen overschrijden beschikbare verlofdagen.');
+        }
+
         try {
             $verlofAanvraag = new VerlofAanvragen();
             $verlofAanvraag->user_id = Auth::id();
