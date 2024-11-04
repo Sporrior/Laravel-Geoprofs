@@ -159,6 +159,10 @@
                         <p class="success-message">{{ session('success') }}</p>
                     @endif
 
+                    @if(session('error'))
+                        <div class="error-message">{{ session('error') }}</div>
+                    @endif
+
                     @if ($errors->any())
                         <div class="error-message">
                             <ul>
@@ -222,9 +226,9 @@
                 }
             }
         });
-        
+
         const endInput = flatpickr("#eindDatum", {
-            dateFormat: "d-m-Y", 
+            dateFormat: "d-m-Y",
             minDate: "today"
         });
     });
