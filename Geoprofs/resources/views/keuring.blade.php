@@ -147,8 +147,6 @@
         .status-form button:active {
             transform: scale(0.98);
         }
-
-        
     </style>
 </head>
 
@@ -161,7 +159,7 @@
                 <div class="success-message" id="successMessage">{{ session('success') }}</div>
             @endif
 
-            @foreach($verlofaanvragens->sortByDesc('aanvraag_datum') as $aanvraag)
+            @foreach($verlofaanvragens->sortByDesc('updated_at') as $aanvraag)
                 <div class="leave-card">
                     <h3>{{ optional($aanvraag->user)->voornaam }}'s Verlofaanvraag</h3>
                     <div class="leave-details">
@@ -171,9 +169,8 @@
                         <div class="leave-detail"><strong>Type Verlof:</strong> {{ optional($aanvraag->type)->type }}</div>
                         <div class="leave-detail">
                             <strong>Status:</strong>
-                            <span
-                                class="status 
-                                    {{ is_null($aanvraag->status) ? 'pending' : ($aanvraag->status == 1 ? 'approved' : 'rejected') }}">
+                            <span class="status 
+                        {{ is_null($aanvraag->status) ? 'pending' : ($aanvraag->status == 1 ? 'approved' : 'rejected') }}">
                                 {{ is_null($aanvraag->status) ? 'Pending' : ($aanvraag->status == 1 ? 'Goedgekeurd' : 'Weigeren') }}
                             </span>
                         </div>

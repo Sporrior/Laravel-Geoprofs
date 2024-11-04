@@ -106,7 +106,7 @@
                 <p>{{ $user->team->group_name }}</p>
             </div>
             <ul class="navigatie">
-                <li><a href="/" class="navigatie-link {{ request()->is('/') ? 'actief' : '' }}">HR Administratie</a>
+                <li><a href="#" class="navigatie-link {{ request()->is('#') ? 'actief' : '' }}">HR Administratie</a>
                 </li>
                 <li><a href="/keuring" class="navigatie-link {{ request()->is('keuring') ? 'actief' : '' }}">Verlof
                         Goedkeuren</a></li>

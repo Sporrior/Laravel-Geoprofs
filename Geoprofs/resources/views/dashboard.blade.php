@@ -177,7 +177,7 @@
     const startOfWeek = new Date(today);
     startOfWeek.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
 
-    const daysOfWeek = ["Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vridag", "Zaterdag", "Zondag"];
+    const daysOfWeek = ["Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"];
     const calendarContainer = document.getElementById("calendar");
 
     daysOfWeek.forEach((day, index) => {
@@ -197,7 +197,7 @@
             const startDate = new Date(item.start_datum);
             const endDate = new Date(item.eind_datum);
 
-            return formattedDate >= item.start_datum && formattedDate <= item.eind_datum;
+            return item.status === 1 && formattedDate >= item.start_datum && formattedDate <= item.eind_datum;
         });
 
         const status = document.createElement("div");
@@ -210,5 +210,8 @@
 
         calendarContainer.appendChild(dayDiv);
     });
+
+
 </script>
+
 </html>
