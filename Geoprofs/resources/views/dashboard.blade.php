@@ -159,6 +159,27 @@
                 </div>
             </div>
 
+
+            <div class="kaart">
+                <div class="kaart-kop">Mijn aanvragen</div>
+                <div class="kaart-body">
+                    @if($mijnAanvragen->isEmpty())
+                        <p><strong>(0)</strong> Geen aanvragen gevonden. Controleer of de juiste gebruiker is ingelogd en of er aanvragen in de database staan.</p>
+                    @else
+                        <p><strong>({{ $mijnAanvragen->count() }})</strong> aanvragen gevonden:</p>
+                        <ul>
+                            @foreach($mijnAanvragen as $aanvraag)
+                                <li>{{ $aanvraag->type->naam }} - Status: @if($aanvraag->status == 1) Goedgekeurd @elseif($aanvraag->status == 2) Gewijgerd @else In Afwachting @endif
+                                    <br> - Start Datum: {{$aanvraag->start_datum}} <br> - Eind Datum: {{$aanvraag->eind_datum}}
+                                </li><br>
+{{--                                <li>{{ $aanvraag->start_datum }}</li>--}}
+                            @endforeach
+                        </ul>
+                    @endif
+                </div>
+            </div>
+
+
             <div class="kaart">
                 <div class="kaart-kop">Verlofkalender</div>
                 <div class="calendar-container" id="calendar">
@@ -169,46 +190,47 @@
 </body>
 
 <script src="https://unpkg.com/phosphor-icons"></script>
-<script>
-    const leaveData = @json($verlofaanvragen);
 
-    const today = new Date();
-    const dayOfWeek = today.getDay();
-    const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+{{--<script>--}}
+{{--    const leaveData = @json($verlofaanvragen);--}}
 
-    const daysOfWeek = ["Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vridag", "Zaterdag", "Zondag"];
-    const calendarContainer = document.getElementById("calendar");
+{{--    const today = new Date();--}}
+{{--    const dayOfWeek = today.getDay();--}}
+{{--    const startOfWeek = new Date(today);--}}
+{{--    startOfWeek.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));--}}
 
-    daysOfWeek.forEach((day, index) => {
-        const dayDiv = document.createElement("div");
-        dayDiv.classList.add("calendar-day");
+{{--    const daysOfWeek = ["Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vridag", "Zaterdag", "Zondag"];--}}
+{{--    const calendarContainer = document.getElementById("calendar");--}}
 
-        const currentDate = new Date(startOfWeek);
-        currentDate.setDate(startOfWeek.getDate() + index);
+{{--    daysOfWeek.forEach((day, index) => {--}}
+{{--        const dayDiv = document.createElement("div");--}}
+{{--        dayDiv.classList.add("calendar-day");--}}
 
-        const formattedDate = currentDate.toISOString().split('T')[0];
+{{--        const currentDate = new Date(startOfWeek);--}}
+{{--        currentDate.setDate(startOfWeek.getDate() + index);--}}
 
-        if (currentDate.toDateString() === today.toDateString()) {
-            dayDiv.classList.add("current-day");
-        }
+{{--        const formattedDate = currentDate.toISOString().split('T')[0];--}}
 
-        const leaveStatus = leaveData.find(item => {
-            const startDate = new Date(item.start_datum);
-            const endDate = new Date(item.eind_datum);
+{{--        if (currentDate.toDateString() === today.toDateString()) {--}}
+{{--            dayDiv.classList.add("current-day");--}}
+{{--        }--}}
 
-            return formattedDate >= item.start_datum && formattedDate <= item.eind_datum;
-        });
+{{--        const leaveStatus = leaveData.find(item => {--}}
+{{--            const startDate = new Date(item.start_datum);--}}
+{{--            const endDate = new Date(item.eind_datum);--}}
 
-        const status = document.createElement("div");
-        status.classList.add("status");
+{{--            return formattedDate >= item.start_datum && formattedDate <= item.eind_datum;--}}
+{{--        });--}}
 
-        status.innerText = leaveStatus ? leaveStatus.verlof_reden : "";
+{{--        const status = document.createElement("div");--}}
+{{--        status.classList.add("status");--}}
 
-        dayDiv.innerHTML = `<div>${day}</div><div>${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'short' })}</div>`;
-        dayDiv.appendChild(status);
+{{--        status.innerText = leaveStatus ? leaveStatus.verlof_reden : "";--}}
 
-        calendarContainer.appendChild(dayDiv);
-    });
-</script>
+{{--        dayDiv.innerHTML = `<div>${day}</div><div>${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'short' })}</div>`;--}}
+{{--        dayDiv.appendChild(status);--}}
+
+{{--        calendarContainer.appendChild(dayDiv);--}}
+{{--    });--}}
+{{--</script>--}}
 </html>

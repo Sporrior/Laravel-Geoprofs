@@ -14,13 +14,25 @@ class KeuringController extends Controller
         $this->middleware('auth');
     }
 
+    // In KeuringController.php
     public function index()
     {
-        // Fetch all leave requests (verlofaanvragens)
+        // Haal alle verlofaanvragen op met de gebruikers- en type-relaties
         $verlofaanvragens = VerlofAanvragen::with('user', 'type')->get();
 
-        // Pass them to the view
+        // Pass de variabele naar de view
         return view('keuring', compact('verlofaanvragens'));
+    }
+
+    public function mijnAanvragen()
+    {
+        $user = auth()->user();
+        $mijnAanvragen = VerlofAanvragen::where('user_id', (int) $user->id)->get();
+
+        // Voeg $verlofaanvragens hier toe als je die ook nodig hebt in de view
+        $verlofaanvragens = VerlofAanvragen::with('user', 'type')->get();
+
+        return view('dashboard', compact('mijnAanvragen', 'verlofaanvragens'));
     }
 
     public function updateStatus(Request $request, $id)

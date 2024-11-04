@@ -30,6 +30,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::get('/dashboard', [KeuringController::class, 'mijnAanvragen'])->name('dashboard');
+
     Route::get('/profiel', [ProfielController::class, 'show'])->name('profiel.show');
     Route::get('/profiel/bewerken', [ProfielController::class, 'edit'])->name('profiel.edit');
     Route::put('/profiel/update', [ProfielController::class, 'update'])->name('profiel.update');
