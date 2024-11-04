@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\VerlofAanvragen;
 use Illuminate\Support\Facades\DB;
 
+
 class KeuringController extends Controller
 {
 
@@ -22,6 +23,13 @@ class KeuringController extends Controller
 
         // Pass de variabele naar de view
         return view('keuring', compact('verlofaanvragens'));
+    }
+    public function getUserVerlofaanvragen()
+    {
+        $userId = auth()->user()->id; // Haal het ID van de ingelogde gebruiker op
+        return VerlofAanvragen::with('type')
+            ->where('user_id', $userId)
+            ->get();
     }
 
     public function mijnAanvragen()
