@@ -10,6 +10,8 @@ use App\Http\Controllers\VerlofAanvraagController;
 use App\Http\Controllers\KeuringController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ZiekmeldenController;
+use App\Http\Middleware\CheckRole;
+
 
 
 Route::get('/', function () {
@@ -23,6 +25,8 @@ Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 
 Route::middleware('auth')->group(function () {
+
+//    Route::get('/admin', [AdminController::class, 'index'])->middleware(CheckRole::class);
 
     Route::get('/2fa', [LoginController::class, 'show2faForm'])->name('2fa.show');
     Route::post('/2fa', [LoginController::class, 'verify2fa'])->name('2fa.verify');
