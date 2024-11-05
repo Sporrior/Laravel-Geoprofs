@@ -1,5 +1,5 @@
-@if($user->role->id == 2 || $user->role->id == 3)
-    {{ 'Page' }}
+@if(!$user->role->id == 2 || $user->role->id == 3)
+
 @elseif($user->role->id == 1)
     <script>window.location = "/dashboard";</script>
 @endif

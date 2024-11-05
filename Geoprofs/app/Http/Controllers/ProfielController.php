@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\logboek;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -67,6 +68,12 @@ class ProfielController extends Controller
         $user->save();
         Log::info('Profile updated for user ID: ' . $user->id);
 
+        logboek::class::create([
+            'user_id' => auth()->user()->id,
+            'actie' => 'Profile updated door gebruiker: ' . $user->voornaam . ' ' . $user->achternaam . ' met een rol van ' . $user->role->roleName,
+            'actie_beschrijving' => 'de volgende gegevens zijn bijgewerkt: ' . $request->voornaam . ' ' . $request->achternaam . ' ' . $request->email . ' ' . $request->telefoon,
+            'actie_datum' => now(),
+        ]);
         return redirect()->back()->with('success', 'Profiel succesvol bijgewerkt');
     }
 
@@ -85,7 +92,12 @@ class ProfielController extends Controller
 
         $user->password = Hash::make($request->nieuwWachtwoord);
         $user->save();
-
+        logboek::class::create([
+            'user_id' => auth()->user()->id,
+            'actie' => 'Password changed door gebruiker: ' . $user->voornaam . ' ' . $user->achternaam . ' met een rol van ' . $user->role->roleName,
+            'actie_beschrijving' => 'Wachtwoord is gewijzigd',
+            'actie_datum' => now(),
+        ]);
         return redirect()->back()->with('success', 'Wachtwoord succesvol gewijzigd');
     }
 }

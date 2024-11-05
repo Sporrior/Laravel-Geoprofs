@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\logboek;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -47,7 +48,18 @@ class UserCreateController extends Controller
             'verlof_dagen' => 25,
         ]);
 
+        $loggedInUser = auth()->user();
+        $voornaam = $loggedInUser->voornaam;
+        $achternaam = $loggedInUser->achternaam;
+        $role = $loggedInUser->role->roleName;
+
         // Redirect back with success message
+        logboek::class::create([
+            'user_id' => $loggedInUser->id,
+            'actie' => 'Profile updated door gebruiker: ' . $voornaam . ' ' . $achternaam . 'met een rol van ' . $role,
+            'actie_beschrijving' => $voornaam . ' Heeft een account aangemaakt ' . $request->voornaam . ' ' . $request->achternaam . " " . $request->email . " " . $request->telefoon,
+            'actie_datum' => now(),
+        ]);
         return redirect()->route('addusers.index')->with('success', 'User successfully created.');
     }
 }

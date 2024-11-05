@@ -48,6 +48,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/verlofaanvragen', [VerlofAanvraagController::class, 'create'])->name('verlofaanvragen.create');
     Route::post('/verlofaanvragen', [VerlofAanvraagController::class, 'store'])->name('verlofaanvragen.store');
 
+//    Route::get('/logboek', [LogboekController::class, 'index'])->name('logboek.index');
+
     Route::middleware('auth')->group(function () {
         Route::get('/keuring', [KeuringController::class, 'index'])->name('keuring.index');
         Route::post('/keuring/update-status/{id}', [KeuringController::class, 'updateStatus'])->name('keuring.updateStatus');
