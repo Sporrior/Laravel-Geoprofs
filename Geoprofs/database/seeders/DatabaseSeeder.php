@@ -55,7 +55,7 @@ class DatabaseSeeder extends Seeder
             'telefoon' => '06123123123',
             'email' => 'ahmad@gmail.com',
             'password' => Hash::make('Ahmad'),
-            'role_id' => Role::where('roleName', 'OM')->first()->id,
+            'role_id' => Role::where('roleName', 'officemanagement')->first()->id,
             'team_id' => $hrm, // Assign to GeoICT team
         ]);
 
