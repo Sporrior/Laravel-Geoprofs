@@ -11,7 +11,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'voornaam',   // Corrected capitalization here
+        'voornaam',
         'tussennaam',
         'achternaam',
         'profielFoto',
