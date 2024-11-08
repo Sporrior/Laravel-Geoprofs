@@ -14,16 +14,20 @@ class ProfielControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Role::firstOrCreate(['roleName' => 'werknemer']);
+        Team::firstOrCreate(['group_name' => 'GeoICT']);
+    }
+
     public function testChangePassword()
     {
-        // Ensure a 'werknemer' role exists, using firstOrCreate to prevent duplicates
-        $role = Role::firstOrCreate(['roleName' => 'werknemer']);
+        $role = Role::where('roleName', 'werknemer')->first();
+        $team = Team::where('group_name', 'GeoICT')->first();
 
-        // Create a team for the user
-        $team = Team::factory()->create(['name' => 'Development Team']);
-
-        // Create a user with all required fields and relationships
-        $user = User::factory()->create([
+        $user = User::create([
             'password' => Hash::make('oldpassword'),
             'voornaam' => 'Jan',
             'tussennaam' => 'van',
@@ -32,32 +36,28 @@ class ProfielControllerTest extends TestCase
             'telefoon' => '0612345678',
             'email' => 'test@gmail.com',
             'verlof_dagen' => 25,
-            'role_id' => $role->id, // Associate with existing 'werknemer' role
+            'role_id' => $role->id,
             'team_id' => $team->id,
         ]);
 
-        // New password data for the request
         $newPasswordData = [
             'huidigWachtwoord' => 'oldpassword',
             'nieuwWachtwoord' => 'newpassword123',
             'nieuwWachtwoord_confirmation' => 'newpassword123',
         ];
 
-        // Act as the user and attempt to change the password using PUT
         $response = $this->actingAs($user)->put(route('profiel.changePassword'), $newPasswordData);
 
-        // Verify that we get a redirect and success message
         $response->assertRedirect();
         $response->assertSessionHas('success', 'Wachtwoord succesvol gewijzigd');
 
-        // Refresh the user instance and check if the password was updated
         $user->refresh();
         $this->assertTrue(Hash::check('newpassword123', $user->password));
 
-        // Confirm that the action was logged in the logboek table
-        $this->assertDatabaseHas('logboeks', [
+        // Update the expected value to match what is in the database
+        $this->assertDatabaseHas('logboeken', [
             'user_id' => $user->id,
-            'actie' => 'Password changed door gebruiker: Jan Jansen',
+            'actie' => 'Password changed door gebruiker: Jan Jansen met een rol van werknemer',
             'actie_beschrijving' => 'Wachtwoord is gewijzigd',
         ]);
     }
