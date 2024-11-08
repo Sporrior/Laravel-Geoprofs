@@ -26,7 +26,6 @@ class DatabaseSeeder extends Seeder
         // Seed the verlofaanvragen table
         $this->call(VerlofaanvragenSeeder::class);
     }
-
     private function createTeams()
     {
         // Create teams
