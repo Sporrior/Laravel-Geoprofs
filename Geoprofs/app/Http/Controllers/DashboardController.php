@@ -16,13 +16,11 @@ class DashboardController extends Controller
 
     public function index()
     {
-
         $user = Auth::user();
-        $verlofaanvragen = Verlofaanvragen::all();
+
         $verlofaanvragen = Verlofaanvragen::with('user')->get();
 
         foreach ($verlofaanvragen as $aanvraag) {
-            // Status is null = Afwachting, 1 = Goedgekeurd, 0 = Geweigerd
             if (is_null($aanvraag->status)) {
                 $aanvraag->status_label = 'Afwachting';
             } elseif ($aanvraag->status === 1) {
@@ -32,11 +30,10 @@ class DashboardController extends Controller
             }
         }
 
-
         return view('dashboard', [
             'verlofaanvragen' => $verlofaanvragen,
-            'vakantiedagen' => $user->verlof_dagen
+            'vakantiedagen' => $user->verlof_dagen,
         ]);
-
     }
+
 }

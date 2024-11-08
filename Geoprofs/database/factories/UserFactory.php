@@ -2,20 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
+use App\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
- */
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
-    protected static ?string $password;
-
     /**
      * Define the model's default state.
      *
@@ -23,15 +17,19 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        return [];
         // return [
-        //     'voorNaam' => $this->faker->firstName(),
-        //     'achterNaam' => $this->faker->lastName(),
-        //     'email' => $this->faker->unique()->safeEmail(),
-        //     'telefoon' => $this->faker->phoneNumber(), // Add telefoon if required by your schema
+        //     'voornaam' => $this->faker->firstName,
+        //     'tussennaam' => $this->faker->optional()->word, // Optional middle name
+        //     'achternaam' => $this->faker->lastName,
+        //     'profielFoto' => 'profile_pictures/default_profile_photo.png', // Default profile photo
+        //     'telefoon' => $this->faker->phoneNumber,
+        //     'email' => $this->faker->unique()->safeEmail,
         //     'email_verified_at' => now(),
-        //     'password' => static::$password ??= Hash::make('password'),
+        //     'password' => static::$password ??= Hash::make('password'), // Default password
         //     'remember_token' => Str::random(10),
+        //     'verlof_dagen' => 25, // Default leave days
+        //     'role_id' => Role::factory(), // Creates a Role and assigns it
+        //     'team_id' => Team::factory(), // Creates a Team and assigns it
         // ];
     }
 
