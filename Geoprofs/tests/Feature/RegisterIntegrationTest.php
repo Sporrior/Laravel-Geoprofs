@@ -2,7 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Http\Controllers\RegisterController;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
 class RegisterIntegrationTest extends TestCase
@@ -46,8 +51,44 @@ class RegisterIntegrationTest extends TestCase
         // probeer te registreren zonder naam
         $response = $this->post(route('register'), $registrationData);
 
-        // Controleer of de validatie faalt
+        // Controleer of de validatie faalt en foutmeldingen bevat voor de naam
         $response->assertSessionHasErrors(['name']);
+        // Controleer of de gebruiker niet is aangemaakt
         $this->assertDatabaseMissing('users', ['email' => 'janedoe@example.com']);
+    }
+    public function test_register_fails_with_duplicate_email()
+    {
+        // Maak een bestaande gebruiker aan met alle vereiste velden
+        User::create([
+            'voornaam'    => 'Jane',
+            'tussennaam'  => null,
+            'achternaam'  => 'Doe',
+            'profielFoto' => '', // Vul een niet-NULL waarde in
+            'telefoon'    => '', // Aangezien dit veld verplicht is
+            'email'       => 'jane@example.com',
+            'password'    => Hash::make('existingpassword'),
+        ]);
+
+        // Maak een request met hetzelfde e-mailadres
+        $data = [
+            'name'                  => 'Jane Smith',
+            'email'                 => 'jane@example.com',
+            'password'              => 'newpassword123',
+            'password_confirmation' => 'newpassword123',
+        ];
+
+        // Maak een request met hetzelfde e-mailadres
+        $request = Request::create('/register', 'POST', $data);
+
+        // Maak een nieuwe instantie van de RegisterController
+        $controller = new RegisterController();
+
+        // Verwacht een ValidationException
+        $this->expectException(ValidationException::class);
+        // Probeer de registratie uit te voeren
+        $controller->register($request);
+
+        // Controleer dat er geen extra gebruiker is aangemaakt
+        $this->assertEquals(1, User::where('email', 'jane@example.com')->count());
     }
 }

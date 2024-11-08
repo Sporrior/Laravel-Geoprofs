@@ -118,7 +118,7 @@
                 @endif
 
                 @if($user->role->id == 3) <!-- Alleen Office Managers -->
-                <li><a href="/" class="navigatie-link {{ request()->is('/') ? 'actief' : '' }}">HR Administratie</a>
+                <li><a href="#" class="navigatie-link {{ request()->is('/') ? 'actief' : '' }}">HR Administratie</a>
                 <li><a href="/accouttoevoegen" class="navigatie-link {{ request()->is('accouttoevoegen') ? 'actief' : '' }}">Account Toevoegen</a></li>
                 @endif
             </ul>

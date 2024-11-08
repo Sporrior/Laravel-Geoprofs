@@ -30,19 +30,19 @@ class RegisterControllerTest extends TestCase
         $controller = new RegisterController();
         $response = $controller->register($request);
 
-        // Controleer of de gebruiker is aangemaakt in de database
+        // Controleer of de gebruiker is angemaakt in de database
         $this->assertDatabaseHas('users', [
             'email'     => 'john@example.com',
             'voornaam'  => 'John',
             'achternaam'=> 'Doe',
-            'telefoon'  => '', // Wordt ingesteld op een lege string in de controller
-            'profielFoto' => null, // Aangezien we de migratie hebben aangepast om NULL toe te staan
+            'telefoon'  => '',
+            'profielFoto' => null, // Is nullable, dus maakt niet uit
         ]);
 
         // Controleer of de gebruiker is geauthenticeerd
         $this->assertAuthenticated();
 
-        // Controleer of de gebruiker wordt doorgestuurd naar '/dashboard'
+        // Controleer of de gebruiker wordt doorgestuurd naar '/dashboard' en niet naar '/login'
         $this->assertEquals(302, $response->getStatusCode());
         $this->assertEquals(url('/dashboard'), $response->headers->get('Location'));
     }
@@ -60,7 +60,7 @@ class RegisterControllerTest extends TestCase
 
         $controller = new RegisterController();
 
-        //  Verwacht een ValidationException
+        //  Verwacht een foutmelding
         $this->expectException(ValidationException::class);
         $controller->register($request);
 
