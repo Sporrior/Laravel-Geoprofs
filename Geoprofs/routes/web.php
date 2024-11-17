@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Dashboard2Controller;
+use App\Http\Controllers\TwoFactorController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfielController;
@@ -25,12 +25,10 @@ Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 
 Route::middleware('auth')->group(function () {
-
-//    Route::get('/admin', [AdminController::class, 'index'])->middleware(CheckRole::class);
-
+    
     Route::get('/2fa', [LoginController::class, 'show2faForm'])->name('2fa.show');
-    Route::post('/2fa', [LoginController::class, 'verify2fa'])->name('2fa.verify');
-    Route::post('/2fa/regenerate', [LoginController::class, 'regenerate2fa'])->name('2fa.regenerate');
+    Route::post('/store-2fa-code', [TwoFactorController::class, 'storeCode']);
+    Route::post('/verify-2fa', [TwoFactorController::class, 'verifyCode'])->name('2fa.verify');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -48,7 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/verlofaanvragen', [VerlofAanvraagController::class, 'create'])->name('verlofaanvragen.create');
     Route::post('/verlofaanvragen', [VerlofAanvraagController::class, 'store'])->name('verlofaanvragen.store');
 
-//    Route::get('/logboek', [LogboekController::class, 'index'])->name('logboek.index');
+    //    Route::get('/logboek', [LogboekController::class, 'index'])->name('logboek.index');
 
     Route::middleware('auth')->group(function () {
         Route::get('/keuring', [KeuringController::class, 'index'])->name('keuring.index');

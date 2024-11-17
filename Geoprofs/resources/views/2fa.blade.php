@@ -4,111 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2FA Verification</title>
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #FFF;
-            margin: 0;
+            background-color: #f9f9f9;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            margin: 0;
         }
-
-        .login-container {
-            width: 100%;
-            max-width: 400px;
+        .container {
+            text-align: center;
+            background: #fff;
             padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
-            text-align: center;
         }
-
-        .input-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-
-        .input-container input {
-            width: 45px;
-            height: 50px;
-            font-size: 1.5em;
-            text-align: center;
+        .input {
+            padding: 10px;
+            font-size: 18px;
+            margin: 10px 0;
             border: 1px solid #ddd;
             border-radius: 5px;
-            outline: none;
-            transition: border 0.2s ease;
         }
-
-        .input-container input:focus {
-            border-color: #4caf50;
-        }
-
-        .submit-button {
-            width: 100%;
-            padding: 10px;
-            font-size: 1em;
-            background-color: #ff8c00;
-            color: #fff;
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
-            margin-top: 20px;
+            font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
         }
-
-        .submit-button:hover {
-            background-color: #ff8c00;
+        .btn:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
-
 <body>
-    <div class="login-container">
-        <h2>Authenticate Your Account</h2>
-        <p>Enter the 5-digit code displayed on your device</p>
-        <div class="input-container">
-            <input type="password" maxlength="1" id="digit-1" oninput="moveToNextInput(this, 'digit-2')">
-            <input type="password" maxlength="1" id="digit-2" oninput="moveToNextInput(this, 'digit-3')">
-            <input type="password" maxlength="1" id="digit-3" oninput="moveToNextInput(this, 'digit-4')">
-            <input type="password" maxlength="1" id="digit-4" oninput="moveToNextInput(this, 'digit-5')">
-            <input type="password" maxlength="1" id="digit-5" oninput="moveToNextInput(this)">
-        </div>
-        <button class="submit-button" onclick="verifyCode()">Submit</button>
+    <div class="container">
+        <h2>Two-Factor Authentication</h2>
+        <p>Please enter the 6-digit code provided to you.</p>
+
+        @if($errors->any())
+            <p style="color: red;">{{ $errors->first('2fa_code') }}</p>
+        @endif
+
+        <form action="{{ route('2fa.verify') }}" method="POST">
+            @csrf
+            <input type="text" name="2fa_code" class="input" maxlength="6" placeholder="Enter 6-digit code" required>
+            <br>
+            <button type="submit" class="btn">Verify</button>
+        </form>
     </div>
-
-    <script>
-        function moveToNextInput(currentInput, nextInputId) {
-            if (currentInput.value.length === 1) {
-                if (nextInputId) {
-                    document.getElementById(nextInputId).focus();
-                }
-            }
-        }
-
-        function verifyCode() {
-            const enteredCode = Array.from({ length: 5 }, (_, i) => document.getElementById(`digit-${i + 1}`).value).join('');
-            fetch("{{ route('2fa.verify') }}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                body: JSON.stringify({ '2fa_code': enteredCode })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = "{{ route('dashboard') }}";
-                    } else {
-                        alert(data.message || "Incorrect code. Please try again.");
-                    }
-                })
-                .catch(error => console.error("Error:", error));
-        }
-    </script>
 </body>
 </html>

@@ -11,8 +11,7 @@ class LoginController extends Controller
 {
     public function showLoginForm(Request $request)
     {
-        $errorMessage = session('error_message', null);
-        return view('login', ['error_message' => $errorMessage]);
+        return view('login');
     }
 
     public function login(Request $request)
@@ -27,14 +26,14 @@ class LoginController extends Controller
         if ($user) {
             if ($user->account_locked) {
                 return back()->withErrors([
-                    'email' => 'Uw account is permanent geblokkeerd na meerdere mislukte inlogpogingen.',
+                    'email' => 'Your account is permanently locked due to multiple failed login attempts.',
                 ]);
             }
 
             if ($user->blocked_until && now()->lessThan($user->blocked_until)) {
                 $blockedMinutes = now()->diffInMinutes($user->blocked_until);
                 return back()->withErrors([
-                    'email' => "U bent geblokkeerd. Probeer het opnieuw over {$blockedMinutes} minuut/minuten.",
+                    'email' => "You are blocked. Try again in {$blockedMinutes} minute(s).",
                 ]);
             }
 
@@ -49,7 +48,7 @@ class LoginController extends Controller
             }
         }
 
-        return back()->withErrors(['email' => 'De opgegeven gegevens komen niet overeen met onze gegevens.']);
+        return back()->withErrors(['email' => 'The provided credentials do not match our records.']);
     }
 
     public function show2faForm(Request $request)
@@ -65,7 +64,7 @@ class LoginController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Code is missing'], 400);
         }
 
-        Cache::put('2fa_code', $code, now()->addSeconds(10));
+        Cache::put('2fa_code', $code, now()->addMinutes(10));
 
         return response()->json(['status' => 'success', 'message' => 'Code stored successfully']);
     }
@@ -73,16 +72,17 @@ class LoginController extends Controller
     public function verify2fa(Request $request)
     {
         $request->validate([
-            '2fa_code' => 'required|numeric|digits:5',
+            '2fa_code' => 'required|numeric|digits:6',
         ]);
 
         $storedCode = Cache::get('2fa_code');
 
         if ($request->input('2fa_code') == $storedCode) {
-            return response()->json(['success' => true]);
+            Cache::forget('2fa_code'); // Clear the stored code after successful verification
+            return redirect()->route('dashboard'); // Change this route to your desired redirect
         }
 
-        return response()->json(['success' => false, 'message' => 'Incorrect code.']);
+        return back()->withErrors(['2fa_code' => 'The 2FA code is incorrect.']);
     }
 
     public function logout(Request $request)
@@ -90,6 +90,7 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect('/login');
     }
 }
