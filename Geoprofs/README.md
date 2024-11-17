@@ -64,3 +64,22 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+
+to get the 2fa use 
+
+for mac 
+curl -X POST http://127.0.0.1:8000/api/store-2fa-code \
+-H "Authorization: Bearer 3857ae8ed65f64d57cc2bb63968ee6e0453b92ccb810fc583e9dda378d4f9f3b" \
+-H "Content-Type: application/json"
+
+for windows
+curl -X POST http://127.0.0.1:8000/api/store-2fa-code ^
+-H "Authorization: Bearer 3857ae8ed65f64d57cc2bb63968ee6e0453b92ccb810fc583e9dda378d4f9f3b" ^
+-H "Content-Type: application/json"
+
+for powershell
+curl -X POST http://127.0.0.1:8000/api/store-2fa-code `
+-H "Authorization: Bearer 3857ae8ed65f64d57cc2bb63968ee6e0453b92ccb810fc583e9dda378d4f9f3b" `
+-H "Content-Type: application/json"
