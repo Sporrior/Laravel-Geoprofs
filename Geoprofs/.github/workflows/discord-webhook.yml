@@ -3,7 +3,7 @@ name: Notify Discord on Commit
 on:
   push:
     branches:
-      - main  # Or the branch you want to monitor
+      - Dev  # Or the branch you want to monitor
 
 jobs:
   send-to-discord:
