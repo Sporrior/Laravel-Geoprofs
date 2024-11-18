@@ -3,13 +3,14 @@ name: Notify Discord on Commit
 on:
   push:
     branches:
-      - dev  # Or the branch you want to monitor
+      - dev  # Monitor the 'dev' branch for changes
 
 jobs:
   send-to-discord:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Check if there are commits
       - name: Check if there are commits
         id: check_commits
         run: |
@@ -20,13 +21,21 @@ jobs:
             echo "Commits found, proceeding with Discord notification."
           fi
 
+      # Step 2: Debugging commit information
+      - name: Debug commit data
+        run: |
+          echo "Commit message: ${{ github.event.head_commit.message }}"
+          echo "Commit author: ${{ github.event.head_commit.author.name }}"
+          echo "Commit URL: ${{ github.event.head_commit.url }}"
+
+      # Step 3: Send commit details to Discord (only if previous steps succeed)
       - name: Send commit to Discord
-        if: success()  # Only run if previous step succeeds
-        uses: peter-evans/discord-webhook-action@v1
+        if: success()  # Only run if previous steps succeed
+        uses: peter-evans/discord-webhook-action@v1  # Using the Discord webhook action
         with:
-          url: https://discord.com/api/webhooks/1308011922184081418/zN7k6xMlXntKX15mQlDxbYKJbKqAJQzhFxFZ0UnhiBQY4pdAyhXTePhw4gTculChF9kp
+          url: https://discord.com/api/webhooks/1308011922184081418/zN7k6xMlXntKX15mQlDxbYKJbKqAJQzhFxFZ0UnhiBQY4pdAyhXTePhw4gTculChF9kp  # Your webhook URL
           message: |
-            **New Commit to Laravel-Geoprofs**
+            **New Commit to Laravel-Geoprofs (dev branch)**
             - **Commit Message**: ${{ github.event.head_commit.message }}
             - **Author**: ${{ github.event.head_commit.author.name }}
             - **Commit URL**: [View Commit](${{ github.event.head_commit.url }})
