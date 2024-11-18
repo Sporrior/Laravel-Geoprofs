@@ -152,6 +152,20 @@
         .status-form button:active {
             transform: scale(0.98);
         }
+
+            .reason-container {
+        margin-top: 10px;
+        }
+
+        .reason-container textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            resize: none;
+        }
+
     </style>
 </head>
 
@@ -165,34 +179,43 @@
             @endif
 
             @foreach($verlofaanvragens->sortByDesc('updated_at') as $aanvraag)
-                <div class="leave-card">
-                    <h3>{{ optional($aanvraag->user)->voornaam }}'s Verlofaanvraag</h3>
-                    <div class="leave-details">
-                        <div class="leave-detail"><strong>Reden:</strong> {{ $aanvraag->verlof_reden }}</div>
-                        <div class="leave-detail"><strong>Start Datum:</strong> {{ $aanvraag->start_datum }}</div>
-                        <div class="leave-detail"><strong>Eind Datum:</strong> {{ $aanvraag->eind_datum }}</div>
-                        <div class="leave-detail"><strong>Type Verlof:</strong> {{ optional($aanvraag->type)->type }}</div>
-                        <div class="leave-detail">
-                            <strong>Status:</strong>
-                            <span class="status
-                            {{ is_null($aanvraag->status) ? 'pending' : ($aanvraag->status == 1 ? 'approved' : 'rejected') }}">
-                                {{ is_null($aanvraag->status) ? 'Pending' : ($aanvraag->status == 1 ? 'Goedgekeurd' : 'Weigeren') }}
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Status update form, available for all statuses -->
-                    <form action="{{ route('keuring.updateStatus', $aanvraag->id) }}" method="POST" class="status-form">
-                        @csrf
-                        <select name="status">
-                            <option value="">Selecteer status</option>
-                            <option value="1" {{ $aanvraag->status === 1 ? 'selected' : '' }}>Goedkeuren</option>
-                            <option value="0" {{ $aanvraag->status === 0 ? 'selected' : '' }}>Weigeren</option>
-                        </select>
-                        <button type="submit">{{ is_null($aanvraag->status) ? 'Verstuur' : 'Wijzigen' }}</button>
-                    </form>
+    <div class="leave-card">
+        <h3>{{ optional($aanvraag->user)->voornaam }}'s Verlofaanvraag</h3>
+        <div class="leave-details">
+            <div class="leave-detail"><strong>Reden:</strong> {{ $aanvraag->verlof_reden }}</div>
+            <div class="leave-detail"><strong>Start Datum:</strong> {{ $aanvraag->start_datum }}</div>
+            <div class="leave-detail"><strong>Eind Datum:</strong> {{ $aanvraag->eind_datum }}</div>
+            <div class="leave-detail"><strong>Type Verlof:</strong> {{ optional($aanvraag->type)->type }}</div>
+            <div class="leave-detail">
+                <strong>Status:</strong>
+                <span class="status
+                {{ is_null($aanvraag->status) ? 'pending' : ($aanvraag->status == 1 ? 'approved' : 'rejected') }}">
+                    {{ is_null($aanvraag->status) ? 'Pending' : ($aanvraag->status == 1 ? 'Goedgekeurd' : 'Weigeren') }}
+                </span>
+            </div>
+            @if($aanvraag->status == 0 && $aanvraag->weigerreden)
+                <div class="leave-detail">
+                    <strong>Weigerreden:</strong> {{ $aanvraag->weigerreden }}
                 </div>
-            @endforeach
+            @endif
+        </div>
+
+        <!-- Status update form, available for all statuses -->
+        <form action="{{ route('keuring.updateStatus', $aanvraag->id) }}" method="POST" class="status-form">
+            @csrf
+            <select name="status" id="status-{{ $aanvraag->id }}" class="status-select" data-aanvraag-id="{{ $aanvraag->id }}">
+                <option value="">Selecteer status</option>
+                <option value="1" {{ $aanvraag->status === 1 ? 'selected' : '' }}>Goedkeuren</option>
+                <option value="0" {{ $aanvraag->status === 0 ? 'selected' : '' }}>Weigeren</option>
+            </select>
+            <div id="reason-container-{{ $aanvraag->id }}" class="reason-container" style="display: none;">
+                <textarea name="weigerreden" placeholder="Geef de reden voor weigering"></textarea>
+            </div>
+            <button type="submit">{{ is_null($aanvraag->status) ? 'Verstuur' : 'Wijzigen' }}</button>
+        </form>
+    </div>
+@endforeach
+
         </div>
     </div>
 
@@ -210,6 +233,23 @@
                     }, 500);
                 }, 3000);
             }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const statusSelects = document.querySelectorAll('.status-select');
+
+            statusSelects.forEach(select => {
+                select.addEventListener('change', function () {
+                    const aanvraagId = this.getAttribute('data-aanvraag-id');
+                    const reasonContainer = document.getElementById(`reason-container-${aanvraagId}`);
+                    if (this.value === '0') {
+                        reasonContainer.style.display = 'block';
+                    } else {
+                        reasonContainer.style.display = 'none';
+                    }
+                });
+            });
         });
     </script>
 </body>
