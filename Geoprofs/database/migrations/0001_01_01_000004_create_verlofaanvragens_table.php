@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('status')->nullable();
             $table->foreignId('verlof_soort')->constrained('types');
             $table->foreignId('user_id')->constrained('users');
+            $table->string('weigerreden')->nullable();
             $table->timestamps();
         });
     }

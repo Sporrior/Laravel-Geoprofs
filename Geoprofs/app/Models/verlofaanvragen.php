@@ -16,6 +16,7 @@ class verlofaanvragen extends Model
         'status',
         'verlof_soort',
         'user_id',
+        'weigerreden',
     ];
 
     // Relationship with Type (Leave Type)
