@@ -3,7 +3,7 @@ name: Notify Discord on Commit
 on:
   push:
     branches:
-      - dev  # Monitor the 'dev' branch for changes
+      - dev  # Monitoring the 'dev' branch for changes
 
 jobs:
   send-to-discord:
@@ -21,16 +21,17 @@ jobs:
             echo "Commits found, proceeding with Discord notification."
           fi
 
-      # Step 2: Debugging commit information
+      # Step 2: Debug commit information (to troubleshoot and check the values)
       - name: Debug commit data
         run: |
           echo "Commit message: ${{ github.event.head_commit.message }}"
           echo "Commit author: ${{ github.event.head_commit.author.name }}"
           echo "Commit URL: ${{ github.event.head_commit.url }}"
+          echo "Full Payload: ${{ toJson(github.event) }}"  # To see the entire payload
 
-      # Step 3: Send commit details to Discord (only if previous steps succeed)
-      - name: Send commit to Discord
-        if: success()  # Only run if previous steps succeed
+      # Step 3: Ensure commit message is not empty before sending to Discord
+      - name: Send commit to Discord if message is valid
+        if: ${{ success() && github.event.head_commit.message != '' }}
         uses: peter-evans/discord-webhook-action@v1  # Using the Discord webhook action
         with:
           url: https://discord.com/api/webhooks/1308011922184081418/zN7k6xMlXntKX15mQlDxbYKJbKqAJQzhFxFZ0UnhiBQY4pdAyhXTePhw4gTculChF9kp  # Your webhook URL
