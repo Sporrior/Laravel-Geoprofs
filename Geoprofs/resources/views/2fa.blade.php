@@ -53,7 +53,7 @@
 
         <form action="{{ route('2fa.verify') }}" method="POST">
             @csrf
-            <input type="text" name="2fa_code" class="input" maxlength="6" placeholder="Enter 6-digit code" required>
+            <input type="text" name="2fa_code" class="input" maxlength="6" placeholder="Enter the 6-digit code" required>
             <br>
             <button type="submit" class="btn">Verify</button>
         </form>

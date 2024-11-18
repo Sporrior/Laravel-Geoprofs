@@ -3,7 +3,7 @@ name: Notify Discord on Commit
 on:
   push:
     branches:
-      - dev
+      - dev  # Or the branch you want to monitor
 
 jobs:
   send-to-discord:
@@ -15,13 +15,13 @@ jobs:
         run: |
           if [ "${{ github.event.head_commit }}" == "null" ]; then
             echo "No commits found. Skipping message to Discord."
-            exit 0
+            exit 0  # Exit early if no commits are present
           else
-            echo "There are commits, proceeding with message."
+            echo "Commits found, proceeding with Discord notification."
           fi
 
       - name: Send commit to Discord
-        if: success()
+        if: success()  # Only run if previous step succeeds
         uses: peter-evans/discord-webhook-action@v1
         with:
           url: https://discord.com/api/webhooks/1308011922184081418/zN7k6xMlXntKX15mQlDxbYKJbKqAJQzhFxFZ0UnhiBQY4pdAyhXTePhw4gTculChF9kp
