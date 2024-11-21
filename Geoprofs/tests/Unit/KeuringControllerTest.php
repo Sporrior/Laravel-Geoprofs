@@ -1,80 +1,120 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Tests\TestCase;
-use Mockery as m;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Collection;
-use Illuminate\View\View;
-use App\Http\Controllers\DashboardController;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\User;
+use App\Models\VerlofAanvragen;
+use Carbon\Carbon;
 
 class KeuringControllerTest extends TestCase
 {
-    use m\Adapter\Phpunit\MockeryPHPUnitIntegration;
+    use RefreshDatabase;
 
-    protected function tearDown(): void
+    /**
+     * Test the index method fetches leave requests and displays them.
+     */
+    public function test_index_fetches_leave_requests_and_displays_view()
     {
-        m::close();
-        parent::tearDown();
-    }
-
-    public function testIndex()
-    {
-        // Arrange
-
-        // Mock the Auth facade to return a user with 'verlof_dagen'
-        $userMock = new \stdClass();
-        $userMock->verlof_dagen = 10;
-
-        Auth::shouldReceive('user')->once()->andReturn($userMock);
-
-        // Create mocked Verlofaanvragen instances with different statuses
-        $verlofaanvraag1 = new \stdClass();
-        $verlofaanvraag1->status = null;
-
-        $verlofaanvraag2 = new \stdClass();
-        $verlofaanvraag2->status = 1;
-
-        $verlofaanvraag3 = new \stdClass();
-        $verlofaanvraag3->status = 0;
-
-        // Collect the mocked Verlofaanvragen
-        $verlofaanvragenCollection = new Collection([
-            $verlofaanvraag1,
-            $verlofaanvraag2,
-            $verlofaanvraag3,
+        $user = User::factory()->create([
+            'voornaam' => 'Test',
+            'achternaam' => 'User',
+            'telefoon' => '123456789',
         ]);
 
-        // Mock the static method Verlofaanvragen::with('user')->get()
-        m::mock('alias:App\Models\Verlofaanvragen')
-            ->shouldReceive('with')
-            ->with('user')
-            ->andReturnSelf()
-            ->shouldReceive('get')
-            ->andReturn($verlofaanvragenCollection);
+        $this->actingAs($user);
 
-        // Act
-        $controller = new DashboardController();
-        $response = $controller->index();
+        VerlofAanvragen::factory()->count(3)->create();
 
-        // Assert
-        $this->assertInstanceOf(View::class, $response);
-        $viewData = $response->getData();
+        $response = $this->get(route('keuring.index'));
 
-        // Assert that the view data contains 'verlofaanvragen' and 'vakantiedagen'
-        $this->assertArrayHasKey('verlofaanvragen', $viewData);
-        $this->assertArrayHasKey('vakantiedagen', $viewData);
+        $response->assertStatus(200);
+        $response->assertViewIs('keuring');
+        $response->assertViewHas('verlofaanvragens');
+    }
 
-        // Assert that the 'vakantiedagen' matches the user's 'verlof_dagen'
-        $this->assertEquals($userMock->verlof_dagen, $viewData['vakantiedagen']);
+    /**
+     * Test updateStatus validates required fields and updates leave status.
+     */
+    public function test_update_status_validates_required_fields_and_updates_status()
+    {
+        $user = User::factory()->create([
+            'voornaam' => 'Test',
+            'achternaam' => 'User',
+            'telefoon' => '123456789',
+            'verlof_dagen' => 20,
+        ]);
 
-        // Assert that 'verlofaanvragen' matches our mocked collection
-        $this->assertEquals($verlofaanvragenCollection, $viewData['verlofaanvragen']);
+        $this->actingAs($user);
 
-        // Check that the 'status_label' is correctly set for each aanvraag
-        $this->assertEquals('Afwachting', $verlofaanvraag1->status_label);
-        $this->assertEquals('Goedgekeurd', $verlofaanvraag2->status_label);
-        $this->assertEquals('Geweigerd', $verlofaanvraag3->status_label);
+        $verlofAanvraag = VerlofAanvragen::factory()->create([
+            'user_id' => $user->id,
+            'verlof_soort' => 2,
+            'start_datum' => Carbon::now(),
+            'eind_datum' => Carbon::now()->addDays(2),
+            'status' => 0,
+        ]);
+
+        $response = $this->post(route('keuring.update', $verlofAanvraag->id), [
+            'status' => 1,
+        ]);
+
+        $response->assertRedirect(route('keuring.index'));
+        $response->assertSessionHas('success', 'Status succesvol bijgewerkt.');
+
+        $this->assertDatabaseHas('verlof_aanvragens', [
+            'id' => $verlofAanvraag->id,
+            'status' => 1,
+        ]);
+
+        $user->refresh();
+        $this->assertEquals(17, $user->verlof_dagen); // 20 - 3 days
+    }
+
+    /**
+     * Test rejection requires weigerreden and restores leave days.
+     */
+    public function test_rejection_requires_weigerreden_and_restores_leave_days()
+    {
+        $user = User::factory()->create([
+            'voornaam' => 'Test',
+            'achternaam' => 'User',
+            'telefoon' => '123456789',
+            'verlof_dagen' => 15,
+        ]);
+
+        $this->actingAs($user);
+
+        $verlofAanvraag = VerlofAanvragen::factory()->create([
+            'user_id' => $user->id,
+            'verlof_soort' => 2,
+            'start_datum' => Carbon::now(),
+            'eind_datum' => Carbon::now()->addDay(),
+            'status' => 1,
+        ]);
+
+        $response = $this->post(route('keuring.update', $verlofAanvraag->id), [
+            'status' => 0,
+        ]);
+
+        $response->assertSessionHasErrors(['weigerreden']);
+
+        $response = $this->post(route('keuring.update', $verlofAanvraag->id), [
+            'status' => 0,
+            'weigerreden' => 'Reason for rejection',
+        ]);
+
+        $response->assertRedirect(route('keuring.index'));
+        $response->assertSessionHas('success', 'Status succesvol bijgewerkt.');
+
+        $this->assertDatabaseHas('verlof_aanvragens', [
+            'id' => $verlofAanvraag->id,
+            'status' => 0,
+            'weigerreden' => 'Reason for rejection',
+        ]);
+
+        $user->refresh();
+        $this->assertEquals(17, $user->verlof_dagen); // 15 + 2 days restored
     }
 }

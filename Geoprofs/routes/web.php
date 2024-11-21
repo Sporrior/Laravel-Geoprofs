@@ -18,17 +18,21 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get('/2fa', [LoginController::class, 'show2faForm'])->name('2fa.show');
+Route::post('/2fa/store', [TwoFactorController::class, 'storeCode'])->name('2fa.store');
+Route::post('/2fa/verify', [TwoFactorController::class, 'verifyCode'])->name('2fa.verify');
 
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/2fa', [LoginController::class, 'show2faForm'])->name('2fa.show');
-    Route::post('/store-2fa-code', [TwoFactorController::class, 'storeCode']);
-    Route::post('/verify-2fa', [TwoFactorController::class, 'verifyCode'])->name('2fa.verify');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -52,11 +56,7 @@ Route::middleware('auth')->group(function () {
 
     //    Route::get('/logboek', [LogboekController::class, 'index'])->name('logboek.index');
 
-    Route::middleware('auth')->group(function () {
-        Route::get('/keuring', [KeuringController::class, 'index'])->name('keuring.index');
-        Route::post('/keuring/update-status/{id}', [KeuringController::class, 'updateStatus'])->name('keuring.updateStatus');
-    });
+    Route::get('/keuring', [KeuringController::class, 'index'])->name('keuring.index');
+    Route::post('/keuring/{id}/update', [KeuringController::class, 'updateStatus'])->name('keuring.update');
 
 });
-
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

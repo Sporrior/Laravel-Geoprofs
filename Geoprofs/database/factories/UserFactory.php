@@ -2,32 +2,24 @@
 
 namespace Database\Factories;
 
-use App\Models\Role;
-use App\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    public function definition()
     {
         return [
+            'voornaam' => $this->faker->firstName,
+            'tussennaam' => $this->faker->optional()->word,
+            'achternaam' => $this->faker->lastName,
+            'profielFoto' => 'profile_pictures/default_profile_photo.png', // Default profile picture
+            'telefoon' => $this->faker->phoneNumber,
+            'email' => $this->faker->unique()->safeEmail,
+            'password' => bcrypt('password'), // Default password
+            'verlof_dagen' => 25, // Default leave days
+            'failed_login_attempts' => 0,
+            'role_id' => null,
+            'team_id' => null,
         ];
-    }
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
     }
 }
