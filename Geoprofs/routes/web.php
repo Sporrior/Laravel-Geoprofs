@@ -32,8 +32,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/code-coverage', function () {
-        return redirect('/coverage-report/Http/Controllers/index.html');
+    Route::get('/code-coverage-report', function () {
+        return redirect('/code-coverage/index.html');
     });
 
     Route::get('/profiel', [ProfielController::class, 'show'])->name('profiel.show');

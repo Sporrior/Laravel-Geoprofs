@@ -115,8 +115,8 @@
                             class="navigatie-link {{ request()->is('ziekmelden') ? 'actief' : '' }}">Ziekmelden</a></li>
                     <li><a href="/settings"
                             class="navigatie-link {{ request()->is('settings') ? 'actief' : '' }}">Settings</a></li>
-                    <li><a href="/code-coverage"
-                            class="navigatie-link {{ request()->is('code-coverage') ? 'actief' : '' }}">Code Coverage</a></li>
+                    <li><a href="/code-coverage-report"
+                            class="navigatie-link {{ request()->is('code-coverage-report') ? 'actief' : '' }}">Code Coverage</a></li>
                     <li>
 
                 @endif
