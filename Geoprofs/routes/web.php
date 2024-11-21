@@ -25,12 +25,16 @@ Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 
 Route::middleware('auth')->group(function () {
-    
+
     Route::get('/2fa', [LoginController::class, 'show2faForm'])->name('2fa.show');
     Route::post('/store-2fa-code', [TwoFactorController::class, 'storeCode']);
     Route::post('/verify-2fa', [TwoFactorController::class, 'verifyCode'])->name('2fa.verify');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/code-coverage', function () {
+        return redirect('/coverage-report/Http/Controllers/index.html');
+    });
 
     Route::get('/profiel', [ProfielController::class, 'show'])->name('profiel.show');
     Route::get('/profiel/bewerken', [ProfielController::class, 'edit'])->name('profiel.edit');
@@ -56,4 +60,3 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-

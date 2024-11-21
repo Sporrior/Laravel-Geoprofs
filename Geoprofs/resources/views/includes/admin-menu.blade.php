@@ -115,13 +115,9 @@
                             class="navigatie-link {{ request()->is('ziekmelden') ? 'actief' : '' }}">Ziekmelden</a></li>
                     <li><a href="/settings"
                             class="navigatie-link {{ request()->is('settings') ? 'actief' : '' }}">Settings</a></li>
+                    <li><a href="/code-coverage"
+                            class="navigatie-link {{ request()->is('code-coverage') ? 'actief' : '' }}">Code Coverage</a></li>
                     <li>
-                        <a href="file:///Users/main/Laravel-Geoprofs/Geoprofs/coverage-report/index.html"
-                            class="navigatie-link">
-                            Coverage-report
-                        </a>
-                    </li>
-
 
                 @endif
 
