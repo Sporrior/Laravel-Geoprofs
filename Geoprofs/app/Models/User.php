@@ -18,6 +18,7 @@ class User extends Authenticatable
         'telefoon',
         'email',
         'password',
+        'verlof_dagen',
     ];
 
     protected $hidden = [
