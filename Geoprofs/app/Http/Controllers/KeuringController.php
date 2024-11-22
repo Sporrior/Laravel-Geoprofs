@@ -56,6 +56,6 @@ class KeuringController extends Controller
         $verlofAanvraag->status = $newStatus;
         $verlofAanvraag->save();
 
-        return redirect()->route('keuring.updateStatus')->with('success', 'Status succesvol bijgewerkt.');
+        return redirect()->route('keuring.index')->with('success', 'Status succesvol bijgewerkt.');
     }
 }
