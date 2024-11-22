@@ -17,10 +17,8 @@ class KeuringController extends Controller
 
     public function index()
     {
-        // Fetch all leave requests (verlofaanvragens) with related user and type
         $verlofaanvragens = VerlofAanvragen::with('user', 'type')->get();
 
-        // Pass them to the view
         return view('keuring', compact('verlofaanvragens'));
     }
 
@@ -40,7 +38,6 @@ class KeuringController extends Controller
             $verlofAanvraag->weigerreden = null;
         }
 
-        // Handle user leave days logic (if applicable)
         if ($verlofAanvraag->verlof_soort == 2) {
             $user = $verlofAanvraag->user;
             $startDatum = Carbon::parse($verlofAanvraag->start_datum);
@@ -59,7 +56,6 @@ class KeuringController extends Controller
         $verlofAanvraag->status = $newStatus;
         $verlofAanvraag->save();
 
-        return redirect()->route('keuring.index')->with('success', 'Status succesvol bijgewerkt.');
+        return redirect()->route('keuring.updateStatus')->with('success', 'Status succesvol bijgewerkt.');
     }
-
 }
