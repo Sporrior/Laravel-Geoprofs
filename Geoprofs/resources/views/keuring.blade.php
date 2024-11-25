@@ -207,7 +207,7 @@
 
     &:before {
       content: '▼';
-      float: right;
+      float: right ;
     }
   }
 
@@ -260,6 +260,20 @@
                         @endforeach
                     </div>
                 </div>
+
+                <div class="dropdown" data-control="checkbox-dropdown">
+                    <label class="dropdown-label">Gebruiker</label>
+                    <div class="dropdown-list">
+                        @foreach($users as $user)
+                            <label class="dropdown-option">
+                                <input type="checkbox" name="users[]" value="{{ $user->id }}"
+                                    {{ (is_array(request('users')) && in_array($user->id, request('users'))) ? 'checked' : '' }} />
+                                {{ $user->voornaam }} {{ $user->achternaam }}
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+
                 <button type="submit">Filter</button>
             </form>
 
