@@ -154,8 +154,12 @@
             <div class="kaart">
                 <div class="kaart-kop">Mijn Acties</div>
                 <div class="kaart-body">
-                    <p><strong>(3)</strong> Verlofaanvragen Goedkeuren</p>
-                    <p><strong>(7)</strong> Presentiebladen Goedkeuren</p>
+                <p><strong>({{ $lopendeAanvragen->count() }})</strong> Lopende Aanvragen</p>
+                <ul>
+                    @foreach ($lopendeAanvragen as $aanvraag)
+                        <li>{{ $aanvraag->verlof_reden }} - <strong> {{ $aanvraag->status_label }}</strong></li>
+                    @endforeach
+                </ul>   
                 </div>
             </div>
 
