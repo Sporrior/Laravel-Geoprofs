@@ -17,9 +17,9 @@ class KeuringController extends Controller
 
     public function index()
     {
-        $verlofaanvragens = VerlofAanvragen::with('user', 'type')->get();
+        $verlofaanvragen = VerlofAanvragen::with('user', 'type')->get();
 
-        return view('keuring', compact('verlofaanvragens'));
+        return view('keuring', compact('verlofaanvragen'));
     }
 
     public function updateStatus(Request $request, $id)

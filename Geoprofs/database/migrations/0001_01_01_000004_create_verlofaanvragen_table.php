@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('verlofaanvragens', function (Blueprint $table) {
+        Schema::create('verlofaanvragen', function (Blueprint $table) {
             $table->id();
             $table->string('verlof_reden');
             $table->date('aanvraag_datum');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('verlofaanvragens');
+        Schema::dropIfExists('verlofaanvragen');
     }
 };

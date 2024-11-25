@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Verlofaanvragen;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -18,7 +16,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        $verlofaanvragen = Verlofaanvragen::with('user')->get();
+        $verlofaanvragen = verlofaanvragen::with('user')->get();
 
         foreach ($verlofaanvragen as $aanvraag) {
             if (is_null($aanvraag->status)) {

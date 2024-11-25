@@ -21,12 +21,10 @@ class ZiekmeldenController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the request data
         $request->validate([
             'verlof_reden' => 'required|string|max:255',
         ]);
 
-        // Create a new leave request for sick leave
         VerlofAanvragen::create([
             'verlof_reden' => $request->input('verlof_reden'),
             'aanvraag_datum' => Carbon::now()->format('Y-m-d'),
@@ -37,7 +35,6 @@ class ZiekmeldenController extends Controller
             'status' => 1,
         ]);
 
-        // Redirect back with a success message
         return redirect()->route('ziekmelden.index')->with('success', 'Ziekmelding succesvol ingediend.');
     }
 }

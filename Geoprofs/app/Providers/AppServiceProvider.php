@@ -22,12 +22,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Make $user variable available in all views
         View::composer('*', function ($view) {
             $view->with('user', Auth::user());
         });
 
-        // Keep model unguarded
         Model::unguard(true);
     }
 }

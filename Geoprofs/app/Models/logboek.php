@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Logboek extends Model
+class logboek extends Model
 {
     use HasFactory;
 
-    protected $table = 'logboeken'; // Table name matches the migration
+    protected $table = 'logboeken'; 
 
     protected $fillable = [
         'user_id',

@@ -12,23 +12,18 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Create roles if not already created
-        Role::firstOrCreate(['roleName' => 'werknemer']);
-        Role::firstOrCreate(['roleName' => 'manager']);
-        Role::firstOrCreate(['roleName' => 'officemanagement']);
+        Role::firstOrCreate(['role_name' => 'werknemer']);
+        Role::firstOrCreate(['role_name' => 'manager']);
+        Role::firstOrCreate(['role_name' => 'officemanagement']);
 
-        // Create teams if not already created
         $this->createTeams();
 
-        // Create users with different roles and assign teams
         $this->createUsers();
 
-        // Seed the verlofaanvragen table
         $this->call(VerlofaanvragenSeeder::class);
     }
     private function createTeams()
     {
-        // Create teams
         Team::firstOrCreate(['group_name' => 'GeoICT']);
         Team::firstOrCreate(['group_name' => 'GeoDECY']);
         Team::firstOrCreate(['group_name' => 'HRM']);
@@ -39,7 +34,6 @@ class DatabaseSeeder extends Seeder
 
     private function createUsers()
     {
-        // Retrieve the specific team IDs
         $geoICT = Team::where('group_name', 'GeoICT')->first()->id;
         $geoDECY = Team::where('group_name', 'GeoDECY')->first()->id;
         $hrm = Team::where('group_name', 'HRM')->first()->id;
@@ -47,26 +41,24 @@ class DatabaseSeeder extends Seeder
         $ICT = Team::where('group_name', 'ICT')->first()->id;
         $OM = Team::where('group_name', 'OM')->first()->id;
 
-        // Create a user with the werknemer role in GeoICT
         User::factory()->create([
             'voornaam' => 'Ahmad',
             'achternaam' => 'Mahouk',
             'telefoon' => '06123123123',
             'email' => 'ahmad@gmail.com',
             'password' => Hash::make('Ahmad'),
-            'role_id' => Role::where('roleName', 'officemanagement')->first()->id,
+            'role_id' => Role::where('role_name', 'officemanagement')->first()->id,
             'team_id' => $hrm, // Assign to GeoICT team
         ]);
 
-        // Create a user with the manager role in GeoDECY
         User::factory()->create([
             'voornaam' => 'Damien',
             'achternaam' => 'Engelen',
             'telefoon' => '06123456789',
             'email' => 'damien@gmail.com',
             'password' => Hash::make('Damien12345'),
-            'role_id' => Role::where('roleName', 'officemanagement')->first()->id,
-            'team_id' => $hrm, // Assign to GeoDECY team
+            'role_id' => Role::where('role_name', 'officemanagement')->first()->id,
+            'team_id' => $hrm, 
         ]);
 
         User::factory()->create([
@@ -75,8 +67,8 @@ class DatabaseSeeder extends Seeder
             'telefoon' => '06234567890',
             'email' => 'wessam@gmail.com',
             'password' => Hash::make('wessam12345'),
-            'role_id' => Role::where('roleName', 'officemanagement')->first()->id,
-            'team_id' => $hrm, // Assign to HRM team
+            'role_id' => Role::where('role_name', 'officemanagement')->first()->id,
+            'team_id' => $hrm, 
         ]);
 
         User::factory()->create([
@@ -85,8 +77,8 @@ class DatabaseSeeder extends Seeder
             'telefoon' => '06234567890',
             'email' => 'testen@gmail.com',
             'password' => Hash::make('testen'),
-            'role_id' => Role::where('roleName', 'officemanagement')->first()->id,
-            'team_id' => $OM, // Assign to Finances team
+            'role_id' => Role::where('role_name', 'officemanagement')->first()->id,
+            'team_id' => $OM, 
         ]);
 
         User::factory()->create([
@@ -95,8 +87,8 @@ class DatabaseSeeder extends Seeder
             'telefoon' => '06234567890',
             'email' => 'karel@gmail.com',
             'password' => Hash::make('Karel'),
-            'role_id' => Role::where('roleName', 'werknemer')->first()->id,
-            'team_id' => $geoICT, // Assign to HRM team
+            'role_id' => Role::where('role_name', 'werknemer')->first()->id,
+            'team_id' => $geoICT,
         ]);
 
         User::factory()->create([
@@ -105,8 +97,8 @@ class DatabaseSeeder extends Seeder
             'telefoon' => '06234567890',
             'email' => 'bob@gmail.com',
             'password' => Hash::make('Bob'),
-            'role_id' => Role::where('roleName', 'werknemer')->first()->id,
-            'team_id' => $geoICT, // Assign to HRM team
+            'role_id' => Role::where('role_name', 'werknemer')->first()->id,
+            'team_id' => $geoICT,
         ]);
 
         User::factory()->create([
@@ -115,8 +107,8 @@ class DatabaseSeeder extends Seeder
             'telefoon' => '06234567890',
             'email' => 'samet@gmail.com',
             'password' => Hash::make('Samet'),
-            'role_id' => Role::where('roleName', 'werknemer')->first()->id,
-            'team_id' => $geoICT, // Assign to HRM team
+            'role_id' => Role::where('role_name', 'werknemer')->first()->id,
+            'team_id' => $geoICT,
         ]);
 
         User::factory()->create([
@@ -125,8 +117,8 @@ class DatabaseSeeder extends Seeder
             'telefoon' => '06234567890',
             'email' => 'kees@gmail.com',
             'password' => Hash::make('Kees'),
-            'role_id' => Role::where('roleName', 'werknemer')->first()->id,
-            'team_id' => $geoICT, // Assign to HRM team
+            'role_id' => Role::where('role_name', 'werknemer')->first()->id,
+            'team_id' => $geoICT,
         ]);
     }
 }

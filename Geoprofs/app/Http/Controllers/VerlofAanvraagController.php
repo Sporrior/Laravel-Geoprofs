@@ -19,16 +19,15 @@ class VerlofAanvraagController extends Controller
 
     public function showDashboard(): \Illuminate\View\View
     {
-        // Retrieve approved leave requests, ordered by start date descending
         $startOfWeek = Carbon::now()->startOfWeek();
         $endOfWeek = Carbon::now()->endOfWeek();
 
-        $verlofaanvragen = VerlofAanvragen::where('status', 1)
+        $verlofaanvragen = verlofAanvragen::where('status', 1)
             ->whereBetween('start_datum', [$startOfWeek, $endOfWeek])
             ->orWhereBetween('eind_datum', [$startOfWeek, $endOfWeek])
-            ->leftJoin('types', 'verlofaanvragens.verlof_soort', '=', 'types.id')
-            ->select('verlofaanvragens.*', 'types.type as type_name')
-            ->orderBy('start_datum', 'desc') // Sort by start_datum instead of aanvraag_datum
+            ->leftJoin('types', 'verlofaanvragen.verlof_soort', '=', 'types.id')
+            ->select('verlofaanvragen.*', 'types.type as type_name')
+            ->orderBy('start_datum', 'desc')
             ->get()
             ->map(function ($item) {
                 return [
@@ -63,14 +62,11 @@ class VerlofAanvraagController extends Controller
             'verlof_soort' => 'required|exists:types,id',
         ]);
 
-        // Calculate requested days
         $requestedDays = Carbon::parse($startDatum)->diffInDays(Carbon::parse($eindDatum)) + 1;
 
-        // Fetch the user's available leave days
         $user = Auth::user();
         $availableDays = $user->verlof_dagen;
 
-        // Check if the requested days exceed available leave days
         if ($requestedDays > $availableDays) {
             Log::info('Verlofaanvraag geweigerd: aangevraagde dagen overschrijden beschikbare verlofdagen.');
             return redirect()->back()->with('error', 'Verlofaanvraag geweigerd: Aangevraagde dagen overschrijden beschikbare verlofdagen.');

@@ -14,12 +14,11 @@ return new class extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
-            $table->string('group_name')->unique(); // Renamed 'Group' to 'group_name'
+            $table->string('group_name')->unique();
             $table->timestamps();
         });
 
-        // Insert predefined teams
-        DB::table('teams')->insert([ // Fixed to insert into 'teams'
+        DB::table('teams')->insert([
             ['group_name' => 'GeoICT'],
             ['group_name' => 'GeoDECY'],
             ['group_name' => 'HRM'],

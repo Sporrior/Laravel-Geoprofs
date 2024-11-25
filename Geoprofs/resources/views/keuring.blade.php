@@ -178,7 +178,7 @@
                 <div class="success-message" id="successMessage">{{ session('success') }}</div>
             @endif
 
-            @foreach($verlofaanvragens->sortByDesc('updated_at') as $aanvraag)
+            @foreach($verlofaanvragen->sortByDesc('updated_at') as $aanvraag)
     <div class="leave-card">
         <h3>{{ optional($aanvraag->user)->voornaam }}'s Verlofaanvraag</h3>
         <div class="leave-details">
