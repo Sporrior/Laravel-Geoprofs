@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\VerlofAanvragen;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Models\type;
 use Carbon\Carbon;
 
 class KeuringController extends Controller
@@ -15,12 +16,21 @@ class KeuringController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $verlofaanvragens = VerlofAanvragen::with('user', 'type')->get();
+        $types = Type::all();
+        $verlofaanvragens = VerlofAanvragen::with('user', 'type');
 
-        return view('keuring', compact('verlofaanvragens'));
+        if ($request->has('types')) {
+            $selectedTypes = $request->input('types');
+            $verlofaanvragens = $verlofaanvragens->whereIn('verlof_soort', $selectedTypes);
+        }
+
+        $verlofaanvragens = $verlofaanvragens->orderByDesc('updated_at')->get();
+
+        return view('keuring', compact('verlofaanvragens', 'types'));
     }
+
 
     public function updateStatus(Request $request, $id)
     {

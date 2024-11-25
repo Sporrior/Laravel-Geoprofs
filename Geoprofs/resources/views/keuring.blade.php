@@ -111,14 +111,14 @@
             color: #f44336;
         }
 
-        .status-form {
+        .status-form, .filter-form {
             display: flex;
             align-items: center;
             gap: 10px;
             margin-top: 10px;
         }
 
-        .status-form select {
+        .status-form select, .filter-form select {
             padding: 6px 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -128,12 +128,12 @@
             transition: border-color 0.3s ease;
         }
 
-        .status-form select:focus {
+        .status-form select:focus, .filter-form select:focus {
             border-color: #007bff;
             outline: none;
         }
 
-        .status-form button {
+        .status-form button, .filter-form button {
             padding: 8px 14px;
             background-color: #007bff;
             color: #fff;
@@ -145,11 +145,11 @@
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
-        .status-form button:hover {
+        .status-form button:hover, .filter-form button:hover {
             background-color: #0056b3;
         }
 
-        .status-form button:active {
+        .status-form button:active, .filter-form button:active {
             transform: scale(0.98);
         }
 
@@ -166,6 +166,74 @@
             resize: none;
         }
 
+        .dropdown {
+  position: relative;
+  font-size: 14px;
+  color: #333;
+  width: 20vw;
+
+  .dropdown-list {
+    padding: 12px;
+    background: #fff;
+    position: absolute;
+    top: 30px;
+    left: 2px;
+    right: 2px;
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, .15);
+    transform-origin: 50% 0;
+    transform: scale(1, 0);
+    transition: transform .15s ease-in-out .15s;
+    max-height: 66vh;
+    overflow-y: scroll;
+  }
+
+  .dropdown-option {
+    display: block;
+    padding: 8px 12px;
+    opacity: 0;
+    transition: opacity .15s ease-in-out;
+  }
+
+  .dropdown-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    line-height: 1;
+    cursor: pointer;
+
+    &:before {
+      content: '▼';
+      float: right;
+    }
+  }
+
+  &.on {
+   .dropdown-list {
+      transform: scale(1, 1);
+      transition-delay: 0s;
+
+      .dropdown-option {
+        opacity: 1;
+        transition-delay: .2s;
+      }
+    }
+
+    .dropdown-label:before {
+      content: '▲';
+    }
+  }
+
+  [type="checkbox"] {
+    position: relative;
+    top: -1px;
+    margin-right: 4px;
+  }
+}
+
     </style>
 </head>
 
@@ -178,8 +246,25 @@
                 <div class="success-message" id="successMessage">{{ session('success') }}</div>
             @endif
 
+            <!-- Filter Form -->
+            <form method="GET" action="{{ route('keuring.index') }}" class="filter-form">
+                <div class="dropdown" data-control="checkbox-dropdown">
+                    <label class="dropdown-label">Verlof</label>
+                    <div class="dropdown-list">
+                        @foreach($types as $type)
+                            <label class="dropdown-option">
+                                <input type="checkbox" name="types[]" value="{{ $type->id }}"
+                                    {{ (is_array(request('types')) && in_array($type->id, request('types'))) ? 'checked' : '' }} />
+                                {{ $type->type }}
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+                <button type="submit">Filter</button>
+            </form>
+
             @foreach($verlofaanvragens->sortByDesc('updated_at') as $aanvraag)
-    <div class="leave-card">
+        <div class="leave-card">
         <h3>{{ optional($aanvraag->user)->voornaam }}'s Verlofaanvraag</h3>
         <div class="leave-details">
             <div class="leave-detail"><strong>Reden:</strong> {{ $aanvraag->verlof_reden }}</div>
@@ -251,6 +336,33 @@
                 });
             });
         });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    const dropdowns = document.querySelectorAll('[data-control="checkbox-dropdown"]');
+
+    dropdowns.forEach(dropdown => {
+        const label = dropdown.querySelector('.dropdown-label');
+        const list = dropdown.querySelector('.dropdown-list');
+
+        // Toggle dropdown visibility
+        label.addEventListener('click', function (e) {
+            e.preventDefault();
+            dropdown.classList.toggle('on');
+            const isExpanded = dropdown.classList.contains('on');
+            dropdown.setAttribute('aria-expanded', isExpanded);
+        });
+
+        // Close dropdown if clicked outside
+        document.addEventListener('click', function (e) {
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.remove('on');
+                dropdown.setAttribute('aria-expanded', false);
+            }
+        });
+    });
+});
+
     </script>
 </body>
 
