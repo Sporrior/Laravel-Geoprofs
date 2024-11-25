@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\VerlofAanvragen;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Models\type;
 use Carbon\Carbon;
 
 class KeuringController extends Controller
@@ -15,12 +16,27 @@ class KeuringController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $verlofaanvragen = VerlofAanvragen::with('user', 'type')->get();
+        $types = Type::all();
+        $users = user::all();
+        $verlofaanvragen = VerlofAanvragen::with('user', 'type');
 
-        return view('keuring', compact('verlofaanvragen'));
+        if ($request->has('types')) {
+            $selectedTypes = $request->input('types');
+            $verlofaanvragen = $verlofaanvragen->whereIn('verlof_soort', $selectedTypes);
+        }
+
+        if ($request->has('users')) {
+            $selectedUsers = $request->input('users');
+            $verlofaanvragen = $verlofaanvragen->whereIn('user_id', $selectedUsers);
+        }
+
+        $verlofaanvragen = $verlofaanvragen->orderByDesc('updated_at')->get();
+
+        return view('keuring', compact('verlofaanvragen', 'types', 'users'));
     }
+
 
     public function updateStatus(Request $request, $id)
     {
@@ -56,6 +72,6 @@ class KeuringController extends Controller
         $verlofAanvraag->status = $newStatus;
         $verlofAanvraag->save();
 
-        return redirect()->route('keuring.updateStatus')->with('success', 'Status succesvol bijgewerkt.');
+        return redirect()->route('keuring.index')->with('success', 'Status succesvol bijgewerkt.');
     }
 }
