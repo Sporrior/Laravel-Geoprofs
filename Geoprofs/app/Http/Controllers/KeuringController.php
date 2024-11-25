@@ -19,7 +19,8 @@ class KeuringController extends Controller
     public function index(Request $request)
     {
         $types = Type::all();
-        $verlofaanvragens = VerlofAanvragen::with('user', 'type');
+        $users = user::all();
+        $verlofaanvragen = VerlofAanvragen::with('user', 'type');
 
         if ($request->has('types')) {
             $selectedTypes = $request->input('types');
@@ -28,12 +29,12 @@ class KeuringController extends Controller
 
         if ($request->has('users')) {
             $selectedUsers = $request->input('users');
-            $verlofaanvragens = $verlofaanvragens->whereIn('user_id', $selectedUsers);
+            $verlofaanvragen = $verlofaanvragen->whereIn('user_id', $selectedUsers);
         }
 
         $verlofaanvragen = $verlofaanvragen->orderByDesc('updated_at')->get();
 
-        return view('keuring', compact('verlofaanvragens', 'types'));
+        return view('keuring', compact('verlofaanvragen', 'types', 'users'));
     }
 
 
