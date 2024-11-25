@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class verlofaanvragen extends Model
 {
     use HasFactory;
+
+    protected $table = 'verlofaanvragen';
+
     protected $fillable = [
         'verlof_reden',
         'aanvraag_datum',
@@ -19,13 +22,11 @@ class verlofaanvragen extends Model
         'weigerreden',
     ];
 
-    // Relationship with Type (Leave Type)
     public function type()
     {
         return $this->belongsTo(Type::class, 'verlof_soort');
     }
 
-    // Relationship with User
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
