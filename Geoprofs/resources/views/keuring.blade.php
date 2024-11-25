@@ -277,7 +277,7 @@
                 <button type="submit">Filter</button>
             </form>
 
-            @foreach($verlofaanvragens->sortByDesc('updated_at') as $aanvraag)
+            @foreach($verlofaanvragen->sortByDesc('updated_at') as $aanvraag)
         <div class="leave-card">
         <h3>{{ optional($aanvraag->user)->voornaam }}'s Verlofaanvraag</h3>
         <div class="leave-details">
@@ -359,7 +359,6 @@
         const label = dropdown.querySelector('.dropdown-label');
         const list = dropdown.querySelector('.dropdown-list');
 
-        // Toggle dropdown visibility
         label.addEventListener('click', function (e) {
             e.preventDefault();
             dropdown.classList.toggle('on');
@@ -367,7 +366,6 @@
             dropdown.setAttribute('aria-expanded', isExpanded);
         });
 
-        // Close dropdown if clicked outside
         document.addEventListener('click', function (e) {
             if (!dropdown.contains(e.target)) {
                 dropdown.classList.remove('on');
