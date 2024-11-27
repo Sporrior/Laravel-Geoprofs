@@ -10,6 +10,7 @@ use App\Http\Controllers\VerlofAanvraagController;
 use App\Http\Controllers\KeuringController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ZiekmeldenController;
+use App\Http\Controllers\VerlofDataController;
 use App\Http\Middleware\CheckRole;
 
 Route::get('/', function () {
@@ -50,4 +51,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/keuring', [KeuringController::class, 'index'])->name('keuring.index');
     Route::post('/keuring/{id}/update', [KeuringController::class, 'updateStatus'])->name('keuring.updateStatus');
+
+    Route::get('/verlofdata', [VerlofDataController::class, 'index'])->name('verlofdata.index');
+    Route::get('/verlofdata', [VerlofDataController::class, 'export'])->name('verlofdata.export');
+
 });
