@@ -47,6 +47,19 @@ class VerlofAanvraagController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
+
+        // Check if user has already 2 pending requests
+        $user = Auth::user();
+
+        $pendingRequestsCount = VerlofAanvragen::where('user_id', $user->id)
+            ->whereNull('status')
+            ->count();
+
+        if ($pendingRequestsCount >= 2) {
+            return redirect()->back()->with('error', 'U heeft al twee openstaande verlofaanvragen. Wacht tot deze zijn verwerkt voordat u een nieuwe aanvraag indient.');
+        }
+
+        // days merge for total days calculation
         $startDatum = Carbon::createFromFormat('d-m-Y', $request->startDatum)->format('Y-m-d');
         $eindDatum = Carbon::createFromFormat('d-m-Y', $request->eindDatum)->format('Y-m-d');
 
@@ -62,6 +75,7 @@ class VerlofAanvraagController extends Controller
             'verlof_soort' => 'required|exists:types,id',
         ]);
 
+        // Check if requested days are available
         $requestedDays = Carbon::parse($startDatum)->diffInDays(Carbon::parse($eindDatum)) + 1;
 
         $user = Auth::user();
