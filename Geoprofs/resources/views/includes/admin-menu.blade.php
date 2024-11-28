@@ -102,7 +102,7 @@
                         class="nav-profiel-foto">
                 </a>
                 <h4>Hallo, {{ $user->voornaam }}</h4>
-                <p>{{ $user->role->roleName }}</p>
+                <p>{{ $user->role->role_name }}</p>
                 <p>{{ $user->team->group_name }}</p>
             </div>
             <ul class="navigatie">

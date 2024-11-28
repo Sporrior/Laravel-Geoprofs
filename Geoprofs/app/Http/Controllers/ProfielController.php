@@ -38,6 +38,7 @@ class ProfielController extends Controller
             'achternaam' => 'required|string|max:255',
             'profielFoto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'telefoon' => 'nullable|string|max:15',
+            'verlof_dagen' => 'nullable|string|max:15',
             'email' => 'required|string|email|max:255|unique:users,email,' . Auth::id(),
         ]);
 

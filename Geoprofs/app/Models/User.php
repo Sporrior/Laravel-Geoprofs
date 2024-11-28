@@ -18,6 +18,7 @@ class User extends Authenticatable
         'telefoon',
         'email',
         'password',
+        'verlof_dagen',
     ];
 
     protected $hidden = [
@@ -30,19 +31,16 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    // Relationship with Role
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
 
-    // Relationship with Team
     public function team()
     {
         return $this->belongsTo(Team::class);
     }
 
-    // Relationship with Leave Requests
     public function verlofaanvragens()
     {
         return $this->hasMany(Verlofaanvragen::class);

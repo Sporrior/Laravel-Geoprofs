@@ -18,13 +18,11 @@ class UserCreateController extends Controller
 
     public function index()
     {
-        // Show the user registration form
         return view('addusers');
     }
 
     public function store(Request $request)
     {
-        // Validate the user input
         $validator = Validator::make($request->all(), [
             'voornaam' => 'required|string|max:255',
             'tussennaam' => 'nullable|string|max:255',
@@ -53,7 +51,6 @@ class UserCreateController extends Controller
         $achternaam = $loggedInUser->achternaam;
         $role = $loggedInUser->role->roleName;
 
-        // Redirect back with success message
         logboek::class::create([
             'user_id' => $loggedInUser->id,
             'actie' => 'Profile updated door gebruiker: ' . $voornaam . ' ' . $achternaam . 'met een rol van ' . $role,

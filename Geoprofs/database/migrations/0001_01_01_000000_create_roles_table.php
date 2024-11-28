@@ -15,15 +15,15 @@ return new class extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->string('roleName')->unique();
+            $table->string('role_name')->unique();
             $table->timestamps();
         });
 
                 // Insert predefined roles
             DB::table('roles')->insert([
-                ['roleName' => 'werknemer'],
-                ['roleName' => 'manager'],
-                ['roleName' => 'officemanagement'],
+                ['role_name' => 'werknemer'],
+                ['role_name' => 'manager'],
+                ['role_name' => 'officemanagement'],
             ]);
 
     }

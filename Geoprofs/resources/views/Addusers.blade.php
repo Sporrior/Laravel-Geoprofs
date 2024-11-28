@@ -14,12 +14,10 @@
 
     <h1>Create New User</h1>
 
-    <!-- Success Message -->
      @if(session('success'))
         <p style="color: green;">{{ session('success') }}</p>
     @endif
 
-    <!-- Display validation errors -->
     @if($errors->any())
         <ul style="color: red;">
             @foreach($errors->all() as $error)

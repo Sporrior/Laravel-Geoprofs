@@ -22,14 +22,14 @@ class RegisterController extends Controller
         ]);
 
         $nameParts = explode(' ', $validatedData['name']);
-        $voorNaam = $nameParts[0];
-        $tussenNaam = count($nameParts) === 3 ? $nameParts[1] : null;
-        $achterNaam = count($nameParts) > 1 ? end($nameParts) : '';
+        $voornaam = $nameParts[0];
+        $tussennaam = count($nameParts) === 3 ? $nameParts[1] : null;
+        $achternaam = count($nameParts) > 1 ? end($nameParts) : '';
 
         $user = User::create([
-            'voorNaam' => $voorNaam,
-            'tussenNaam' => $tussenNaam,
-            'achterNaam' => $achterNaam,
+            'voornaam' => $voornaam,
+            'tussennaam' => $tussennaam,
+            'achternaam' => $achternaam,
             'profielFoto' => null, 
             'telefoon' => '', 
             'email' => $validatedData['email'],

@@ -97,7 +97,7 @@
         .personnel-table th,
         .personnel-table td {
             padding: 12px;
-            text-align: left;
+            text-align: center;
             border-bottom: 1px solid #ddd;
         }
 
@@ -192,6 +192,7 @@
             background-color: #f44336;
             color: #fff;
         }
+
     </style>
 </head>
 
@@ -211,6 +212,7 @@
                         <h2>{{ $user->voornaam }} {{ $user->achternaam }}</h2>
                         <p class="functie">{{ $user->role->roleName }}</p>
                         <p class="team">Team: {{ $user->team->group_name }}</p>
+                        <p class="verlof-dagen">verlof dagen : {{ $user->verlof_dagen }}</p>
                     </div>
                 </div>
 
@@ -224,6 +226,7 @@
                                 <th>Telefoonnummer</th>
                                 <th>Email</th>
                                 <th>Functie</th>
+                                <th>verlof dagen</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -235,6 +238,7 @@
                                         <td>{{ $persoon->telefoon }}</td>
                                         <td>{{ $persoon->email }}</td>
                                         <td>{{ $persoon->role->roleName }}</td>
+                                        <td>{{ $persoon->verlof_dagen }}</td>
                                     </tr>
                                 @endif
                             @endforeach

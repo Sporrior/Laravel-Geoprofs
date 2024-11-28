@@ -4,10 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+
 
 class verlofaanvragen extends Model
 {
     use HasFactory;
+
+    protected $table = 'verlofaanvragen';
+
     protected $fillable = [
         'verlof_reden',
         'aanvraag_datum',
@@ -19,16 +24,21 @@ class verlofaanvragen extends Model
         'weigerreden',
     ];
 
-    // Relationship with Type (Leave Type)
+    protected $casts = [
+        'start_datum' => 'datetime',
+        'eind_datum' => 'datetime',
+        'aanvraag_datum' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function type()
     {
         return $this->belongsTo(Type::class, 'verlof_soort');
     }
 
-    // Relationship with User
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    
 }

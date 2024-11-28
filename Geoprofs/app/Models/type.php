@@ -9,10 +9,9 @@ class type extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['type']; // Fillable for type name
+    protected $fillable = ['type']; 
 
-    // Relationship with Leave Requests
-    public function verlofaanvragens()
+    public function verlofaanvragen()
     {
         return $this->hasMany(Verlofaanvragen::class, 'verlof_soort');
     }

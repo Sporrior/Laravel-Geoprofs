@@ -78,8 +78,8 @@ class LoginController extends Controller
         $storedCode = Cache::get('2fa_code');
 
         if ($request->input('2fa_code') == $storedCode) {
-            Cache::forget('2fa_code'); // Clear the stored code after successful verification
-            return redirect()->route('dashboard'); // Change this route to your desired redirect
+            Cache::forget('2fa_code');
+            return redirect()->route('dashboard'); 
         }
 
         return back()->withErrors(['2fa_code' => 'The 2FA code is incorrect.']);
