@@ -140,6 +140,7 @@
                 <input type="checkbox" id="staySignedIn" name="remember">
                 <label for="staySignedIn">Stay signed in for a week</label>
             </div>
+            
         </form>
         <footer>
             <p>&copy; Geoprofs | <a href="#">Contact</a> | <a href="#">Privacy & Terms</a></p>

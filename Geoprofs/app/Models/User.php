@@ -24,11 +24,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'failed_login_attempts',
+        'bloack_attempts',
     ];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'blocked_until' => 'datetime',
     ];
 
     public function role()

@@ -20,35 +20,56 @@ class LoginController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-
+    
         $user = User::where('email', $credentials['email'])->first();
-
+    
         if ($user) {
-            if ($user->account_locked) {
+            // if ($user->failed_login_attempts >= 2 && $user->blocked_until === null) {
+            //     $user->update([
+            //         'blocked_until' => now()->addMinutes(5),
+            //     ]);
+            // }
+            if ($user->failed_login_attempts >= 2) {
+                if ($user->blocked_until && now()->lessThan($user->blocked_until)) {
+                    $remainingSeconds = now()->diffInSeconds($user->blocked_until);
+                    return back()->withErrors([
+                        'email' => json_encode([
+                            'message' => 'Your account is locked.',
+                            'remaining_seconds' => $remainingSeconds,
+                        ]),
+                    ]);
+                }else {
+                    $remainingSeconds = 0;
+                }
+    
+                // Blokkeer account voor 5 minuten
+                $user->update([
+                    'blocked_until' => now()->addMinutes(5),
+                    'failed_login_attempts' => $user->failed_login_attempts + 1,
+                ]);
+    
                 return back()->withErrors([
-                    'email' => 'Your account is permanently locked due to multiple failed login attempts.',
+                    'email' => 'Too many failed login attempts. Your account is now locked for 5 minutes.',
                 ]);
             }
-
-            if ($user->blocked_until && now()->lessThan($user->blocked_until)) {
-                $blockedMinutes = now()->diffInMinutes($user->blocked_until);
-                return back()->withErrors([
-                    'email' => "You are blocked. Try again in {$blockedMinutes} minute(s).",
-                ]);
+    
+            if (!Auth::attempt($credentials) && $user->blocked_until === null) {
+                $user->increment('failed_login_attempts');
+                return back()->withErrors(['password' => 'The provided password is incorrect.']);
             }
-
-            $remember = $request->has('remember');
-
-            if (Auth::attempt($credentials, $remember)) {
-                $user->update(['failed_login_attempts' => 0, 'blocked_until' => null]);
-
-                $request->session()->regenerate();
-
-                return redirect()->route('2fa.show');
-            }
+    
+            // Login succesvol: reset login attempts
+            $user->update([
+                'failed_login_attempts' => 0,
+                'blocked_until' => null,
+            ]);
+    
+            $request->session()->regenerate();
+            return redirect()->route('dashboard');
         }
-
-        return back()->withErrors(['email' => 'The provided credentials do not match our records.']);
+    
+        // Als de gebruiker niet bestaat
+        return back()->withErrors(['email' => 'No account found with this email address.']);
     }
 
     public function show2faForm(Request $request)

@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->integer('verlof_dagen')->default(25);
             $table->integer('failed_login_attempts')->default(0);
             $table->timestamp('blocked_until')->nullable();
+            $table->integer('bloack_attempts')->default(0);
             $table->foreignId('role_id')->nullable()->constrained();
             $table->foreignId('team_id')->nullable()->constrained();
             $table->rememberToken();
