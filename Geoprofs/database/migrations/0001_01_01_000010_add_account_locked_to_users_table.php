@@ -10,8 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('account_locked')->default(false)->after('team_id'); // Add account_locked column
+        Schema::table('user_info', function (Blueprint $table) {
+            $table->boolean('account_locked')->default(false)->after('team_id');
         });
     }
 

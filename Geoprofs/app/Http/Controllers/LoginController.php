@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use App\Models\User;
+use App\Models\UserInfo;
 
 class LoginController extends Controller
 {
@@ -21,9 +22,12 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        $user = User::where('email', $credentials['email'])->first();
+        // Find the UserInfo by email
+        $userInfo = UserInfo::where('email', $credentials['email'])->first();
 
-        if ($user) {
+        if ($userInfo) {
+            $user = $userInfo->user;
+
             if ($user->account_locked) {
                 return back()->withErrors([
                     'email' => 'Your account is permanently locked due to multiple failed login attempts.',
@@ -39,7 +43,8 @@ class LoginController extends Controller
 
             $remember = $request->has('remember');
 
-            if (Auth::attempt($credentials, $remember)) {
+            // Attempt login
+            if (Auth::attempt(['user_id' => $userInfo->id, 'password' => $credentials['password']], $remember)) {
                 $user->update(['failed_login_attempts' => 0, 'blocked_until' => null]);
 
                 $request->session()->regenerate();
@@ -48,6 +53,7 @@ class LoginController extends Controller
             }
         }
 
+        // If credentials do not match
         return back()->withErrors(['email' => 'The provided credentials do not match our records.']);
     }
 
@@ -79,7 +85,7 @@ class LoginController extends Controller
 
         if ($request->input('2fa_code') == $storedCode) {
             Cache::forget('2fa_code');
-            return redirect()->route('dashboard'); 
+            return redirect()->route('dashboard');
         }
 
         return back()->withErrors(['2fa_code' => 'The 2FA code is incorrect.']);
