@@ -22,7 +22,6 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        // Find the UserInfo by email
         $userInfo = UserInfo::where('email', $credentials['email'])->first();
 
         if ($userInfo) {
