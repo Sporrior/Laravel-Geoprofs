@@ -1,0 +1,48 @@
+name: Notify Discord on Commit or Push
+
+on:
+  push:
+    branches:
+      - dev  # Monitor the 'dev' branch
+
+jobs:
+  send-to-discord:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check if there's a valid commit and it's not a delete
+      - name: Check for valid commit and non-deletion
+        id: check_commit
+        run: |
+          if [ "${{ github.event.head_commit }}" == "null" ]; then
+            echo "No commit data found. Skipping Discord notification."
+            exit 0  # If no commit is present, exit early.
+          else
+            echo "Commit data found, proceeding with Discord notification."
+          fi
+
+      # Step 2: Debug commit information
+      - name: Debug commit data
+        run: |
+          echo "Commit Message: ${{ github.event.head_commit.message }}"
+          echo "Commit Author: ${{ github.event.head_commit.author.name }}"
+          echo "Commit URL: ${{ github.event.head_commit.url }}"
+          echo "Full Payload: ${{ toJson(github.event) }}"  # For detailed inspection
+
+      # Step 3: Send the commit details to Discord if the commit message is valid
+      - name: Send commit to Discord
+        if: ${{ github.event.head_commit != null && github.event.head_commit.message != '' }}
+        uses: peter-evans/discord-webhook-action@v1  # Use the Discord webhook action
+        with:
+          url: https://discord.com/api/webhooks/1308011922184081418/zN7k6xMlXntKX15mQlDxbYKJbKqAJQzhFxFZ0UnhiBQY4pdAyhXTePhw4gTculChF9kp  # Your Discord webhook URL
+          message: |
+            **New Commit on Laravel-Geoprofs (Dev Branch)**
+            **Commit Message**: ${{ github.event.head_commit.message }}
+            **Author**: ${{ github.event.head_commit.author.name }}
+            **Commit URL**: [View Commit](${{ github.event.head_commit.url }})
+
+      # Step 4: Handle cases where there is no valid commit and handle branch deletion (if the branch is deleted)
+      - name: Handle branch deletion (if the branch was deleted)
+        if: ${{ github.event.before == '0000000000000000000000000000000000000000' }}
+        run: |
+          echo "The branch was deleted. Skipping commit notification."

@@ -3,11 +3,30 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "test": "jest"
     },
     "devDependencies": {
+        "@babel/plugin-transform-modules-commonjs": "^7.22.5",
+        "@babel/preset-env": "^7.22.5",
+        "@popperjs/core": "^2.11.6",
+        "@testing-library/dom": "^10.4.0",
         "axios": "^1.7.4",
+        "babel-jest": "^29.7.0",
+        "bootstrap": "^5.2.3",
+        "jest-environment-jsdom": "^29.7.0",
         "laravel-vite-plugin": "^1.0",
+        "sass": "^1.56.1",
         "vite": "^5.0"
+    },
+    "dependencies": {
+        "jest": "^29.7.0",
+        "jsdom": "^25.0.1"
+    },
+    "jest": {
+        "transform": {
+            "^.+\\.js$": "babel-jest"
+        },
+        "testEnvironment": "jsdom"
     }
 }

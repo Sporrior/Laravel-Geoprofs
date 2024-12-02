@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -14,18 +13,16 @@ class User extends Authenticatable
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
-        'name',
-        'email',
         'password',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * The attributes that should be hidden for arrays.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $hidden = [
         'password',
@@ -33,15 +30,45 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
-     * @return array<string, string>
+     * @var array
      */
-    protected function casts(): array
+    protected $casts = [
+        'password' => 'hashed',
+    ];
+
+    /**
+     * Define the relationship with the UserInfo model.
+     */
+    public function info()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasOne(UserInfo::class, 'id', 'id');
+    }
+
+    /**
+     * Magic property access for UserInfo fields.
+     *
+     * If a property is not directly on the User model, attempt to retrieve it from UserInfo.
+     */
+    public function __get($key)
+    {
+        if (in_array($key, [
+            'voornaam',
+            'tussennaam',
+            'achternaam',
+            'profielFoto',
+            'email',
+            'telefoon',
+            'verlof_dagen',
+            'failed_login_attempts',
+            'blocked_until',
+            'role_id',
+            'team_id',
+        ])) {
+            return $this->info->$key ?? null;
+        }
+
+        return parent::__get($key);
     }
 }

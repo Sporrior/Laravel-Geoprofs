@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Auth;  // Import Auth
+use Illuminate\Support\Facades\View;  // Import View
+use Illuminate\Database\Eloquent\Model;  // Import Model
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        View::composer('*', function ($view) {
+            $view->with('user', Auth::user());
+        });
+
+        Model::unguard(true);
     }
 }
