@@ -106,7 +106,7 @@
                 <p>{{ $user->group_name }}</p>
             </div>
             <ul class="navigatie">
-                @if($user->id >= 1) <!-- Gebruikers met rol 1 en hoger -->
+                @if($user->role_id >= 1) <!-- Gebruikers met rol 1 en hoger -->
                     <li><a href="/dashboard"
                             class="navigatie-link {{ request()->is('dashboard') ? 'actief' : '' }}">Dashboard</a></li>
                     <li><a href="/verlofaanvragen"
@@ -121,12 +121,12 @@
 
                 @endif
 
-                @if($user->id >= 2) <!-- Managers en hoger -->
+                @if($user->role_id >= 2) <!-- Managers en hoger -->
                     <li><a href="/keuring" class="navigatie-link {{ request()->is('keuring') ? 'actief' : '' }}">Verlof
                             Goedkeuren</a></li>
                 @endif
 
-                @if($user->id == 3) <!-- Alleen Office Managers -->
+                @if($user->role_id == 3) <!-- Alleen Office Managers -->
                     <li><a href="#" class="navigatie-link {{ request()->is('/') ? 'actief' : '' }}">HR Administratie</a>
                     <li><a href="/accouttoevoegen"
                             class="navigatie-link {{ request()->is('accouttoevoegen') ? 'actief' : '' }}">Account
