@@ -102,11 +102,11 @@
                         class="nav-profiel-foto">
                 </a>
                 <h4>Hallo, {{ $user->voornaam }}</h4>
-                <p>{{ $user->role->role_name }}</p>
-                <p>{{ $user->team->group_name }}</p>
+                <p>{{ $user->role_name }}</p>
+                <p>{{ $user->group_name }}</p>
             </div>
             <ul class="navigatie">
-                @if($user->role->id >= 1) <!-- Gebruikers met rol 1 en hoger -->
+                @if($user->id >= 1) <!-- Gebruikers met rol 1 en hoger -->
                     <li><a href="/dashboard"
                             class="navigatie-link {{ request()->is('dashboard') ? 'actief' : '' }}">Dashboard</a></li>
                     <li><a href="/verlofaanvragen"
@@ -121,12 +121,12 @@
 
                 @endif
 
-                @if($user->role->id >= 2) <!-- Managers en hoger -->
+                @if($user->id >= 2) <!-- Managers en hoger -->
                     <li><a href="/keuring" class="navigatie-link {{ request()->is('keuring') ? 'actief' : '' }}">Verlof
                             Goedkeuren</a></li>
                 @endif
 
-                @if($user->role->id == 3) <!-- Alleen Office Managers -->
+                @if($user->id == 3) <!-- Alleen Office Managers -->
                     <li><a href="#" class="navigatie-link {{ request()->is('/') ? 'actief' : '' }}">HR Administratie</a>
                     <li><a href="/accouttoevoegen"
                             class="navigatie-link {{ request()->is('accouttoevoegen') ? 'actief' : '' }}">Account
