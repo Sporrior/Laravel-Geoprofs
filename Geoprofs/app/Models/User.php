@@ -10,39 +10,65 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
-        'voornaam',
-        'tussennaam',
-        'achternaam',
-        'profielFoto',
-        'telefoon',
-        'email',
         'password',
-        'verlof_dagen',
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 
-    public function role()
+    /**
+     * Define the relationship with the UserInfo model.
+     */
+    public function info()
     {
-        return $this->belongsTo(Role::class);
+        return $this->hasOne(UserInfo::class, 'id', 'id');
     }
 
-    public function team()
+    /**
+     * Magic property access for UserInfo fields.
+     *
+     * If a property is not directly on the User model, attempt to retrieve it from UserInfo.
+     */
+    public function __get($key)
     {
-        return $this->belongsTo(Team::class);
-    }
+        if (in_array($key, [
+            'voornaam',
+            'tussennaam',
+            'achternaam',
+            'profielFoto',
+            'email',
+            'telefoon',
+            'verlof_dagen',
+            'failed_login_attempts',
+            'blocked_until',
+            'role_id',
+            'team_id',
+        ])) {
+            return $this->info->$key ?? null;
+        }
 
-    public function verlofaanvragens()
-    {
-        return $this->hasMany(Verlofaanvragen::class);
+        return parent::__get($key);
     }
 }
