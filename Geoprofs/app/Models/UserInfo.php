@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+// use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserInfo extends Model
 {
@@ -36,26 +37,71 @@ class UserInfo extends Model
     ];
 
     /**
-     * The user this information belongs to.
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'blocked_until' => 'datetime',
+        'failed_login_attempts' => 'integer',
+        'verlof_dagen' => 'integer',
+    ];
+
+    /**
+     * Get the full name of the user.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return trim("{$this->voornaam} {$this->tussennaam} {$this->achternaam}");
+    }
+
+    /**
+     * Relationship with the User model.
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id', 'id'); // Adjust foreign and local keys as necessary
     }
 
     /**
-     * The role associated with this user info.
+     * Relationship with the Role model.
      */
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class, 'role_id');
     }
 
     /**
-     * The team associated with this user info.
+     * Relationship with the Team model.
      */
     public function team()
     {
-        return $this->belongsTo(Team::class);
+        return $this->belongsTo(Team::class, 'team_id');
+    }
+
+    /**
+     * Scope a query to only include users with a specific role.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $roleName
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithRole($query, $roleName)
+    {
+        return $query->whereHas('role', function ($q) use ($roleName) {
+            $q->where('role_name', $roleName);
+        });
+    }
+
+    /**
+     * Check if the user is blocked.
+     *
+     * @return bool
+     */
+    public function isBlocked()
+    {
+        return $this->blocked_until && now()->lessThan($this->blocked_until);
     }
 }

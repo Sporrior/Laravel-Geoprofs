@@ -1,13 +1,15 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\logboek;
+use App\Models\Role; // Ensure this model exists and is imported
+use App\Models\UserInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
-use App\Models\User;
 
 class ProfielController extends Controller
 {
@@ -15,8 +17,8 @@ class ProfielController extends Controller
     {
         $user = Auth::user();
 
-        $users = User::whereHas('role', function ($query) {
-            $query->where('roleName', 'werknemer');
+        $users = UserInfo::with('role')->whereHas('role', function ($query) {
+            $query->where('role_id', 'werknemer');
         })->get();
 
         Log::info('Profiel page viewed by user ID: ' . $user->id);
@@ -26,7 +28,7 @@ class ProfielController extends Controller
 
     public function edit()
     {
-        $user = Auth::user();
+        $user = Auth::user()->load('info');
         return view('profiel.edit', compact('user'));
     }
 
@@ -39,42 +41,37 @@ class ProfielController extends Controller
             'profielFoto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'telefoon' => 'nullable|string|max:15',
             'verlof_dagen' => 'nullable|string|max:15',
-            'email' => 'required|string|email|max:255|unique:users,email,' . Auth::id(),
+            'email' => 'required|string|email|max:255|unique:user_info,email,' . Auth::id(),
         ]);
 
         $user = Auth::user();
-        Log::info('Updating profile for user ID: ' . $user->id);
+        $userInfo = $user->info;
 
         if ($request->hasFile('profielFoto')) {
-            if ($user->profielFoto) {
-                Log::info('Deleting old profile photo for user ID: ' . $user->id);
-                Storage::delete('public/' . $user->profielFoto);
+            if ($userInfo->profielFoto) {
+                Storage::delete('public/' . $userInfo->profielFoto);
             }
 
             $file = $request->file('profielFoto');
             $filename = time() . '_' . $file->getClientOriginalName();
-            Log::info('New profile photo uploaded for user ID: ' . $user->id . ' - Filename: ' . $filename);
-
             $file->storeAs('profile_pictures', $filename, 'public');
-
-            $user->profielFoto = 'profile_pictures/' . $filename;
+            $userInfo->profielFoto = 'profile_pictures/' . $filename;
         }
 
-        $user->voornaam = $request->voornaam;
-        $user->tussennaam = $request->tussennaam;
-        $user->achternaam = $request->achternaam;
-        $user->telefoon = $request->telefoon;
-        $user->email = $request->email;
+        $userInfo->voornaam = $request->voornaam;
+        $userInfo->tussennaam = $request->tussennaam;
+        $userInfo->achternaam = $request->achternaam;
+        $userInfo->telefoon = $request->telefoon;
+        $userInfo->email = $request->email;
+        $userInfo->save();
 
-        $user->save();
-        Log::info('Profile updated for user ID: ' . $user->id);
-
-        logboek::class::create([
-            'user_id' => auth()->user()->id,
-            'actie' => 'Profile updated door gebruiker: ' . $user->voornaam . ' ' . $user->achternaam . ' met een rol van ' . $user->role->roleName,
-            'actie_beschrijving' => 'de volgende gegevens zijn bijgewerkt: ' . $request->voornaam . ' ' . $request->achternaam . ' ' . $request->email . ' ' . $request->telefoon,
+        logboek::create([
+            'user_id' => $user->id,
+            'actie' => 'Profile updated door gebruiker: ' . $userInfo->voornaam . ' ' . $userInfo->achternaam . ' met een rol van ' . optional($userInfo->role)->role_name,
+            'actie_beschrijving' => 'De volgende gegevens zijn bijgewerkt: ' . $request->voornaam . ' ' . $request->achternaam . ' ' . $request->email . ' ' . $request->telefoon,
             'actie_datum' => now(),
         ]);
+
         return redirect()->back()->with('success', 'Profiel succesvol bijgewerkt');
     }
 
@@ -93,12 +90,14 @@ class ProfielController extends Controller
 
         $user->password = Hash::make($request->nieuwWachtwoord);
         $user->save();
-        logboek::class::create([
-            'user_id' => auth()->user()->id,
-            'actie' => 'Password changed door gebruiker: ' . $user->voornaam . ' ' . $user->achternaam . ' met een rol van ' . $user->role->roleName,
+
+        logboek::create([
+            'user_id' => $user->id,
+            'actie' => 'Password changed door gebruiker: ' . $user->info->voornaam . ' ' . $user->info->achternaam . ' met een rol van ' . optional($user->info->role)->role_name,
             'actie_beschrijving' => 'Wachtwoord is gewijzigd',
             'actie_datum' => now(),
         ]);
+
         return redirect()->back()->with('success', 'Wachtwoord succesvol gewijzigd');
     }
 }
