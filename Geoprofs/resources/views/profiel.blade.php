@@ -230,18 +230,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($users as $persoon)
-                                @if($persoon->role_id == '')
-                                    <tr>
-                                        <td>{{ $persoon->voornaam }}</td>
-                                        <td>{{ $persoon->achternaam }}</td>
-                                        <td>{{ $persoon->telefoon }}</td>
-                                        <td>{{ $persoon->email }}</td>
-                                        <td>{{ $persoon->role->role_name }}</td>
-                                        <td>{{ $persoon->verlof_dagen }}</td>
-                                    </tr>
-                                @endif
-                            @endforeach
+                        @foreach($users as $persoon)
+                                <tr>
+                                    <td>{{ $persoon->voornaam }}</td>
+                                    <td>{{ $persoon->achternaam }}</td>
+                                    <td>{{ $persoon->telefoon }}</td>
+                                    <td>{{ $persoon->email }}</td>
+                                    <td>{{ $persoon->role->role_name }}</td>
+                                    <td>{{ $persoon->verlof_dagen }}</td>
+                                </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>

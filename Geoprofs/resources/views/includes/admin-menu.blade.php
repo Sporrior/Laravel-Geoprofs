@@ -102,8 +102,8 @@
                         class="nav-profiel-foto">
                 </a>
                 <h4>Hallo, {{ $user->voornaam }}</h4>
-                <p>{{ $user->role_name }}</p>
-                <p>{{ $user->group_name }}</p>
+                <p>{{ $user->role->role_name }}</p>
+                <p>{{ $user->team->group_name }}</p>
             </div>
             <ul class="navigatie">
                 @if($user->id >= 1) <!-- Gebruikers met rol 1 en hoger -->

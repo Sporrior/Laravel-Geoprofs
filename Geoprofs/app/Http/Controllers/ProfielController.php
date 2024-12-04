@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\logboek;
-use App\Models\Role; // Ensure this model exists and is imported
+use App\Models\Role;
 use App\Models\UserInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,15 +16,19 @@ class ProfielController extends Controller
     public function show()
     {
         $user = Auth::user();
+        $users = UserInfo::with('role')
+        ->where('team_id', $user->team_id) // Filter users by the authenticated user's team_id
+        ->whereHas('role', function ($query) {
+            $query->where('role_name', 'werknemer'); // Ensure they have the 'werknemer' role
+        })
+        ->get();
 
-        $users = UserInfo::with('role')->whereHas('role', function ($query) {
-            $query->where('role_id', 'werknemer');
-        })->get();
 
         Log::info('Profiel page viewed by user ID: ' . $user->id);
 
         return view('profiel', compact('user', 'users'));
     }
+
 
     public function edit()
     {
@@ -100,4 +104,5 @@ class ProfielController extends Controller
 
         return redirect()->back()->with('success', 'Wachtwoord succesvol gewijzigd');
     }
+
 }
