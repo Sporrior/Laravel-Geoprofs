@@ -2,7 +2,7 @@
 <html lang="en">
  <head>
   <meta charset="UTF-8">
-  <title>Dashboard for C:\xampp\htdocs\Geoprofs\Laravel-Geoprofs\Geoprofs\app\Providers</title>
+  <title>Dashboard for C:\xampp\htdocs\Geoprofs\Laravel-Geoprofs\Geoprofs\app\Exports</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="../_css/bootstrap.min.css?v=11.0.6" rel="stylesheet" type="text/css">
   <link href="../_css/nv.d3.min.css?v=11.0.6" rel="stylesheet" type="text/css">
@@ -17,7 +17,7 @@
       <nav aria-label="breadcrumb">
        <ol class="breadcrumb">
          <li class="breadcrumb-item"><a href="../index.html">C:\xampp\htdocs\Geoprofs\Laravel-Geoprofs\Geoprofs\app</a></li>
-         <li class="breadcrumb-item"><a href="index.html">Providers</a></li>
+         <li class="breadcrumb-item"><a href="index.html">Exports</a></li>
          <li class="breadcrumb-item active">(Dashboard)</li>
 
        </ol>
@@ -58,6 +58,7 @@
         </tr>
        </thead>
        <tbody>
+       <tr><td><a href="VerlofaanvragenExport.php.html#12">App\Exports\VerlofaanvragenExport</a></td><td class="text-right">0%</td></tr>
 
        </tbody>
       </table>
@@ -74,6 +75,7 @@
         </tr>
        </thead>
        <tbody>
+       <tr><td><a href="VerlofaanvragenExport.php.html#12">App\Exports\VerlofaanvragenExport</a></td><td class="text-right">42</td></tr>
 
        </tbody>
       </table>
@@ -111,6 +113,10 @@
         </tr>
        </thead>
        <tbody>
+       <tr><td><a href="VerlofaanvragenExport.php.html#14"><abbr title="App\Exports\VerlofaanvragenExport::collection">collection</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="VerlofaanvragenExport.php.html#23"><abbr title="App\Exports\VerlofaanvragenExport::map">map</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="VerlofaanvragenExport.php.html#41"><abbr title="App\Exports\VerlofaanvragenExport::headings">headings</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="VerlofaanvragenExport.php.html#59"><abbr title="App\Exports\VerlofaanvragenExport::styles">styles</abbr></a></td><td class="text-right">0%</td></tr>
 
        </tbody>
       </table>
@@ -127,6 +133,7 @@
         </tr>
        </thead>
        <tbody>
+       <tr><td><a href="VerlofaanvragenExport.php.html#23"><abbr title="App\Exports\VerlofaanvragenExport::map">map</abbr></a></td><td class="text-right">12</td></tr>
 
        </tbody>
       </table>
@@ -155,7 +162,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#classCoverageDistribution svg')
-      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,0,0,2], "Class Coverage"))
+      .datum(getCoverageDistributionData([1,0,0,0,0,0,0,0,0,0,0,0], "Class Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -173,7 +180,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#methodCoverageDistribution svg')
-      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,0,0,6], "Method Coverage"))
+      .datum(getCoverageDistributionData([4,0,0,0,0,0,0,0,0,0,0,0], "Method Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -223,7 +230,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[100,2,"<a href=\"AppServiceProvider.php.html#10\">App\\Providers\\AppServiceProvider<\/a>"],[100,4,"<a href=\"RouteServiceProvider.php.html#8\">App\\Providers\\RouteServiceProvider<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[0,6,"<a href=\"VerlofaanvragenExport.php.html#12\">App\\Exports\\VerlofaanvragenExport<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -247,7 +254,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[100,1,"<a href=\"AppServiceProvider.php.html#15\">App\\Providers\\AppServiceProvider::register<\/a>"],[100,1,"<a href=\"AppServiceProvider.php.html#23\">App\\Providers\\AppServiceProvider::boot<\/a>"],[100,1,"<a href=\"RouteServiceProvider.php.html#18\">App\\Providers\\RouteServiceProvider::boot<\/a>"],[100,1,"<a href=\"RouteServiceProvider.php.html#26\">App\\Providers\\RouteServiceProvider::map<\/a>"],[100,1,"<a href=\"RouteServiceProvider.php.html#36\">App\\Providers\\RouteServiceProvider::mapApiRoutes<\/a>"],[100,1,"<a href=\"RouteServiceProvider.php.html#47\">App\\Providers\\RouteServiceProvider::mapWebRoutes<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[0,1,"<a href=\"VerlofaanvragenExport.php.html#14\">App\\Exports\\VerlofaanvragenExport::collection<\/a>"],[0,3,"<a href=\"VerlofaanvragenExport.php.html#23\">App\\Exports\\VerlofaanvragenExport::map<\/a>"],[0,1,"<a href=\"VerlofaanvragenExport.php.html#41\">App\\Exports\\VerlofaanvragenExport::headings<\/a>"],[0,1,"<a href=\"VerlofaanvragenExport.php.html#59\">App\\Exports\\VerlofaanvragenExport::styles<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);
