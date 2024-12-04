@@ -1,6 +1,6 @@
-@if(!$user->role->id == 2 || $user->role->id == 3)
+@if(!$user->id == 2 || $user->id == 3)
 
-@elseif($user->role->id == 1)
+@elseif($user->id == 1)
     <script>window.location = "/dashboard";</script>
 @endif
 <!DOCTYPE html>
@@ -238,7 +238,7 @@
 </head>
 
 <body>
-    <div class="container-admin">
+<div class="container-admin">
         @include('includes.admin-menu')
 
         <div class="main-content">
@@ -264,11 +264,11 @@
                 <div class="dropdown" data-control="checkbox-dropdown">
                     <label class="dropdown-label">Gebruiker</label>
                     <div class="dropdown-list">
-                        @foreach($users as $user)
+                        @foreach($users as $dropdownUser)
                             <label class="dropdown-option">
-                                <input type="checkbox" name="users[]" value="{{ $user->id }}"
-                                    {{ (is_array(request('users')) && in_array($user->id, request('users'))) ? 'checked' : '' }} />
-                                {{ $user->voornaam }} {{ $user->achternaam }}
+                                <input type="checkbox" name="users[]" value="{{ $dropdownUser->id }}"
+                                    {{ (is_array(request('users')) && in_array($dropdownUser->id, request('users'))) ? 'checked' : '' }} />
+                                {{ $dropdownUser->voornaam }} {{ $dropdownUser->achternaam }}
                             </label>
                         @endforeach
                     </div>
@@ -278,43 +278,41 @@
             </form>
 
             @foreach($verlofaanvragen->sortByDesc('updated_at') as $aanvraag)
-        <div class="leave-card">
-        <h3>{{ optional($aanvraag->user)->voornaam }}'s Verlofaanvraag</h3>
-        <div class="leave-details">
-            <div class="leave-detail"><strong>Reden:</strong> {{ $aanvraag->verlof_reden }}</div>
-            <div class="leave-detail"><strong>Start Datum:</strong> {{ $aanvraag->start_datum }}</div>
-            <div class="leave-detail"><strong>Eind Datum:</strong> {{ $aanvraag->eind_datum }}</div>
-            <div class="leave-detail"><strong>Type Verlof:</strong> {{ optional($aanvraag->type)->type }}</div>
-            <div class="leave-detail">
-                <strong>Status:</strong>
-                <span class="status
-                {{ is_null($aanvraag->status) ? 'pending' : ($aanvraag->status == 1 ? 'approved' : 'rejected') }}">
-                    {{ is_null($aanvraag->status) ? 'Pending' : ($aanvraag->status == 1 ? 'Goedgekeurd' : 'Weigeren') }}
-                </span>
-            </div>
-            @if($aanvraag->status == 0 && $aanvraag->weigerreden)
-                <div class="leave-detail">
-                    <strong>Weigerreden:</strong> {{ $aanvraag->weigerreden }}
+                <div class="leave-card">
+                    <h3>{{ optional($aanvraag->user->info)->voornaam }}'s Verlofaanvraag</h3>
+                    <div class="leave-details">
+                        <div class="leave-detail"><strong>Reden:</strong> {{ $aanvraag->verlof_reden }}</div>
+                        <div class="leave-detail"><strong>Start Datum:</strong> {{ $aanvraag->start_datum }}</div>
+                        <div class="leave-detail"><strong>Eind Datum:</strong> {{ $aanvraag->eind_datum }}</div>
+                        <div class="leave-detail"><strong>Type Verlof:</strong> {{ optional($aanvraag->type)->type }}</div>
+                        <div class="leave-detail">
+                            <strong>Status:</strong>
+                            <span class="status
+                            {{ is_null($aanvraag->status) ? 'pending' : ($aanvraag->status == 1 ? 'approved' : 'rejected') }}">
+                                {{ is_null($aanvraag->status) ? 'Pending' : ($aanvraag->status == 1 ? 'Goedgekeurd' : 'Weigeren') }}
+                            </span>
+                        </div>
+                        @if($aanvraag->status == 0 && $aanvraag->weigerreden)
+                            <div class="leave-detail">
+                                <strong>Weigerreden:</strong> {{ $aanvraag->weigerreden }}
+                            </div>
+                        @endif
+                    </div>
+
+                    <form action="{{ route('keuring.updateStatus', $aanvraag->id) }}" method="POST" class="status-form">
+                        @csrf
+                        <select name="status" id="status-{{ $aanvraag->id }}" class="status-select" data-aanvraag-id="{{ $aanvraag->id }}">
+                            <option value="">Selecteer status</option>
+                            <option value="1" {{ $aanvraag->status === 1 ? 'selected' : '' }}>Goedkeuren</option>
+                            <option value="0" {{ $aanvraag->status === 0 ? 'selected' : '' }}>Weigeren</option>
+                        </select>
+                        <div id="reason-container-{{ $aanvraag->id }}" class="reason-container" style="display: none;">
+                            <textarea name="weigerreden" placeholder="Geef de reden voor weigering"></textarea>
+                        </div>
+                        <button type="submit">{{ is_null($aanvraag->status) ? 'Verstuur' : 'Wijzigen' }}</button>
+                    </form>
                 </div>
-            @endif
-        </div>
-
-        <!-- Status update form, available for all statuses -->
-        <form action="{{ route('keuring.updateStatus', $aanvraag->id) }}" method="POST" class="status-form">
-            @csrf
-            <select name="status" id="status-{{ $aanvraag->id }}" class="status-select" data-aanvraag-id="{{ $aanvraag->id }}">
-                <option value="">Selecteer status</option>
-                <option value="1" {{ $aanvraag->status === 1 ? 'selected' : '' }}>Goedkeuren</option>
-                <option value="0" {{ $aanvraag->status === 0 ? 'selected' : '' }}>Weigeren</option>
-            </select>
-            <div id="reason-container-{{ $aanvraag->id }}" class="reason-container" style="display: none;">
-                <textarea name="weigerreden" placeholder="Geef de reden voor weigering"></textarea>
-            </div>
-            <button type="submit">{{ is_null($aanvraag->status) ? 'Verstuur' : 'Wijzigen' }}</button>
-        </form>
-    </div>
-@endforeach
-
+            @endforeach
         </div>
     </div>
 

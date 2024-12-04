@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\logboek;
+use App\Models\Logboek;
 use App\Models\User;
+use App\Models\UserInfo;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class UserCreateController extends Controller
+class AccounttoevoegenController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -18,7 +19,8 @@ class UserCreateController extends Controller
 
     public function index()
     {
-        return view('addusers');
+        $roles = Role::all();
+        return view('account-toevoegen', compact('roles'));
     }
 
     public function store(Request $request)
@@ -28,35 +30,37 @@ class UserCreateController extends Controller
             'tussennaam' => 'nullable|string|max:255',
             'achternaam' => 'required|string|max:255',
             'telefoon' => 'required|string|max:20',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:user_info,email',
             'password' => 'required|string|min:8|confirmed',
+            'role_id' => 'required|exists:roles,id',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        User::create([
+        $user = User::create([
+            'password' => Hash::make($request->password),
+        ]);
+
+        UserInfo::create([
+            'id' => $user->id,
             'voornaam' => $request->voornaam,
             'tussennaam' => $request->tussennaam,
             'achternaam' => $request->achternaam,
             'telefoon' => $request->telefoon,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'verlof_dagen' => 25,
+            'role_id' => $request->role_id,
         ]);
 
         $loggedInUser = auth()->user();
-        $voornaam = $loggedInUser->voornaam;
-        $achternaam = $loggedInUser->achternaam;
-        $role = $loggedInUser->role->roleName;
-
-        logboek::class::create([
+        Logboek::create([
             'user_id' => $loggedInUser->id,
-            'actie' => 'Profile updated door gebruiker: ' . $voornaam . ' ' . $achternaam . 'met een rol van ' . $role,
-            'actie_beschrijving' => $voornaam . ' Heeft een account aangemaakt ' . $request->voornaam . ' ' . $request->achternaam . " " . $request->email . " " . $request->telefoon,
+            'actie' => 'User account created',
+            'actie_beschrijving' => "{$loggedInUser->voornaam} created a new account for {$request->voornaam} {$request->achternaam}",
             'actie_datum' => now(),
         ]);
-        return redirect()->route('addusers.index')->with('success', 'User successfully created.');
+
+        return redirect()->route('account-toevoegen.index')->with('success', 'Gebruiker succesvol aangemaakt.');
     }
 }

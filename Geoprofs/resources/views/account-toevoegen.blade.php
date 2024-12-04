@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verlofaanvraag</title>
+    <title>Account Toevoegen</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     <style>
@@ -51,66 +51,46 @@
             text-align: center;
         }
 
+        .success-message,
+        .error-message {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
         .success-message {
             color: #4caf50;
             background-color: #e0f9e0;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
             text-align: center;
             font-weight: bold;
         }
 
         .error-message {
             color: #f44336;
-            font-weight: bold;
-            margin-bottom: 15px;
             background-color: #ffebee;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .error-message ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+            font-weight: bold;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
             margin-bottom: 20px;
-            text-align: left;
         }
 
         .form-group label {
             font-size: 16px;
             font-weight: bold;
             margin-bottom: 8px;
-            color: #333;
         }
 
         input,
-        select,
-        textarea {
+        select {
             padding: 10px;
             font-size: 16px;
             color: #555;
             border: 1px solid #ccc;
             border-radius: 5px;
             outline: none;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        textarea {
-            resize: vertical;
-        }
-
-        input:focus,
-        select:focus,
-        textarea:focus {
-            border-color: #FF8C00;
-            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
         }
 
         .submit-button {
@@ -122,25 +102,11 @@
             font-weight: bold;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.1s ease;
+            transition: background-color 0.3s ease;
         }
 
         .submit-button:hover {
             background-color: #e07c00;
-        }
-
-        .submit-button:active {
-            transform: scale(0.98);
-        }
-
-        @media (max-width: 600px) {
-            .form-container {
-                padding: 20px;
-            }
-
-            h1 {
-                font-size: 20px;
-            }
         }
     </style>
 </head>
@@ -152,7 +118,7 @@
         <div class="main-content">
             <div class="form-wrapper">
                 <div class="form-container">
-                    <h1>Verlofaanvraag</h1>
+                    <h1>Account Toevoegen</h1>
 
                     @if(session('success'))
                         <p class="success-message">{{ session('success') }}</p>
@@ -172,66 +138,64 @@
                         </div>
                     @endif
 
-                    <form id="leaveForm" action="{{ route('verlofaanvragen.store') }}" method="POST">
+                    <form action="{{ route('account-toevoegen.store') }}" method="POST">
                         @csrf
 
                         <div class="form-group">
-                            <label for="startDatum">Startdatum:</label>
-                            <input type="text" id="startDatum" name="startDatum" class="flatpickr-input"
-                                placeholder="dd/mm/yyyy" required>
+                            <label for="voornaam">Voornaam:</label>
+                            <input type="text" id="voornaam" name="voornaam" value="{{ old('voornaam') }}" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="eindDatum">Einddatum:</label>
-                            <input type="text" id="eindDatum" name="eindDatum" class="flatpickr-input"
-                                placeholder="dd/mm/yyyy" required>
+                            <label for="tussennaam">Tussenvoegsel:</label>
+                            <input type="text" id="tussennaam" name="tussennaam" value="{{ old('tussennaam') }}">
                         </div>
 
                         <div class="form-group">
-                            <label for="verlof_reden">Reden:</label>
-                            <textarea id="verlof_reden" name="verlof_reden" rows="4"
-                                required>{{ old('verlof_reden') }}</textarea>
+                            <label for="achternaam">Achternaam:</label>
+                            <input type="text" id="achternaam" name="achternaam" value="{{ old('achternaam') }}" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="verlof_soort">Type Verlof:</label>
-                            <select id="verlof_soort" name="verlof_soort" required>
-                                <option value="">Kies een type...</option>
-                                @foreach($types as $type)
-                                    <option value="{{ $type->id }}" {{ old('verlof_soort') == $type->id ? 'selected' : '' }}>
-                                        {{ $type->type }}
+                            <label for="telefoon">Telefoonnummer:</label>
+                            <input type="text" id="telefoon" name="telefoon" value="{{ old('telefoon') }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">E-mailadres:</label>
+                            <input type="email" id="email" name="email" value="{{ old('email') }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Wachtwoord:</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password_confirmation">Bevestig Wachtwoord:</label>
+                            <input type="password" id="password_confirmation" name="password_confirmation" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rol">Rol:</label>
+                            <select id="rol" name="role_id" required>
+                                <option value="">Kies een rol...</option>
+                                @foreach($roles as $role)
+                                    <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>
+                                        {{ $role->role_name }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="submit-button">Verlofaanvraag Versturen</button>
+                            <button type="submit" class="submit-button">Account Aanmaken</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        flatpickr("#startDatum", {
-            dateFormat: "d-m-Y",
-            onChange: function(selectedDates, dateStr, instance) {
-                if (selectedDates.length > 0) {
-                    endInput.set('minDate', selectedDates[0]);
-                }
-            }
-        });
-
-        const endInput = flatpickr("#eindDatum", {
-            dateFormat: "d-m-Y",
-            minDate: "today"
-        });
-    });
-</script>
 </body>
 
 </html>
