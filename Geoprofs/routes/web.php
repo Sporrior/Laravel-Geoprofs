@@ -5,13 +5,12 @@ use App\Http\Controllers\TwoFactorController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfielController;
-use App\Http\Controllers\UserCreateController;
 use App\Http\Controllers\VerlofAanvraagController;
 use App\Http\Controllers\KeuringController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ZiekmeldenController;
 use App\Http\Controllers\VerlofDataController;
-use App\Http\Middleware\CheckRole;
+use App\Http\Controllers\AccounttoevoegenController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -43,8 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/ziekmelden', [ZiekmeldenController::class, 'index'])->name('ziekmelden.index');
     Route::post('/ziekmelden', [ZiekmeldenController::class, 'store'])->name('ziekmelden.store');
 
-    Route::get('/account-toevoegen', [UserCreateController::class, 'index'])->name('addusers.index');
-    Route::post('/account-toevoegen', [UserCreateController::class, 'store'])->name('addusers.store');
+    Route::get('/account-toevoegen', [AccounttoevoegenController::class, 'index'])->name('account-toevoegen.index');
+    Route::post('/account-toevoegen', [AccounttoevoegenController::class, 'store'])->name('account-toevoegen.store');
 
     Route::get('/verlofaanvragen', [VerlofAanvraagController::class, 'create'])->name('verlofaanvragen.create');
     Route::post('/verlofaanvragen', [VerlofAanvraagController::class, 'store'])->name('verlofaanvragen.store');

@@ -39,7 +39,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Define the relationship with the Role model.
+     * Relationship with the Role model.
      */
     public function role()
     {
@@ -47,7 +47,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Define the relationship with the Team model.
+     * Relationship with the Team model.
      */
     public function team()
     {
@@ -55,7 +55,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Define the relationship with the UserInfo model.
+     * Relationship with the UserInfo model.
      */
     public function info()
     {
@@ -86,5 +86,15 @@ class User extends Authenticatable
         }
 
         return parent::__get($key);
+    }
+
+    /**
+     * Check if the user is blocked.
+     *
+     * @return bool
+     */
+    public function isBlocked()
+    {
+        return $this->info && $this->info->blocked_until && now()->lessThan($this->info->blocked_until);
     }
 }

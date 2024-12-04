@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
         $geoICT = Team::where('group_name', 'GeoICT')->first()->id;
         $hrm = Team::where('group_name', 'HRM')->first()->id;
         $OM = Team::where('group_name', 'OM')->first()->id;
-
+    
         $users = [
             [
                 'email' => 'ahmad@gmail.com',
@@ -130,22 +130,22 @@ class DatabaseSeeder extends Seeder
                 ],
             ],
         ];
-
+    
         foreach ($users as $userData) {
-            $user_info = UserInfo::firstOrCreate(
+            $user = User::create([
+                'password' => $userData['password'],
+            ]);
+    
+            UserInfo::firstOrCreate(
                 ['email' => $userData['email']],
                 [
+                    'id' => $user->id,
                     'voornaam' => $userData['info']['voornaam'],
                     'achternaam' => $userData['info']['achternaam'],
                     'telefoon' => $userData['info']['telefoon'],
                     'role_id' => $userData['info']['role_id'],
                     'team_id' => $userData['info']['team_id'],
                 ]
-            );
-
-            User::firstOrCreate(
-                ['user_id' => $user_info->id],
-                ['password' => $userData['password']]
             );
         }
     }

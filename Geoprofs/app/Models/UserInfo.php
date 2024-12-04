@@ -47,24 +47,6 @@ class UserInfo extends Model
     ];
 
     /**
-     * Get the full name of the user.
-     *
-     * @return string
-     */
-    public function getFullNameAttribute()
-    {
-        return trim("{$this->voornaam} {$this->tussennaam} {$this->achternaam}");
-    }
-
-    /**
-     * Relationship with the User model.
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'id', 'id'); // Adjust foreign and local keys as necessary
-    }
-
-    /**
      * Relationship with the Role model.
      */
     public function role()
@@ -81,26 +63,12 @@ class UserInfo extends Model
     }
 
     /**
-     * Scope a query to only include users with a specific role.
+     * Get the full name of the user.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $roleName
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return string
      */
-    public function scopeWithRole($query, $roleName)
+    public function getFullNameAttribute()
     {
-        return $query->whereHas('role', function ($q) use ($roleName) {
-            $q->where('role_name', $roleName);
-        });
-    }
-
-    /**
-     * Check if the user is blocked.
-     *
-     * @return bool
-     */
-    public function isBlocked()
-    {
-        return $this->blocked_until && now()->lessThan($this->blocked_until);
+        return trim("{$this->voornaam} {$this->tussennaam} {$this->achternaam}");
     }
 }

@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('user_info', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // Primary key, which also acts as a foreign key to `users`
             $table->string('voornaam');
             $table->string('tussennaam')->nullable();
             $table->string('achternaam');
@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->timestamp('blocked_until')->nullable();
             $table->foreignId('role_id')->nullable()->constrained();
             $table->foreignId('team_id')->nullable()->constrained();
-            $table->timestamps();
+            $table->timestamps(); // Created and updated timestamps
         });
     }
 
