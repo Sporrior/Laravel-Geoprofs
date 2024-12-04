@@ -106,28 +106,30 @@
                 <p>{{ $user->group_name }}</p>
             </div>
             <ul class="navigatie">
-                @if($user->role_id >= 1) <!-- Gebruikers met rol 1 en hoger -->
+                @if($user->id >= 1) <!-- Gebruikers met rol 1 en hoger -->
                     <li><a href="/dashboard"
                             class="navigatie-link {{ request()->is('dashboard') ? 'actief' : '' }}">Dashboard</a></li>
                     <li><a href="/verlofaanvragen"
                             class="navigatie-link {{ request()->is('verlofaanvragen') ? 'actief' : '' }}">Verlof</a></li>
                     <li><a href="/ziekmelden"
                             class="navigatie-link {{ request()->is('ziekmelden') ? 'actief' : '' }}">Ziekmelden</a></li>
+                    <li><a href="/settings"
+                            class="navigatie-link {{ request()->is('settings') ? 'actief' : '' }}">Settings</a></li>
                     <li><a href="/code-coverage-report"
                             class="navigatie-link {{ request()->is('code-coverage-report') ? 'actief' : '' }}">Code Coverage</a></li>
                     <li>
 
                 @endif
 
-                @if($user->role_id >= 2) <!-- Managers en hoger -->
+                @if($user->id >= 2) <!-- Managers en hoger -->
                     <li><a href="/keuring" class="navigatie-link {{ request()->is('keuring') ? 'actief' : '' }}">Verlof
                             Goedkeuren</a></li>
                 @endif
 
                 @if($user->role_id == 3) <!-- Alleen Office Managers -->
                     <li><a href="#" class="navigatie-link {{ request()->is('/') ? 'actief' : '' }}">HR Administratie</a>
-                    <li><a href="/accouttoevoegen"
-                            class="navigatie-link {{ request()->is('accouttoevoegen') ? 'actief' : '' }}">Account
+                    <li><a href="/account-toevoegen"
+                            class="navigatie-link {{ request()->is('account-toevoegen') ? 'actief' : '' }}">Account
                             Toevoegen</a></li>
                 @endif
             </ul>

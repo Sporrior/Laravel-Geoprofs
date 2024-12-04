@@ -43,8 +43,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/ziekmelden', [ZiekmeldenController::class, 'index'])->name('ziekmelden.index');
     Route::post('/ziekmelden', [ZiekmeldenController::class, 'store'])->name('ziekmelden.store');
 
-    Route::get('/addusers', [UserCreateController::class, 'index'])->name('addusers.index');
-    Route::post('/addusers', [UserCreateController::class, 'store'])->name('addusers.store');
+    Route::get('/account-toevoegen', [UserCreateController::class, 'index'])->name('addusers.index');
+    Route::post('/account-toevoegen', [UserCreateController::class, 'store'])->name('addusers.store');
 
     Route::get('/verlofaanvragen', [VerlofAanvraagController::class, 'create'])->name('verlofaanvragen.create');
     Route::post('/verlofaanvragen', [VerlofAanvraagController::class, 'store'])->name('verlofaanvragen.store');

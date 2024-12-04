@@ -9,11 +9,13 @@ class team extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['group_name']; 
+    protected $fillable = ['group_name'];
 
-
+    /**
+     * Relationship with the User model.
+     */
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(User::class, 'team_id');
     }
 }

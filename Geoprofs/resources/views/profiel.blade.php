@@ -210,8 +210,8 @@
                     </div>
                     <div class="profiel-info">
                         <h2>{{ $user->voornaam }} {{ $user->achternaam }}</h2>
-                        <p class="functie">{{ $user->role_name }}</p>
-                        <p class="team">Team: {{ $user->group_name }}</p>
+                        <p class="functie">{{ $user->role->role_name }}</p>
+                        <p class="team">Team: {{ $user->team->group_name }}</p>
                         <p class="verlof-dagen">verlof dagen : {{ $user->verlof_dagen }}</p>
                     </div>
                 </div>
@@ -231,7 +231,7 @@
                         </thead>
                         <tbody>
                             @foreach($users as $persoon)
-                                @if($persoon->role_name == 'werknemer')
+                                @if($persoon->role_id == '')
                                     <tr>
                                         <td>{{ $persoon->voornaam }}</td>
                                         <td>{{ $persoon->achternaam }}</td>

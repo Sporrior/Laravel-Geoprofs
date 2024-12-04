@@ -18,7 +18,7 @@ class UserCreateController extends Controller
 
     public function index()
     {
-        return view('addusers');
+        return view('account-toevoegen');
     }
 
     public function store(Request $request)
@@ -57,6 +57,6 @@ class UserCreateController extends Controller
             'actie_beschrijving' => $voornaam . ' Heeft een account aangemaakt ' . $request->voornaam . ' ' . $request->achternaam . " " . $request->email . " " . $request->telefoon,
             'actie_datum' => now(),
         ]);
-        return redirect()->route('addusers.index')->with('success', 'User successfully created.');
+        return redirect()->route('account-toevoegen.index')->with('success', 'User successfully created.');
     }
 }

@@ -39,6 +39,22 @@ class User extends Authenticatable
     ];
 
     /**
+     * Define the relationship with the Role model.
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    /**
+     * Define the relationship with the Team model.
+     */
+    public function team()
+    {
+        return $this->belongsTo(Team::class, 'team_id');
+    }
+
+    /**
      * Define the relationship with the UserInfo model.
      */
     public function info()
