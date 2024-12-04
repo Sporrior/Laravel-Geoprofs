@@ -24,11 +24,6 @@ class LoginController extends Controller
         $user = User::where('email', $credentials['email'])->first();
     
         if ($user) {
-            // if ($user->failed_login_attempts >= 2 && $user->blocked_until === null) {
-            //     $user->update([
-            //         'blocked_until' => now()->addMinutes(5),
-            //     ]);
-            // }
             if ($user->failed_login_attempts >= 2) {
                 if ($user->blocked_until && now()->lessThan($user->blocked_until)) {
                     $remainingSeconds = now()->diffInSeconds($user->blocked_until);
