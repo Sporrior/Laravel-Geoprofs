@@ -1,6 +1,6 @@
-@if(!$user->id == 2 || $user->id == 3)
+@if(!$user->role_id == 2 || $user->role_id == 3)
 
-@elseif($user->id == 3)
+@elseif($user->role_id == 3)
     <script>window.location = "/dashboard";</script>
 @endif
 <!DOCTYPE html>
