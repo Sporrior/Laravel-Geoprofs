@@ -113,8 +113,6 @@
                             class="navigatie-link {{ request()->is('verlofaanvragen') ? 'actief' : '' }}">Verlof</a></li>
                     <li><a href="/ziekmelden"
                             class="navigatie-link {{ request()->is('ziekmelden') ? 'actief' : '' }}">Ziekmelden</a></li>
-                    <li><a href="/settings"
-                            class="navigatie-link {{ request()->is('settings') ? 'actief' : '' }}">Settings</a></li>
                     <li><a href="/code-coverage-report"
                             class="navigatie-link {{ request()->is('code-coverage-report') ? 'actief' : '' }}">Code Coverage</a></li>
                     <li>
