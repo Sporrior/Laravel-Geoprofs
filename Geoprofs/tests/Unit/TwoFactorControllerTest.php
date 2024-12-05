@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
+use App\Models\UserInfo;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -14,7 +14,7 @@ class TwoFactorControllerTest extends TestCase
     public function test_generate_2fa_code()
     {
         // Create a user and authenticate
-        $user = User::factory()->create();
+        $user = UserInfo::factory()->create();
         $this->actingAs($user);
 
         // Make a POST request to generate a 2FA code
@@ -32,7 +32,7 @@ class TwoFactorControllerTest extends TestCase
     public function test_verify_2fa_code_successfully()
     {
         // Create a user and authenticate
-        $user = User::factory()->create();
+        $user = UserInfo::factory()->create();
         $this->actingAs($user);
 
         // Generate a 2FA code and store it in the cache
@@ -53,7 +53,7 @@ class TwoFactorControllerTest extends TestCase
     public function test_verify_2fa_code_fails_with_incorrect_code()
     {
         // Create a user and authenticate
-        $user = User::factory()->create();
+        $user = UserInfo::factory()->create();
         $this->actingAs($user);
 
         // Generate a correct 2FA code and store it in the cache
@@ -74,7 +74,7 @@ class TwoFactorControllerTest extends TestCase
     public function test_verify_2fa_code_fails_with_no_code_in_cache()
     {
         // Create a user and authenticate
-        $user = User::factory()->create();
+        $user = UserInfo::factory()->create();
         $this->actingAs($user);
 
         // Ensure there is no code in the cache
