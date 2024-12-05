@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id(); // Primary key
-            $table->string('password'); // User's password
+            $table->string('password')->default('Welkom01');
             $table->rememberToken(); // For "remember me" functionality
             $table->timestamps(); // Created and updated timestamps
         });

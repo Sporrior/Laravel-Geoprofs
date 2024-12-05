@@ -17,7 +17,6 @@ class TwoFactorControllerTest extends TestCase
         $user = UserInfo::factory()->create();
         $this->actingAs($user);
 
-        // Make a POST request to generate a 2FA code
         $response = $this->postJson(route('2fa.store'));
 
         // Assert the response contains the success message and the code

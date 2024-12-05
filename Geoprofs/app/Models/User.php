@@ -4,11 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
-class User extends Authenticatable
+class User extends UserInfo
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -39,62 +46,33 @@ class User extends Authenticatable
     ];
 
     /**
-     * Relationship with the Role model.
+     * Override save to ensure `password` is handled properly in the `users` table.
      */
-    public function role()
+    public function save(array $options = [])
     {
-        return $this->belongsTo(Role::class, 'role_id');
-    }
+        $isCreating = !$this->exists;
 
-    /**
-     * Relationship with the Team model.
-     */
-    public function team()
-    {
-        return $this->belongsTo(Team::class, 'team_id');
-    }
-
-    /**
-     * Relationship with the UserInfo model.
-     */
-    public function info()
-    {
-        return $this->hasOne(UserInfo::class, 'id', 'id');
-    }
-
-    /**
-     * Magic property access for UserInfo fields.
-     *
-     * If a property is not directly on the User model, attempt to retrieve it from UserInfo.
-     */
-    public function __get($key)
-    {
-        if (in_array($key, [
-            'voornaam',
-            'tussennaam',
-            'achternaam',
-            'profielFoto',
-            'email',
-            'telefoon',
-            'verlof_dagen',
-            'failed_login_attempts',
-            'blocked_until',
-            'role_id',
-            'team_id',
-        ])) {
-            return $this->info->$key ?? null;
+        if ($isCreating && !isset($this->attributes['password'])) {
+            throw new \Exception("Password is required for new User records.");
         }
 
-        return parent::__get($key);
-    }
+        if (isset($this->attributes['password'])) {
+            // Extract and save password separately
+            $password = $this->attributes['password'];
+            unset($this->attributes['password']);
 
-    /**
-     * Check if the user is blocked.
-     *
-     * @return bool
-     */
-    public function isBlocked()
-    {
-        return $this->info && $this->info->blocked_until && now()->lessThan($this->info->blocked_until);
+            // Save the parent data (`user_info` table)
+            parent::save($options);
+
+            // Ensure the password is stored in the `users` table
+            DB::table($this->getTable())->updateOrInsert(
+                ['id' => $this->id],
+                ['password' => $password, 'created_at' => now(), 'updated_at' => now()]
+            );
+            return true;
+        }
+
+        // Default behavior for updates
+        return parent::save($options);
     }
 }
