@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
 
-class User extends UserInfo
+class User extends Authenticatable
 {
     use HasFactory;
 
@@ -57,22 +57,43 @@ class User extends UserInfo
         }
 
         if (isset($this->attributes['password'])) {
-            // Extract and save password separately
             $password = $this->attributes['password'];
             unset($this->attributes['password']);
 
-            // Save the parent data (`user_info` table)
             parent::save($options);
 
-            // Ensure the password is stored in the `users` table
             DB::table($this->getTable())->updateOrInsert(
                 ['id' => $this->id],
                 ['password' => $password, 'created_at' => now(), 'updated_at' => now()]
             );
+
             return true;
         }
 
-        // Default behavior for updates
         return parent::save($options);
+    }
+
+    /**
+     * Relationship with the UserInfo model.
+     */
+    public function userInfo()
+    {
+        return $this->hasOne(UserInfo::class, 'id', 'id');
+    }
+
+    /**
+     * Relationship with the Role model.
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    /**
+     * Relationship with the Team model.
+     */
+    public function team()
+    {
+        return $this->belongsTo(Team::class, 'team_id');
     }
 }

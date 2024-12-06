@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
 use App\Models\UserInfo;
 use Illuminate\Support\Facades\Cache;

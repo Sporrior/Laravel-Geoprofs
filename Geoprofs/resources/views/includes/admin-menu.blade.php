@@ -1,3 +1,7 @@
+<pre>
+    {{ print_r($user_info, true) }}
+</pre>
+
 <!DOCTYPE html>
 <html lang="nl">
 
@@ -30,6 +34,7 @@
             margin-bottom: 10px;
             margin-top: 20px;
             transition: transform 0.3s ease;
+            object-fit: cover;
         }
 
         .profiel-sectie img.nav-profiel-foto:hover {
@@ -98,42 +103,71 @@
         <div class="profiel-selectie">
             <div class="profiel-sectie">
                 <a href="/profiel">
-                    <img id="profielFotoDisplay" src="{{ asset('storage/' . $user->profielFoto) }}" alt="Profielfoto"
+                    <img id="profielFotoDisplay"
+                        src="{{ $user_info->profielFoto && file_exists(public_path('storage/' . $user_info->profielFoto)) 
+                            ? asset('storage/' . $user_info->profielFoto) 
+                            : asset('images/default-profile.jpg') }}"
+                        alt="Profielfoto"
                         class="nav-profiel-foto">
                 </a>
-                <h4>Hallo, {{ $user->voornaam }}</h4>
-                <p>{{ $user->role->role_name }}</p>
-                <p>{{ $user->team->group_name }}</p>
+                <h4>Hallo, {{ $user->voornaam ?? 'Gebruiker' }}</h4>
+                <p>{{ $user_info->role->role_name ?? 'Geen rol' }}</p>
+                <p>{{ $user_info->team->group_name ?? 'Geen team' }}</p>
             </div>
             <ul class="navigatie">
-                @if($user->role_id >= 1) <!-- Gebruikers met rol 1 en hoger -->
-                    <li><a href="/dashboard"
-                            class="navigatie-link {{ request()->is('dashboard') ? 'actief' : '' }}">Dashboard</a></li>
-                    <li><a href="/verlofaanvragen"
-                            class="navigatie-link {{ request()->is('verlofaanvragen') ? 'actief' : '' }}">Verlof</a></li>
-                    <li><a href="/ziekmelden"
-                            class="navigatie-link {{ request()->is('ziekmelden') ? 'actief' : '' }}">Ziekmelden</a></li>
-                    <li><a href="/code-coverage-report"
-                            class="navigatie-link {{ request()->is('code-coverage-report') ? 'actief' : '' }}">Code Coverage</a></li>
+                @if($user_info->role_id >= 1) <!-- Users with role 1 and higher -->
                     <li>
-
+                        <a href="/dashboard" class="navigatie-link {{ request()->is('dashboard') ? 'actief' : '' }}">
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/verlofaanvragen"
+                            class="navigatie-link {{ request()->is('verlofaanvragen') ? 'actief' : '' }}">
+                            Verlof
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/ziekmelden" class="navigatie-link {{ request()->is('ziekmelden') ? 'actief' : '' }}">
+                            Ziekmelden
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/code-coverage-report"
+                            class="navigatie-link {{ request()->is('code-coverage-report') ? 'actief' : '' }}">
+                            Code Coverage
+                        </a>
+                    </li>
                 @endif
 
-                @if($user->role_id >= 2) <!-- Managers en hoger -->
-                    <li><a href="/keuring" class="navigatie-link {{ request()->is('keuring') ? 'actief' : '' }}">Verlof
-                            Goedkeuren</a></li>
+                @if($user_info->role_id >= 2) <!-- Managers and higher -->
+                    <li>
+                        <a href="/keuring" class="navigatie-link {{ request()->is('keuring') ? 'actief' : '' }}">
+                            Verlof Goedkeuren
+                        </a>
+                    </li>
                 @endif
 
-                @if($user->role_id == 3) <!-- Alleen Office Managers -->
-                    <li><a href="#" class="navigatie-link {{ request()->is('/') ? 'actief' : '' }}">HR Administratie</a>
-                    <li><a href="/account-toevoegen"
-                            class="navigatie-link {{ request()->is('account-toevoegen') ? 'actief' : '' }}">Account
-                            Toevoegen</a></li>
+                @if($user_info->role_id == 3) <!-- Only Office Managers -->
+                    <li>
+                        <a href="/hr-administratie"
+                            class="navigatie-link {{ request()->is('hr-administratie') ? 'actief' : '' }}">
+                            HR Administratie
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/account-toevoegen"
+                            class="navigatie-link {{ request()->is('account-toevoegen') ? 'actief' : '' }}">
+                            Account Toevoegen
+                        </a>
+                    </li>
                 @endif
             </ul>
         </div>
         <div class="logo">
-            <a href="/dashboard"><img src="{{ asset('assets/geoprofs-oranje.png') }}" alt="Logo" class="logo-icon"></a>
+            <a href="/dashboard">
+                <img src="{{ asset('assets/geoprofs-oranje.png') }}" alt="Logo" class="logo-icon">
+            </a>
         </div>
     </div>
 
