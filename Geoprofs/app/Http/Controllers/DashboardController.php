@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\UserInfo;
 use App\Models\Verlofaanvragen;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,10 +15,12 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $user = Auth::user();
+        $user = Auth::user(); // Get the authenticated user
 
-        $user_info = $user->load(['role', 'team']);
+        // Load related role and team for the user
+        $user_info = UserInfo::with(['role', 'team'])->findOrFail($user->id);
 
+        // Fetch all leave requests with their associated users
         $verlofaanvragen = Verlofaanvragen::with('user')->get();
 
         foreach ($verlofaanvragen as $aanvraag) {
@@ -43,12 +45,11 @@ class DashboardController extends Controller
         $verlofaanvragen = Verlofaanvragen::with("user")
             ->where([
                 ['status', '=', null],
-                ['verlof_soort', '=', 4], 
+                ['verlof_soort', '=', 4],
                 ['user_id', '=', $user->id],
             ])
             ->get();
 
-        // Add status labels to each leave request
         foreach ($verlofaanvragen as $aanvraag) {
             $aanvraag->status_label = $this->getStatusLabel($aanvraag->status);
         }
@@ -56,12 +57,6 @@ class DashboardController extends Controller
         return $verlofaanvragen;
     }
 
-    /**
-     * Get the status label for a leave request.
-     *
-     * @param int|null $status
-     * @return string
-     */
     private function getStatusLabel($status)
     {
         if (is_null($status)) {

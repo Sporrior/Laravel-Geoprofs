@@ -110,76 +110,32 @@
                         alt="Profielfoto"
                         class="nav-profiel-foto">
                 </a>
-                <h4>Hallo, {{ $user->voornaam ?? 'Gebruiker' }}</h4>
+                <h4>Hallo, {{ $user_info->voornaam ?? 'Gebruiker' }}</h4>
                 <p>{{ $user_info->role->role_name ?? 'Geen rol' }}</p>
                 <p>{{ $user_info->team->group_name ?? 'Geen team' }}</p>
             </div>
             <ul class="navigatie">
-                @if($user_info->role_id >= 1) <!-- Users with role 1 and higher -->
-                    <li>
-                        <a href="/dashboard" class="navigatie-link {{ request()->is('dashboard') ? 'actief' : '' }}">
-                            Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/verlofaanvragen"
-                            class="navigatie-link {{ request()->is('verlofaanvragen') ? 'actief' : '' }}">
-                            Verlof
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/ziekmelden" class="navigatie-link {{ request()->is('ziekmelden') ? 'actief' : '' }}">
-                            Ziekmelden
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/code-coverage-report"
-                            class="navigatie-link {{ request()->is('code-coverage-report') ? 'actief' : '' }}">
-                            Code Coverage
-                        </a>
-                    </li>
+                @if($user_info->role_id >= 1)
+                    <li><a href="/dashboard" class="navigatie-link {{ request()->is('dashboard') ? 'actief' : '' }}">Dashboard</a></li>
+                    <li><a href="/verlofaanvragen" class="navigatie-link {{ request()->is('verlofaanvragen') ? 'actief' : '' }}">Verlof</a></li>
+                    <li><a href="/ziekmelden" class="navigatie-link {{ request()->is('ziekmelden') ? 'actief' : '' }}">Ziekmelden</a></li>
+                    <li><a href="/code-coverage-report" class="navigatie-link {{ request()->is('code-coverage-report') ? 'actief' : '' }}">Code Coverage</a></li>
                 @endif
 
-                @if($user_info->role_id >= 2) <!-- Managers and higher -->
-                    <li>
-                        <a href="/keuring" class="navigatie-link {{ request()->is('keuring') ? 'actief' : '' }}">
-                            Verlof Goedkeuren
-                        </a>
-                    </li>
+                @if($user_info->role_id >= 2)
+                    <li><a href="/keuring" class="navigatie-link {{ request()->is('keuring') ? 'actief' : '' }}">Verlof Goedkeuren</a></li>
                 @endif
 
-                @if($user_info->role_id == 3) <!-- Only Office Managers -->
-                    <li>
-                        <a href="/hr-administratie"
-                            class="navigatie-link {{ request()->is('hr-administratie') ? 'actief' : '' }}">
-                            HR Administratie
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/account-toevoegen"
-                            class="navigatie-link {{ request()->is('account-toevoegen') ? 'actief' : '' }}">
-                            Account Toevoegen
-                        </a>
-                    </li>
+                @if($user_info->role_id == 3)
+                    <li><a href="/hr-administratie" class="navigatie-link {{ request()->is('hr-administratie') ? 'actief' : '' }}">HR Administratie</a></li>
+                    <li><a href="/account-toevoegen" class="navigatie-link {{ request()->is('account-toevoegen') ? 'actief' : '' }}">Account Toevoegen</a></li>
                 @endif
             </ul>
         </div>
         <div class="logo">
-            <a href="/dashboard">
-                <img src="{{ asset('assets/geoprofs-oranje.png') }}" alt="Logo" class="logo-icon">
-            </a>
+            <a href="/dashboard"><img src="{{ asset('assets/geoprofs-oranje.png') }}" alt="Logo" class="logo-icon"></a>
         </div>
     </div>
-
-    <script>
-        const profilePic = document.getElementById('profielFotoDisplay');
-        profilePic.addEventListener('mouseover', () => {
-            profilePic.style.transform = 'scale(1.1)';
-        });
-        profilePic.addEventListener('mouseout', () => {
-            profilePic.style.transform = 'scale(1)';
-        });
-    </script>
 </body>
 
 </html>
