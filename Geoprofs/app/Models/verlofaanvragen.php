@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
-
 class verlofaanvragen extends Model
 {
     use HasFactory;
@@ -32,13 +31,19 @@ class verlofaanvragen extends Model
         'updated_at' => 'datetime',
     ];
 
+    /**
+     * Relationship with the Type model.
+     */
     public function type()
     {
         return $this->belongsTo(Type::class, 'verlof_soort');
     }
 
+    /**
+     * Relationship with the UserInfo model (instead of User).
+     */
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(UserInfo::class, 'user_id');
     }
 }

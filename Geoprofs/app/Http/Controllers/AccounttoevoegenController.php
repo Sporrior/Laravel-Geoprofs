@@ -20,7 +20,7 @@ class AccounttoevoegenController extends Controller
     public function index()
     {
         $roles = Role::all();
-        return view('account-toevoegen', compact('roles'));
+        return view('account-toevoegen', compact('roles',"user_info"));
     }
 
     public function store(Request $request)
