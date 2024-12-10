@@ -56,7 +56,6 @@
             right: 20px;
             z-index: 1000;
             display: none;
-            /* Initially hidden */
             font-size: 14px;
             transition: opacity 0.5s ease;
         }

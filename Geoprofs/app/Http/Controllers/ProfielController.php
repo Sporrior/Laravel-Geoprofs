@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\logboek;
+use App\Models\Logboek;
 use App\Models\Role;
 use App\Models\UserInfo;
 use Illuminate\Http\Request;
@@ -16,24 +16,19 @@ class ProfielController extends Controller
     public function show()
     {
         $user = Auth::user();
-        $users = UserInfo::with('role')
-        ->where('team_id', $user->team_id) // Filter users by the authenticated user's team_id
-        ->whereHas('role', function ($query) {
-            $query->where('role_name', 'werknemer'); // Ensure they have the 'werknemer' role
-        })
-        ->get();
+        $user_info = UserInfo::with(['role', 'team'])->findOrFail($user->id);
 
+        // Fetch users in the same team as the logged-in user with the role 'werknemer'
+        $users = UserInfo::with('role')
+            ->where('team_id', $user_info->team_id)
+            ->whereHas('role', function ($query) {
+                $query->where('role_name', 'werknemer');
+            })
+            ->get();
 
         Log::info('Profiel page viewed by user ID: ' . $user->id);
 
-        return view('profiel', compact('user', 'users'));
-    }
-
-
-    public function edit()
-    {
-        $user = Auth::user()->load('info');
-        return view('profiel.edit', compact('user'));
+        return view('profiel', compact('user', 'user_info', 'users'));
     }
 
     public function update(Request $request)
@@ -44,65 +39,40 @@ class ProfielController extends Controller
             'achternaam' => 'required|string|max:255',
             'profielFoto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'telefoon' => 'nullable|string|max:15',
-            'verlof_dagen' => 'nullable|string|max:15',
+            'verlof_dagen' => 'nullable|integer',
             'email' => 'required|string|email|max:255|unique:user_info,email,' . Auth::id(),
         ]);
 
         $user = Auth::user();
-        $userInfo = $user->info;
+        $user_info = UserInfo::findOrFail($user->id);
 
         if ($request->hasFile('profielFoto')) {
-            if ($userInfo->profielFoto) {
-                Storage::delete('public/' . $userInfo->profielFoto);
+            if ($user_info->profielFoto) {
+                Storage::delete('public/' . $user_info->profielFoto);
             }
 
             $file = $request->file('profielFoto');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('profile_pictures', $filename, 'public');
-            $userInfo->profielFoto = 'profile_pictures/' . $filename;
+            $user_info->profielFoto = 'profile_pictures/' . $filename;
         }
 
-        $userInfo->voornaam = $request->voornaam;
-        $userInfo->tussennaam = $request->tussennaam;
-        $userInfo->achternaam = $request->achternaam;
-        $userInfo->telefoon = $request->telefoon;
-        $userInfo->email = $request->email;
-        $userInfo->save();
+        $user_info->fill($request->only([
+            'voornaam',
+            'tussennaam',
+            'achternaam',
+            'telefoon',
+            'email',
+        ]));
+        $user_info->save();
 
-        logboek::create([
+        Logboek::create([
             'user_id' => $user->id,
-            'actie' => 'Profile updated door gebruiker: ' . $userInfo->voornaam . ' ' . $userInfo->achternaam . ' met een rol van ' . optional($userInfo->role)->role_name,
-            'actie_beschrijving' => 'De volgende gegevens zijn bijgewerkt: ' . $request->voornaam . ' ' . $request->achternaam . ' ' . $request->email . ' ' . $request->telefoon,
+            'actie' => 'Profile updated by user: ' . $user_info->getFullNameAttribute(),
+            'actie_beschrijving' => 'Profile updated successfully.',
             'actie_datum' => now(),
         ]);
 
         return redirect()->back()->with('success', 'Profiel succesvol bijgewerkt');
     }
-
-    public function changePassword(Request $request)
-    {
-        $request->validate([
-            'huidigWachtwoord' => 'required',
-            'nieuwWachtwoord' => 'required|min:8|confirmed',
-        ]);
-
-        $user = Auth::user();
-
-        if (!Hash::check($request->huidigWachtwoord, $user->password)) {
-            return back()->withErrors(['huidigWachtwoord' => 'Huidig wachtwoord is incorrect.']);
-        }
-
-        $user->password = Hash::make($request->nieuwWachtwoord);
-        $user->save();
-
-        logboek::create([
-            'user_id' => $user->id,
-            'actie' => 'Password changed door gebruiker: ' . $user->info->voornaam . ' ' . $user->info->achternaam . ' met een rol van ' . optional($user->info->role)->role_name,
-            'actie_beschrijving' => 'Wachtwoord is gewijzigd',
-            'actie_datum' => now(),
-        ]);
-
-        return redirect()->back()->with('success', 'Wachtwoord succesvol gewijzigd');
-    }
-
 }

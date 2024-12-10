@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\VerlofAanvragen;
+use App\Models\UserInfo;
 use App\Models\Type;
 use Carbon\Carbon;
 
@@ -14,7 +15,9 @@ class VerlofAanvraagController extends Controller
     public function create(): \Illuminate\View\View
     {
         $types = Type::all();
-        return view('verlofaanvragen', compact('types'));
+        $user_info = UserInfo::with(['role', 'team'])->findOrFail(Auth::id());
+
+        return view('verlofaanvragen', compact('types', 'user_info'));
     }
 
     public function showDashboard(): \Illuminate\View\View
@@ -22,7 +25,7 @@ class VerlofAanvraagController extends Controller
         $startOfWeek = Carbon::now()->startOfWeek();
         $endOfWeek = Carbon::now()->endOfWeek();
 
-        $verlofaanvragen = verlofAanvragen::where('status', 1)
+        $verlofaanvragen = VerlofAanvragen::where('status', 1)
             ->whereBetween('start_datum', [$startOfWeek, $endOfWeek])
             ->orWhereBetween('eind_datum', [$startOfWeek, $endOfWeek])
             ->leftJoin('types', 'verlofaanvragen.verlof_soort', '=', 'types.id')
@@ -39,19 +42,19 @@ class VerlofAanvraagController extends Controller
                 ];
             });
 
+        $user_info = UserInfo::with(['role', 'team'])->findOrFail(Auth::id());
+
         return view('dashboard', [
             'verlofaanvragen' => $verlofaanvragen,
+            'user_info' => $user_info,
         ]);
     }
 
-
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
-
-        // Check if user has already 2 pending requests
-        $user = Auth::user();
-
-        $pendingRequestsCount = VerlofAanvragen::where('user_id', $user->id)
+        $user_info = UserInfo::findOrFail(Auth::id());
+        
+        $pendingRequestsCount = VerlofAanvragen::where('user_id', $user_info->id)
             ->whereNull('status')
             ->count();
 
@@ -59,7 +62,6 @@ class VerlofAanvraagController extends Controller
             return redirect()->back()->with('error', 'U heeft al twee openstaande verlofaanvragen. Wacht tot deze zijn verwerkt voordat u een nieuwe aanvraag indient.');
         }
 
-        // days merge for total days calculation
         $startDatum = Carbon::createFromFormat('d-m-Y', $request->startDatum)->format('Y-m-d');
         $eindDatum = Carbon::createFromFormat('d-m-Y', $request->eindDatum)->format('Y-m-d');
 
@@ -75,20 +77,16 @@ class VerlofAanvraagController extends Controller
             'verlof_soort' => 'required|exists:types,id',
         ]);
 
-        // Check if requested days are available
         $requestedDays = Carbon::parse($startDatum)->diffInDays(Carbon::parse($eindDatum)) + 1;
 
-        $user = Auth::user();
-        $availableDays = $user->verlof_dagen;
-
-        if ($requestedDays > $availableDays) {
+        if ($requestedDays > $user_info->verlof_dagen) {
             Log::info('Verlofaanvraag geweigerd: aangevraagde dagen overschrijden beschikbare verlofdagen.');
             return redirect()->back()->with('error', 'Verlofaanvraag geweigerd: Aangevraagde dagen overschrijden beschikbare verlofdagen.');
         }
 
         try {
             $verlofAanvraag = new VerlofAanvragen();
-            $verlofAanvraag->user_id = Auth::id();
+            $verlofAanvraag->user_id = $user_info->id;
             $verlofAanvraag->start_datum = $startDatum;
             $verlofAanvraag->eind_datum = $eindDatum;
             $verlofAanvraag->verlof_reden = $request->verlof_reden;
@@ -96,7 +94,7 @@ class VerlofAanvraagController extends Controller
             $verlofAanvraag->aanvraag_datum = Carbon::now();
             $verlofAanvraag->save();
 
-            Log::info('Nieuwe verlofaanvraag van gebruiker ID: ' . Auth::id());
+            Log::info('Nieuwe verlofaanvraag van gebruiker ID: ' . $user_info->id);
             return redirect()->back()->with('success', 'Verlofaanvraag succesvol verzonden.');
         } catch (\Exception $e) {
             Log::error('Failed to store leave request', ['error' => $e->getMessage()]);

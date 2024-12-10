@@ -192,7 +192,6 @@
             background-color: #f44336;
             color: #fff;
         }
-
     </style>
 </head>
 
@@ -205,43 +204,15 @@
             <div class="container">
                 <div class="profiel-kaart">
                     <div class="profiel-header">
-                        <img id="profielFotoDisplay" src="{{ asset('storage/' . $user->profielFoto) }}"
+                        <img id="profielFotoDisplay" src="{{ asset('storage/' . $user_info->profielFoto) }}"
                             alt="Gebruikersprofiel" class="profiel-foto">
                     </div>
                     <div class="profiel-info">
-                        <h2>{{ $user->voornaam }} {{ $user->achternaam }}</h2>
-                        <p class="functie">{{ $user->role->role_name }}</p>
-                        <p class="team">Team: {{ $user->team->group_name }}</p>
-                        <p class="verlof-dagen">verlof dagen : {{ $user->verlof_dagen }}</p>
+                        <h2>{{ $user_info->voornaam }} {{ $user_info->achternaam }}</h2>
+                        <p class="functie">{{ $user_info->role->role_name }}</p>
+                        <p class="team">Team: {{ $user_info->team->group_name }}</p>
+                        <p class="verlof-dagen">verlof dagen : {{ $user_info->verlof_dagen }}</p>
                     </div>
-                </div>
-
-                <div class="personeel">
-                    <h3>Personeel</h3>
-                    <table class="personnel-table">
-                        <thead>
-                            <tr>
-                                <th>Voornaam</th>
-                                <th>Achternaam</th>
-                                <th>Telefoonnummer</th>
-                                <th>Email</th>
-                                <th>Functie</th>
-                                <th>verlof dagen</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($users as $persoon)
-                                <tr>
-                                    <td>{{ $persoon->voornaam }}</td>
-                                    <td>{{ $persoon->achternaam }}</td>
-                                    <td>{{ $persoon->telefoon }}</td>
-                                    <td>{{ $persoon->email }}</td>
-                                    <td>{{ $persoon->role->role_name }}</td>
-                                    <td>{{ $persoon->verlof_dagen }}</td>
-                                </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
                 </div>
 
                 <div class="profiel-bewerken">
@@ -253,17 +224,17 @@
                         <div class="form-group">
                             <label for="voornaam">Voornaam</label>
                             <input type="text" id="voornaam" name="voornaam"
-                                value="{{ old('voornaam', $user->voornaam) }}">
+                                value="{{ old('voornaam', $user_info->voornaam) }}">
                         </div>
                         <div class="form-group">
                             <label for="tussennaam">Tussennaam</label>
                             <input type="text" id="tussennaam" name="tussennaam"
-                                value="{{ old('tussennaam', $user->tussennaam) }}">
+                                value="{{ old('tussennaam', $user_info->tussennaam) }}">
                         </div>
                         <div class="form-group">
                             <label for="achternaam">Achternaam</label>
                             <input type="text" id="achternaam" name="achternaam"
-                                value="{{ old('achternaam', $user->achternaam) }}">
+                                value="{{ old('achternaam', $user_info->achternaam) }}">
                         </div>
                         <div class="form-group">
                             <label for="profielFoto">Profiel Foto</label>
@@ -272,11 +243,11 @@
                         <div class="form-group">
                             <label for="telefoon">Telefoon</label>
                             <input type="text" id="telefoon" name="telefoon"
-                                value="{{ old('telefoon', $user->telefoon) }}">
+                                value="{{ old('telefoon', $user_info->telefoon) }}">
                         </div>
                         <div class="form-group">
                             <label for="email">E-mail</label>
-                            <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}">
+                            <input type="email" id="email" name="email" value="{{ old('email', $user_info->email) }}">
                         </div>
                         <button type="submit" class="btn-primary">Opslaan</button>
                     </form>

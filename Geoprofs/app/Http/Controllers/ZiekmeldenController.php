@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\VerlofAanvragen;
+use App\Models\UserInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -16,7 +17,11 @@ class ZiekmeldenController extends Controller
 
     public function index()
     {
-        return view('ziekmelden');
+        // Fetch the authenticated user's info
+        $user_info = UserInfo::with(['role', 'team'])->findOrFail(Auth::id());
+
+        // Pass the user info to the view
+        return view('ziekmelden', compact('user_info'));
     }
 
     public function store(Request $request)

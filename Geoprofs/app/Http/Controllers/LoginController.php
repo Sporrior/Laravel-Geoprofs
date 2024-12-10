@@ -18,27 +18,23 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        // Validate the incoming request
         $credentials = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
 
-        // Find the user in the user_info table by email
         $user_info = UserInfo::where('email', $credentials['email'])->first();
 
         if (!$user_info) {
             return back()->withErrors(['email' => 'The provided credentials do not match our records.']);
         }
 
-        // Check if the account is locked
         if ($user_info->account_locked) {
             return back()->withErrors([
                 'email' => 'Your account is permanently locked due to multiple failed login attempts.',
             ]);
         }
 
-        // Check if the account is temporarily blocked
         if ($user_info->blocked_until && now()->lessThan($user_info->blocked_until)) {
             $blockedMinutes = now()->diffInMinutes($user_info->blocked_until);
             return back()->withErrors([
@@ -46,15 +42,11 @@ class LoginController extends Controller
             ]);
         }
 
-        // Retrieve the password from the users table
         $user_password = User::where('id', $user_info->id)->value('password');
 
-        // Verify the password
         if (!Hash::check($credentials['password'], $user_password)) {
-            // Increment failed login attempts
             $user_info->increment('failed_login_attempts');
 
-            // Block the user if too many failed attempts
             if ($user_info->failed_login_attempts >= 5) {
                 $user_info->update(['blocked_until' => now()->addMinutes(15)]);
                 return back()->withErrors(['email' => 'Too many failed login attempts. Try again in 15 minutes.']);
@@ -63,13 +55,10 @@ class LoginController extends Controller
             return back()->withErrors(['email' => 'The provided credentials do not match our records.']);
         }
 
-        // Reset failed login attempts and blocked status
         $user_info->update(['failed_login_attempts' => 0, 'blocked_until' => null]);
 
-        // Manually log in the user
         Auth::loginUsingId($user_info->id, $request->has('remember'));
 
-        // Regenerate the session to prevent session fixation
         $request->session()->regenerate();
 
         return redirect()->route('2fa.show');

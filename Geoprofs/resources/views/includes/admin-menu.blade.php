@@ -1,7 +1,3 @@
-<pre>
-    {{ print_r($user_info, true) }}
-</pre>
-
 <!DOCTYPE html>
 <html lang="nl">
 
