@@ -279,7 +279,7 @@
 
             @foreach($verlofaanvragen->sortByDesc('updated_at') as $aanvraag)
                 <div class="leave-card">
-                    <h3>{{ optional($aanvraag->user->info)->voornaam }}'s Verlofaanvraag</h3>
+                <h3>{{ $aanvraag->user ? $aanvraag->user->voornaam : 'Onbekende Gebruiker' }}'s Verlofaanvraag</h3>
                     <div class="leave-details">
                         <div class="leave-detail"><strong>Reden:</strong> {{ $aanvraag->verlof_reden }}</div>
                         <div class="leave-detail"><strong>Start Datum:</strong> {{ $aanvraag->start_datum }}</div>
