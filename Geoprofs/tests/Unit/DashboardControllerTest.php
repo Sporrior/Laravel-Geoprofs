@@ -7,11 +7,20 @@ use App\Models\UserInfo;
 use App\Models\Verlofaanvragen;
 use App\Models\Type;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class DashboardControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        $this->artisan('migrate:fresh');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+    }
 
     public function test_dashboard_index_displays_correct_data()
     {
