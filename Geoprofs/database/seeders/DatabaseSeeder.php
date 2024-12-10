@@ -46,6 +46,17 @@ class DatabaseSeeder extends Seeder
 
         $users = [
             [
+                'email' => 'wessam@gmail.com',
+                'password' => Hash::make('Wess'),
+                'info' => [
+                    'voornaam' => 'Wess',
+                    'achternaam' => 'Boy',
+                    'telefoon' => '06123123123',
+                    'role_id' => Role::where('role_name', 'officemanagement')->first()->id,
+                    'team_id' => $hrm,
+                ],
+            ],
+            [
                 'email' => 'ahmad@gmail.com',
                 'password' => Hash::make('Ahmad'),
                 'info' => [
