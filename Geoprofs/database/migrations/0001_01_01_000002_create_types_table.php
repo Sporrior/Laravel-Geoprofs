@@ -19,7 +19,6 @@ return new class extends Migration
         });
 
         DB::table('types')->insert([
-            ['type' => 'Ziekmelden'],
             ['type' => 'Vakantie'],
             ['type' => 'Personelijk'],
             ['type' => 'Verlof'],
