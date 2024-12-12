@@ -166,6 +166,130 @@
         .status-label.geweigerd {
             color: #F44336;
         }
+
+        :root {
+            --numDays: 5;
+            --numHours: 10;
+            --timeHeight: 60px;
+            --calBgColor: #fff1f8;
+            --eventBorderColor: #f2d3d8;
+            --eventColor1: #ffd6d1;
+            --eventColor2: #fafaa3;
+            --eventColor3: #e2f8ff;
+            --eventColor4: #d1ffe6;
+        }
+
+        .calendar {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: auto 1fr;
+            margin: 2rem;
+        }
+
+        .timeline {
+            display: grid;
+            grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+        }
+
+        .days {
+            display: grid;
+            grid-column: 2;
+            gap: 5px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        }
+
+        .day {
+            grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+            border-radius: 5px;
+            background: var(--calBgColor);
+        }
+
+        .start-10 {
+            grid-row-start: 2;
+        }
+
+        .start-12 {
+            grid-row-start: 4;
+        }
+
+        .start-1 {
+            grid-row-start: 5;
+        }
+
+        .start-2 {
+            grid-row-start: 6;
+        }
+
+        .end-12 {
+            grid-row-end: 4;
+        }
+
+        .end-1 {
+            grid-row-end: 5;
+        }
+
+        .end-3 {
+            grid-row-end: 7;
+        }
+
+        .end-4 {
+            grid-row-end: 8;
+        }
+
+        .end-5 {
+            grid-row-end: 9;
+        }
+
+        .title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .verlofaanvraag {
+            border: 1px solid var(--eventBorderColor);
+            border-radius: 5px;
+            padding: 0.5rem;
+            margin: 0 0.5rem;
+            background: white;
+        }
+
+        .space,
+        .date {
+            height: 60px;
+            background-color: white;
+        }
+
+        .corp-fi {
+            background: var(--eventColor1);
+        }
+
+        .ent-law {
+            background: var(--eventColor2);
+        }
+
+        .writing {
+            background: var(--eventColor3);
+        }
+
+        .securities {
+            background: var(--eventColor4);
+        }
+
+        .date {
+            gap: 1em;
+        }
+
+        .date-num {
+            font-size: 3rem;
+            font-weight: 600;
+            display: inline;
+        }
+
+        .date-day {
+            display: inline;
+            font-size: 3rem;
+            font-weight: 100;
+        }
     </style>
 </head>
 
@@ -231,54 +355,31 @@
             </div>
 
             <div class="kaart">
-                <div class="kaart-kop">Verlofkalender</div>
-                <div class="calendar-container" id="calendar"></div>
+                <div class="calendar">
+                    <div class="days">
+                        @foreach ($dagen as $dag)
+                            <div class="day">
+                                <div class="date">
+                                    <p class="date-num">{{ $dag['datumNummer'] }}</p>
+                                    <p class="date-day">{{ $dag['datumDag'] }}</p>
+                                </div>
+                                <div class="verlofaanvragen">
+                                    @foreach ($dag['verlofaanvragen'] as $verlofaanvraag)
+                                        <div class="verlofaanvraag" style="
+                                                    grid-row-start: {{ $verlofaanvraag['start'] }};
+                                                    grid-row-end: {{ $verlofaanvraag['end'] }};">
+                                            <p class="voornaam">{{ $verlofaanvraag['voornaam'] }}</p>
+                                            <p class="reason">{{ $verlofaanvraag['reden'] }}</p>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <script>
-        const leaveData = @json($verlofaanvragen);
-
-        const today = new Date();
-        const dayOfWeek = today.getDay();
-        const startOfWeek = new Date(today);
-        startOfWeek.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
-
-        const daysOfWeek = ["Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"];
-        const calendarContainer = document.getElementById("calendar");
-
-        daysOfWeek.forEach((day, index) => {
-            const dayDiv = document.createElement("div");
-            dayDiv.classList.add("calendar-day");
-
-            const currentDate = new Date(startOfWeek);
-            currentDate.setDate(startOfWeek.getDate() + index);
-
-            const formattedDate = currentDate.toISOString().split('T')[0];
-
-            if (currentDate.toDateString() === today.toDateString()) {
-                dayDiv.classList.add("current-day");
-            }
-
-            const leaveStatus = leaveData.find(item => {
-                const startDate = new Date(item.start_datum);
-                const endDate = new Date(item.eind_datum);
-
-                return item.status === 1 && formattedDate >= item.start_datum && formattedDate <= item.eind_datum;
-            });
-
-            const status = document.createElement("div");
-            status.classList.add("status");
-
-            status.innerText = leaveStatus ? leaveStatus.verlof_reden : "";
-
-            dayDiv.innerHTML = `<div>${day}</div><div>${currentDate.getDate()} ${currentDate.toLocaleString('default', { month: 'short' })}</div>`;
-            dayDiv.appendChild(status);
-
-            calendarContainer.appendChild(dayDiv);
-        });
-    </script>
 </body>
 
 </html>

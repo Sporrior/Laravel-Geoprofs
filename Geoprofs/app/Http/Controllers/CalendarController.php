@@ -10,29 +10,31 @@ class CalendarController extends Controller
 {
     public function index()
     {
-        // Fetch the logged-in user's user_info
-        $user_info = Auth::user(); // Ensure User model includes the necessary relationships
+        $data = $this->getCalendarData();
+        return view('calendar', $data);
+    }
 
-        // Fetch approved leave requests (status = 1)
+    public function getCalendarData()
+    {
+        $user_info = Auth::user();
+
         $verlofaanvragen = Verlofaanvragen::where('status', 1)
-            ->with('user') // Load the related UserInfo data via 'user'
+            ->with('user')
             ->get();
 
-        // Prepare the days with leave requests
         $dagen = $this->prepareDays($verlofaanvragen);
 
-        return view('calendar', compact('dagen', 'user_info'));
+        return compact('dagen', 'user_info');
     }
 
     private function prepareDays($verlofaanvragen)
     {
         $dagen = [];
-        $startVanWeek = now()->startOfWeek(); // Start of the current week
+        $startVanWeek = now()->startOfWeek();
 
         for ($i = 0; $i < 7; $i++) {
             $huidigeDatum = $startVanWeek->copy()->addDays($i);
 
-            // Filter leave requests for the current date
             $gefilterdeVerzoeken = $verlofaanvragen->filter(function ($verzoek) use ($huidigeDatum) {
                 $startDatum = $verzoek->start_datum;
                 $eindDatum = $verzoek->eind_datum;
@@ -40,11 +42,11 @@ class CalendarController extends Controller
                 return $huidigeDatum->between($startDatum, $eindDatum);
             })->map(function ($verzoek) {
                 return [
-                    'voornaam' => $verzoek->user->voornaam ?? 'Onbekend', // Access 'voornaam' from the related user
+                    'voornaam' => $verzoek->user->voornaam ?? 'Onbekend',
                     'reden' => $verzoek->verlof_reden,
                     'tijd' => $verzoek->start_datum->format('H:i') . ' - ' . $verzoek->eind_datum->format('H:i'),
-                    'start' => (int) $verzoek->start_datum->format('G') - 8, // Offset for grid-row-start
-                    'end' => (int) $verzoek->eind_datum->format('G') - 8,    // Offset for grid-row-end
+                    'start' => (int) $verzoek->start_datum->format('G') - 8,
+                    'end' => (int) $verzoek->eind_datum->format('G') - 8,
                 ];
             });
 
