@@ -20,40 +20,40 @@ class VerlofAanvraagController extends Controller
         return view('verlofaanvragen', compact('types', 'user_info'));
     }
 
-    public function showDashboard(): \Illuminate\View\View
-    {
-        $startOfWeek = Carbon::now()->startOfWeek();
-        $endOfWeek = Carbon::now()->endOfWeek();
+    // public function showDashboard(): \Illuminate\View\View
+    // {
+    //     $startOfWeek = Carbon::now()->startOfWeek();
+    //     $endOfWeek = Carbon::now()->endOfWeek();
 
-        $verlofaanvragen = VerlofAanvragen::where('status', 1)
-            ->whereBetween('start_datum', [$startOfWeek, $endOfWeek])
-            ->orWhereBetween('eind_datum', [$startOfWeek, $endOfWeek])
-            ->leftJoin('types', 'verlofaanvragen.verlof_soort', '=', 'types.id')
-            ->select('verlofaanvragen.*', 'types.type as type_name')
-            ->orderBy('start_datum', 'desc')
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'start_datum' => $item->start_datum->format('Y-m-d'),
-                    'eind_datum' => $item->eind_datum->format('Y-m-d'),
-                    'status' => $item->status ? 'Ziek' : 'Vrij',
-                    'type_name' => $item->type_name ?? 'Onbekend',
-                    'verlof_reden' => $item->verlof_reden,
-                ];
-            });
+    //     $verlofaanvragen = VerlofAanvragen::where('status', 1)
+    //         ->whereBetween('start_datum', [$startOfWeek, $endOfWeek])
+    //         ->orWhereBetween('eind_datum', [$startOfWeek, $endOfWeek])
+    //         ->leftJoin('types', 'verlofaanvragen.verlof_soort', '=', 'types.id')
+    //         ->select('verlofaanvragen.*', 'types.type as type_name')
+    //         ->orderBy('start_datum', 'desc')
+    //         ->get()
+    //         ->map(function ($item) {
+    //             return [
+    //                 'start_datum' => $item->start_datum->format('Y-m-d'),
+    //                 'eind_datum' => $item->eind_datum->format('Y-m-d'),
+    //                 'status' => $item->status ? 'Ziek' : 'Vrij',
+    //                 'type_name' => $item->type_name ?? 'Onbekend',
+    //                 'verlof_reden' => $item->verlof_reden,
+    //             ];
+    //         });
 
-        $user_info = UserInfo::with(['role', 'team'])->findOrFail(Auth::id());
+    //     $user_info = UserInfo::with(['role', 'team'])->findOrFail(Auth::id());
 
-        return view('dashboard', [
-            'verlofaanvragen' => $verlofaanvragen,
-            'user_info' => $user_info,
-        ]);
-    }
+    //     return view('dashboard', [
+    //         'verlofaanvragen' => $verlofaanvragen,
+    //         'user_info' => $user_info,
+    //     ]);
+    // }
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $user_info = UserInfo::findOrFail(Auth::id());
-        
+
         $pendingRequestsCount = VerlofAanvragen::where('user_id', $user_info->id)
             ->whereNull('status')
             ->count();

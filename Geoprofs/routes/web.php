@@ -52,6 +52,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/keuring/{id}/update', [KeuringController::class, 'updateStatus'])->name('keuring.updateStatus');
 
     Route::get('/verlofdata', [VerlofDataController::class, 'index'])->name('verlofdata.index');
-    Route::get('/verlofdata', [VerlofDataController::class, 'export'])->name('verlofdata.export');
+    Route::get('/verlofdata/export', [VerlofDataController::class, 'export'])->name('verlofdata.export');
 
 });
