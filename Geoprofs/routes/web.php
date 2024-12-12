@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ZiekmeldenController;
 use App\Http\Controllers\VerlofDataController;
 use App\Http\Controllers\AccounttoevoegenController;
+use App\Http\Controllers\CalendarController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -53,5 +54,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/verlofdata', [VerlofDataController::class, 'index'])->name('verlofdata.index');
     Route::get('/verlofdata/export', [VerlofDataController::class, 'export'])->name('verlofdata.export');
+
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
 
 });

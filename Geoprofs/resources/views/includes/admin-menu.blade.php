@@ -123,7 +123,7 @@
                 @endif
 
                 @if($user_info->role_id == 3)
-                    <li><a href="/hr-administratie" class="navigatie-link {{ request()->is('hr-administratie') ? 'actief' : '' }}">HR Administratie</a></li>
+                    <li><a href="/calendar" class="navigatie-link {{ request()->is('calendar') ? 'actief' : '' }}">Kalender</a></li>
                     <li><a href="/account-toevoegen" class="navigatie-link {{ request()->is('account-toevoegen') ? 'actief' : '' }}">Account Toevoegen</a></li>
                 @endif
             </ul>
