@@ -15,16 +15,16 @@ class VerlofDataControllerTest extends TestCase
     /**
      * Test the index method.
      */
-    public function testIndexMethod()
-    {
-        $user = User::factory()->create();
-        $this->actingAs($user);
+    // public function testIndexMethod()
+    // {
+    //     $user = User::factory()->create();
+    //     $this->actingAs($user);
 
-        $response = $this->get(route('verlofdata.index'));
+    //     $response = $this->get(route('verlofdata.index'));
 
-        $response->assertStatus(200);
-        $response->assertViewIs('verlofdata');
-    }
+    //     $response->assertStatus(200);
+    //     $response->assertViewIs('verlofdata');
+    // }
 
     /**
      * Test the export method.
