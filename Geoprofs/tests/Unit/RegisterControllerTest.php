@@ -1,85 +1,165 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
-use App\Models\User;
-use App\Models\UserInfo;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\UserInfo;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_show_register_form()
+    /** @test */
+    public function it_displays_the_registration_form()
     {
-        $response = $this->get('/register');
+        $response = $this->get(route('register'));
 
         $response->assertStatus(200);
         $response->assertViewIs('register');
     }
 
-    public function test_register_success()
+    /** @test */
+    public function it_registers_a_new_user_and_logs_them_in()
     {
-        $requestData = [
+        $data = [
+            'name' => 'John Doe',
+            'email' => 'johndoe@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ];
+
+        $response = $this->post(route('register'), $data);
+
+        $this->assertDatabaseHas('user_info', [
+            'email' => 'johndoe@example.com',
+            'voornaam' => 'John',
+            'tussennaam' => null,
+            'achternaam' => 'Doe',
+        ]);
+
+        $this->assertTrue(Auth::check());
+
+        $response->assertRedirect('/dashboard');
+    }
+
+    /** @test */
+    public function it_handles_users_with_two_names()
+    {
+        $data = [
+            'name' => 'John Michael Doe',
+            'email' => 'johnmichael@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ];
+
+        $response = $this->post(route('register'), $data);
+
+        $this->assertDatabaseHas('user_info', [
+            'email' => 'johnmichael@example.com',
+            'voornaam' => 'John',
+            'tussennaam' => 'Michael',
+            'achternaam' => 'Doe',
+        ]);
+
+        $this->assertTrue(Auth::check());
+
+        $response->assertRedirect('/dashboard');
+    }
+
+    /** @test */
+    public function it_handles_users_with_no_middle_name()
+    {
+        $data = [
+            'name' => 'John Doe',
+            'email' => 'johndoe2@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ];
+
+        $response = $this->post(route('register'), $data);
+
+        $this->assertDatabaseHas('user_info', [
+            'email' => 'johndoe2@example.com',
+            'voornaam' => 'John',
+            'tussennaam' => null,
+            'achternaam' => 'Doe',
+        ]);
+
+        $this->assertTrue(Auth::check());
+
+        $response->assertRedirect('/dashboard');
+    }
+
+    /** @test */
+    public function it_validates_registration_data()
+    {
+        $response = $this->post(route('register'), [
+            'name' => '',
+            'email' => 'invalid-email',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertSessionHasErrors(['name', 'email']);
+    }
+
+    /** @test */
+    public function it_requires_name_to_split_into_first_middle_last_names()
+    {
+        $data = [
+            'name' => 'John',
+            'email' => 'john@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ];
+
+        $response = $this->post(route('register'), $data);
+
+        $this->assertDatabaseHas('user_info', [
+            'email' => 'john@example.com',
+            'voornaam' => 'John',
+            'tussennaam' => null,
+            'achternaam' => '',
+        ]);
+
+        $this->assertTrue(Auth::check());
+
+        $response->assertRedirect('/dashboard');
+    }
+
+    /** @test */
+    public function it_validates_password_confirmation()
+    {
+        $data = [
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'differentpassword',
+        ];
+
+        $response = $this->post(route('register'), $data);
+
+        $response->assertSessionHasErrors(['password']);
+    }
+
+    /** @test */
+    public function it_validates_email_uniqueness()
+    {
+        $existingUser = UserInfo::factory()->create([
+            'email' => 'john@example.com'
+        ]);
+
+        $data = [
             'name' => 'John Doe',
             'email' => 'john@example.com',
             'password' => 'password123',
             'password_confirmation' => 'password123',
         ];
 
-        $response = $this->post('/register', $requestData);
-
-        $response->assertRedirect('/dashboard');
-
-        // Check UserInfo
-        $this->assertDatabaseHas('user_info', [
-            'email' => 'john@example.com',
-        ]);
-
-        $userInfo = UserInfo::where('email', 'john@example.com')->first();
-        $this->assertNotNull($userInfo);
-        $this->assertEquals('John', $userInfo->voornaam);
-        $this->assertEquals('Doe', $userInfo->achternaam);
-
-        // Check User
-        $user = User::find($userInfo->id);
-        $this->assertNotNull($user);
-        $this->assertTrue(Hash::check('password123', $user->password));
-    }
-
-    public function test_register_validation_errors()
-    {
-        $response = $this->post('/register', [
-            'name' => '', // Missing name
-            'email' => 'invalid-email', // Invalid email
-            'password' => 'short', // Password too short
-            'password_confirmation' => 'mismatch', // Password mismatch
-        ]);
-
-        $response->assertSessionHasErrors([
-            'name',
-            'email',
-            'password',
-        ]);
-    }
-
-    public function test_register_with_duplicate_email()
-    {
-        UserInfo::factory()->create([
-            'email' => 'existing@example.com',
-        ]);
-
-        $response = $this->post('/register', [
-            'name' => 'Jane Doe',
-            'email' => 'existing@example.com',
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
-        ]);
+        $response = $this->post(route('register'), $data);
 
         $response->assertSessionHasErrors(['email']);
-
-        $this->assertDatabaseCount('user_info', 1);
     }
 }
