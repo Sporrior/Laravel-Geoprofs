@@ -78,7 +78,50 @@ class DatabaseSeeder extends Seeder
                     'team_id' => $hrm,
                 ],
             ],
-            // Add more users as needed...
+            [
+                'email' => 'User01@gmail.com',
+                'password' => Hash::make('User01'),
+                'info' => [
+                    'voornaam' => 'User01',
+                    'achternaam' => 'back',
+                    'telefoon' => '06123456789',
+                    'role_id' => Role::where('role_name', 'werknemer')->first()->id,
+                    'team_id' => $hrm,
+                ],
+            ],
+            [
+                'email' => 'User02@gmail.com',
+                'password' => Hash::make('User02'),
+                'info' => [
+                    'voornaam' => 'User02',
+                    'achternaam' => 'back',
+                    'telefoon' => '06123456789',
+                    'role_id' => Role::where('role_name', 'werknemer')->first()->id,
+                    'team_id' => $geoICT,
+                ],
+            ],
+            [
+                'email' => 'User03@gmail.com',
+                'password' => Hash::make('User03'),
+                'info' => [
+                    'voornaam' => 'User03',
+                    'achternaam' => 'back',
+                    'telefoon' => '06123456789',
+                    'role_id' => Role::where('role_name', 'werknemer')->first()->id,
+                    'team_id' => $geoICT,
+                ],
+            ],
+            [
+                'email' => 'User04@gmail.com',
+                'password' => Hash::make('User04'),
+                'info' => [
+                    'voornaam' => 'User04',
+                    'achternaam' => 'back',
+                    'telefoon' => '06123456789',
+                    'role_id' => Role::where('role_name', 'manager')->first()->id,
+                    'team_id' => $geoICT,
+                ],
+            ],
         ];
 
         foreach ($users as $userData) {
