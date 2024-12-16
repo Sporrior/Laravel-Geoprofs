@@ -274,6 +274,20 @@
                     </div>
                 </div>
 
+                <div class="dropdown" data-control="checkbox-dropdown">
+                    <label class="dropdown-label">Team</label>
+                    <div class="dropdown-list">
+                        @foreach($teams as $team)
+                            <label class="dropdown-option">
+                                <input type="checkbox" name="teams[]" value="{{ $team->id }}"
+                                    {{ (is_array(request('teams')) && in_array($team->id, request('teams'))) ? 'checked' : '' }} />
+                                {{ $team->group_name }}
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+
+
                 <button type="submit">Filter</button>
             </form>
 
