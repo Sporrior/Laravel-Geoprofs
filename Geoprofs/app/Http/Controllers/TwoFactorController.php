@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Cache;
 
 class TwoFactorController extends Controller
 {
+    /**
+     * Generate and store 2FA code.
+     */
     public function storeCode(Request $request)
     {
         $code = random_int(100000, 999999);
@@ -20,6 +23,9 @@ class TwoFactorController extends Controller
         ], 200);
     }
 
+    /**
+     * Verify 2FA code.
+     */
     public function verifyCode(Request $request)
     {
         $request->validate([
