@@ -46,4 +46,10 @@ class verlofaanvragen extends Model
     {
         return $this->belongsTo(UserInfo::class, 'user_id');
     }
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class, 'team_id');
+    }
+
 }

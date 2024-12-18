@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\VerlofAanvragen;
 use App\Models\UserInfo;
 use App\Models\Type;
+use App\Models\Team;
 use Carbon\Carbon;
 
 class KeuringController extends Controller
@@ -19,9 +20,10 @@ class KeuringController extends Controller
     {
         $types = Type::all();
         $users = UserInfo::all();
-        $user_info = auth()->user()->userInfo; 
+        $teams = Team::all();
+        $user_info = auth()->user()->userInfo;
 
-        $verlofaanvragen = VerlofAanvragen::with('user', 'type');
+        $verlofaanvragen = VerlofAanvragen::with('user', 'type' , 'team');
 
         if ($request->has('types')) {
             $selectedTypes = $request->input('types');
@@ -33,9 +35,16 @@ class KeuringController extends Controller
             $verlofaanvragen->whereIn('user_id', $selectedUsers);
         }
 
+        if ($request->has('teams')) {
+            $selectedTeams = $request->input('teams');
+            $verlofaanvragen->whereHas('user.team', function ($query) use ($selectedTeams) {
+                $query->whereIn('id', $selectedTeams);
+            });
+        }
+
         $verlofaanvragen = $verlofaanvragen->orderByDesc('updated_at')->get();
 
-        return view('keuring', compact('verlofaanvragen', 'types', 'users', 'user_info'));
+        return view('keuring', compact('verlofaanvragen', 'types', 'users', 'user_info' , 'teams'));
     }
 
     public function updateStatus(Request $request, $id)
