@@ -14,7 +14,6 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            /* background: linear-gradient(135deg, #6C63FF, #c5c5ff); */
             background-color: #fff;
             display: flex;
             justify-content: center;
@@ -52,14 +51,7 @@
             margin-bottom: 20px;
             border: 1px solid #ddd;
             border-radius: 10px;
-            transition: 0.3s ease;
             background-color: #f9f9f9;
-        }
-
-        .input:focus {
-            border-color: #6C63FF;
-            box-shadow: 0 0 8px rgba(108, 99, 255, 0.3);
-            outline: none;
         }
 
         .btn {
@@ -70,7 +62,6 @@
             border: none;
             border-radius: 10px;
             color: #fff;
-            /* background: linear-gradient(135deg, #6C63FF, #5848FF); */
             background-color: #ff8c00;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -81,17 +72,21 @@
             transform: translateY(-2px);
         }
 
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        .error-message {
+        .alert {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
             background: rgba(255, 0, 0, 0.1);
             color: #ff4d4d;
             padding: 12px;
             margin-bottom: 15px;
             border-radius: 8px;
             font-size: 14px;
+        }
+
+        .alert.show {
+            display: block;
+            opacity: 1;
         }
 
         footer {
@@ -101,13 +96,8 @@
         }
 
         footer a {
-            /* color: #6C63FF; */
             color: #F76C6C;
             text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
@@ -117,22 +107,61 @@
         <h2>Two-Factor Authentication</h2>
         <p>Please enter the 6-digit code sent to your email or mobile device.</p>
 
-        @if($errors->any())
-            <div class="error-message">
-                {{ $errors->first('2fa_code') }}
-            </div>
-        @endif
+        <!-- Alert for Errors -->
+        <div id="alert" class="alert"></div>
 
-        <form action="{{ route('2fa.verify') }}" method="POST">
-            @csrf
-            <input type="text" name="2fa_code" class="input" maxlength="6" placeholder="Enter the 6-digit code" required>
-            <button type="submit" class="btn">Verify</button>
+        <!-- Form -->
+        <form id="2faForm">
+            <input type="text" id="2faCode" class="input" maxlength="6" placeholder="Enter the 6-digit code" required>
+            <button type="button" id="verifyBtn" class="btn">Verify</button>
         </form>
 
         <footer>
             <p>&copy; 2024 Geoprofs | <a href="#">Privacy</a> | <a href="#">Contact</a></p>
         </footer>
     </div>
+
+    <!-- JavaScript -->
+    <script>
+        const alertBox = document.getElementById('alert');
+        const verifyBtn = document.getElementById('verifyBtn');
+
+        verifyBtn.addEventListener('click', () => {
+            const code = document.getElementById('2faCode').value;
+
+            if (!/^\d{6}$/.test(code)) {
+                showAlert('Please enter a valid 6-digit code.');
+                return;
+            }
+
+            // Send AJAX request to verify code
+            fetch('/verify-2fa', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ '2fa_code': code })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        window.location.href = '/dashboard'; // Redirect to dashboard
+                    } else {
+                        showAlert('The code you entered is incorrect. Please try again.');
+                    }
+                })
+                .catch(() => {
+                    showAlert('An error occurred. Please try again later.');
+                });
+        });
+
+        function showAlert(message) {
+            alertBox.textContent = message;
+            alertBox.classList.add('show');
+            setTimeout(() => alertBox.classList.remove('show'), 5000);
+        }
+    </script>
 </body>
 
 </html>
