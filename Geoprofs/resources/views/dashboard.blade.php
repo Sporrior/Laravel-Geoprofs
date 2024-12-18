@@ -302,15 +302,15 @@
                 <div class="kaart-kop">Snelle Toegang</div>
                 <div class="quick-access-grid">
                     <div class="quick-access-item">
-                        <a href="#">
-                            <i class="ph-bold ph-calendar"></i>
-                            <p>Agenda</p>
-                        </a>
+                    <a href="{{ $user_info->role_id == 3 ? '/account-toevoegen' : '/ziekmelden' }}">
+                        <i class="ph-bold ph-calendar"></i>
+                        <p>{{ $user_info->role_id == 3 ? 'Account Toevoegen' : 'Ziekmelden' }}</p>
+                    </a>
                     </div>
                     <div class="quick-access-item">
                         <a href="#">
                             <i class="ph-bold ph-user-plus"></i>
-                            <p>Verlof Toewijzen</p>
+                            <p>{{$user_info->role_id == 3 || 2 ? 'Ziekmelden' : ''}}</p>
                         </a>
                     </div>
                     <div class="quick-access-item">
@@ -320,9 +320,9 @@
                         </a>
                     </div>
                     <div class="quick-access-item">
-                        <a href="#">
-                            <i class="ph ph-user-focus"></i>
-                            <p>Mijn Verlof</p>
+                    <a href="{{ $user_info->role_id == 3 ? '/keuring' : '/profiel' }}">
+                        <i class="ph ph-user-focus"></i>
+                        <p>{{ $user_info->role_id == 3 ? 'Verlof Goedkeuren' : 'Profiel' }}</p>
                         </a>
                     </div>
                 </div>
