@@ -22,6 +22,6 @@ yarn-error.log
 composer.json
 .idea
 /coverage-report
-
+cypress.config.js
 
 
