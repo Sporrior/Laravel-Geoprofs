@@ -17,10 +17,8 @@ class ZiekmeldenController extends Controller
 
     public function index()
     {
-        // Fetch the authenticated user's info
         $user_info = UserInfo::with(['role', 'team'])->findOrFail(Auth::id());
 
-        // Pass the user info to the view
         return view('ziekmelden', compact('user_info'));
     }
 
@@ -29,7 +27,16 @@ class ZiekmeldenController extends Controller
         $request->validate([
             'verlof_reden' => 'required|string|max:255',
         ]);
-
+    
+        $alreadySick = VerlofAanvragen::where('user_id', Auth::id())
+            ->where('verlof_soort', 1)
+            ->whereDate('aanvraag_datum', Carbon::today())
+            ->exists();
+    
+        if ($alreadySick) {
+            return redirect()->route('ziekmelden.index')->with('error', 'Je hebt je vandaag al ziek gemeld.');
+        }
+    
         VerlofAanvragen::create([
             'verlof_reden' => $request->input('verlof_reden'),
             'aanvraag_datum' => Carbon::now()->format('Y-m-d'),
@@ -39,7 +46,7 @@ class ZiekmeldenController extends Controller
             'user_id' => Auth::id(),
             'status' => 1,
         ]);
-
+    
         return redirect()->route('ziekmelden.index')->with('success', 'Ziekmelding succesvol ingediend.');
     }
 }
