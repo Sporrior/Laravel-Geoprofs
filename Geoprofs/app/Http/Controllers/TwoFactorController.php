@@ -14,12 +14,14 @@ class TwoFactorController extends Controller
     {
         $code = random_int(100000, 999999);
 
-        Cache::put('2fa_code_' . auth()->id(), $code, now()->addMinutes(10));
+        $cacheKey = '2fa_code_' . ($request->input('user_id') ?? 'guest');
+
+        Cache::put($cacheKey, $code, now()->addMinutes(10));
 
         return response()->json([
             'status' => 'success',
             'message' => '2FA code generated successfully',
-            'code' => $code 
+            'code' => $code
         ], 200);
     }
 
@@ -32,15 +34,21 @@ class TwoFactorController extends Controller
             '2fa_code' => 'required|numeric|digits:6',
         ]);
 
-        $inputCode = $request->input('2fa_code');
-        $storedCode = Cache::get('2fa_code_' . auth()->id());
+        $cacheKey = '2fa_code_' . ($request->input('user_id') ?? 'guest');
+        $storedCode = Cache::get($cacheKey);
 
-        if ($storedCode && $inputCode == $storedCode) {
-            Cache::forget('2fa_code_' . auth()->id());
+        if ($storedCode && $request->input('2fa_code') == $storedCode) {
+            Cache::forget($cacheKey);
 
-            return redirect()->route('dashboard')->with('success', '2FA verification successful!');
+            return response()->json([
+                'status' => 'success',
+                'message' => '2FA verification successful!',
+            ]);
         }
 
-        return back()->withErrors(['2fa_code' => 'The code you entered is incorrect. Please try again.']);
+        return response()->json([
+            'status' => 'error',
+            'message' => 'The code you entered is incorrect.',
+        ]);
     }
 }

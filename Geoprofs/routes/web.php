@@ -22,8 +22,8 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/2fa', [LoginController::class, 'show2faForm'])->name('2fa.show');
-Route::post('/2fa/store', [TwoFactorController::class, 'storeCode'])->name('2fa.store');
-Route::post('/2fa/verify', [TwoFactorController::class, 'verifyCode'])->name('2fa.verify');
+Route::post('/store-2fa-code', [TwoFactorController::class, 'storeCode']);
+Route::post('/verify-2fa', [TwoFactorController::class, 'verifyCode']);
 
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
