@@ -125,9 +125,18 @@
         <div class="logo">
             <img src="{{ asset('assets/geoprofs-oranje.png') }}" alt="Geoprofs Logo">
         </div>
-        @if (session('error_message'))
+        <!-- @if (session('error_message'))
             <div class="error-message">
                 {{ session('error_message') }}
+            </div>
+        @endif -->
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        {{ $error }}
+                    @endforeach
+                </ul>
             </div>
         @endif
         <form action="{{ route('login.submit') }}" method="POST">

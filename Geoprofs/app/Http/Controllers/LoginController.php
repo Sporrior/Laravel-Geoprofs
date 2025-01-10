@@ -47,9 +47,9 @@ class LoginController extends Controller
         if (!Hash::check($credentials['password'], $user_password)) {
             $user_info->increment('failed_login_attempts');
 
-            if ($user_info->failed_login_attempts >= 5) {
-                $user_info->update(['blocked_until' => now()->addMinutes(15)]);
-                return back()->withErrors(['email' => 'Too many failed login attempts. Try again in 15 minutes.']);
+            if ($user_info->failed_login_attempts >= 3) {
+                $user_info->update(['blocked_until' => now()->addMinutes(5)]);
+                return back()->withErrors(['email' => 'Too many failed login attempts. Try again in 5 minutes.']);
             }
 
             return back()->withErrors(['email' => 'The provided credentials do not match our records.']);
