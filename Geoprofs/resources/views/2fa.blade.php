@@ -105,7 +105,7 @@
 <body>
     <div class="container">
         <h2>Two-Factor Authentication</h2>
-        <p>Vul de code in die is te vinden in de discord.</p>
+        <p>Enter the code you received in Discord.</p>
 
         <div id="alert" class="alert"></div>
 
@@ -144,7 +144,7 @@
                     if (data.status === 'success') {
                         window.location.href = '/dashboard';
                     } else {
-                        showAlert(data.message || 'The code you entered is incorrect. Please try again.');
+                        showAlert(data.message);
                     }
                 })
                 .catch(() => {
