@@ -112,7 +112,7 @@
 
         <!-- Form -->
         <form id="2faForm">
-            <input type="text" id="2faCode" class="input" maxlength="6" placeholder="Enter the 6-digit code" required>
+            <input type="text" id="2faCode" class="input" maxlength="6" placeholder="Enter the 6-digit code" name="code" required>
             <button type="button" id="verifyBtn" class="btn">Verify</button>
         </form>
 
