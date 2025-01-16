@@ -1,3 +1,4 @@
+<!-- $user->role_id == 3 ? '' : abort(403, 'Unauthorized action...'); -->
 <!DOCTYPE html>
 <html lang="nl">
 
