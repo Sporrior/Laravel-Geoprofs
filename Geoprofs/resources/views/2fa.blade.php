@@ -105,12 +105,10 @@
 <body>
     <div class="container">
         <h2>Two-Factor Authentication</h2>
-        <p>Please enter the 6-digit code sent to your email or mobile device.</p>
+        <p>Enter the code you received in Discord.</p>
 
-        <!-- Alert for Errors -->
         <div id="alert" class="alert"></div>
 
-        <!-- Form -->
         <form id="2faForm">
             <input type="text" id="2faCode" class="input" maxlength="6" placeholder="Enter the 6-digit code" name="code" required>
             <button type="button" id="verifyBtn" class="btn">Verify</button>
@@ -121,7 +119,6 @@
         </footer>
     </div>
 
-    <!-- JavaScript -->
     <script>
         const alertBox = document.getElementById('alert');
         const verifyBtn = document.getElementById('verifyBtn');
@@ -134,7 +131,6 @@
                 return;
             }
 
-            // Send AJAX request to verify code
             fetch('/verify-2fa', {
                 method: 'POST',
                 headers: {
@@ -146,9 +142,9 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
-                        window.location.href = '/dashboard'; // Redirect to dashboard
+                        window.location.href = '/dashboard';
                     } else {
-                        showAlert('The code you entered is incorrect. Please try again.');
+                        showAlert(data.message);
                     }
                 })
                 .catch(() => {
