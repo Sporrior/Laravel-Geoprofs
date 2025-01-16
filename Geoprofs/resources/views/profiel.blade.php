@@ -245,17 +245,17 @@
                         <div class="form-group">
                             <label for="voornaam">Voornaam</label>
                             <input type="text" id="voornaam" name="voornaam"
-                                value="{{ old('voornaam', $user_info->voornaam) }}">
+                                value="{{ old('voornaam', $user_info->voornaam) }}" required>
                         </div>
                         <div class="form-group">
                             <label for="tussennaam">Tussennaam</label>
                             <input type="text" id="tussennaam" name="tussennaam"
-                                value="{{ old('tussennaam', $user_info->tussennaam) }}">
+                                value="{{ old('tussennaam', $user_info->tussennaam) }}" >
                         </div>
                         <div class="form-group">
                             <label for="achternaam">Achternaam</label>
                             <input type="text" id="achternaam" name="achternaam"
-                                value="{{ old('achternaam', $user_info->achternaam) }}">
+                                value="{{ old('achternaam', $user_info->achternaam) }}" required>
                         </div>
                         <div class="form-group">
                             <label for="profielFoto">Profiel Foto</label>
@@ -264,11 +264,11 @@
                         <div class="form-group">
                             <label for="telefoon">Telefoon</label>
                             <input type="text" id="telefoon" name="telefoon"
-                                value="{{ old('telefoon', $user_info->telefoon) }}">
+                                value="{{ old('telefoon', $user_info->telefoon) }}" required>
                         </div>
                         <div class="form-group">
                             <label for="email">E-mail</label>
-                            <input type="email" id="email" name="email" value="{{ old('email', $user_info->email) }}">
+                            <input type="email" id="email" name="email" value="{{ old('email', $user_info->email) }}" required>
                         </div>
                         <button type="submit" class="btn-primary">Opslaan</button>
                     </form>

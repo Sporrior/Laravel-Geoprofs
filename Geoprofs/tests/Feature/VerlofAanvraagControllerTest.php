@@ -37,62 +37,6 @@ class VerlofAanvraagControllerTest extends TestCase
     });
 }
 
-
-    /**
-     * Test the showDashboard method.
-     */
-    // public function testShowDashboardMethod()
-    // {
-    //     $user = User::factory()->create();
-    //     $userInfo = UserInfo::factory()->create(['id' => $user->id]);
-
-    //     $type = Type::factory()->create();
-    //     $startOfWeek = Carbon::now()->startOfWeek();
-    //     $endOfWeek = Carbon::now()->endOfWeek();
-
-    //     // Create leave requests
-    //     $verlof1 = VerlofAanvragen::factory()->create([
-    //         'user_id' => $userInfo->id,
-    //         'verlof_soort' => $type->id,
-    //         'status' => 1,
-    //         'start_datum' => $startOfWeek->copy()->addDay(),
-    //         'eind_datum' => $endOfWeek->copy()->subDay(),
-    //     ]);
-
-    //     $verlof2 = VerlofAanvragen::factory()->create([
-    //         'user_id' => $userInfo->id,
-    //         'verlof_soort' => $type->id,
-    //         'status' => 1,
-    //         'start_datum' => $startOfWeek->copy()->subDay(),
-    //         'eind_datum' => $startOfWeek->copy()->addDay(),
-    //     ]);
-
-    //     $this->actingAs($user);
-
-    //     $response = $this->get(route('dashboard'));
-
-    //     $response->assertStatus(200);
-
-    //     // Check if the transformed data matches
-    //     $response->assertViewHas('verlofaanvragen', function ($verlofaanvragen) use ($verlof1, $verlof2) {
-    //         return $verlofaanvragen->contains(function ($item) use ($verlof1) {
-    //             return $item['start_datum'] === $verlof1->start_datum->format('Y-m-d') &&
-    //                    $item['eind_datum'] === $verlof1->eind_datum->format('Y-m-d') &&
-    //                    $item['status'] === '1';
-    //         }) &&
-    //         $verlofaanvragen->contains(function ($item) use ($verlof2) {
-    //             return $item['start_datum'] === $verlof2->start_datum->format('Y-m-d') &&
-    //                    $item['eind_datum'] === $verlof2->eind_datum->format('Y-m-d') &&
-    //                    $item['status'] === '1';
-    //         });
-    //     });
-
-    //     // Assert user_info is correct
-    //     $response->assertViewHas('user_info', function ($viewUserInfo) use ($userInfo) {
-    //         return $viewUserInfo->id === $userInfo->id;
-    //     });
-    // }
-
     /**
      * Test the store method with valid data.
      */

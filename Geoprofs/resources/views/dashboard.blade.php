@@ -308,9 +308,9 @@
                     </a>
                     </div>
                     <div class="quick-access-item">
-                        <a href="#">
+                        <a href="{{ $user_info->role_id == 3 || 2 ? '/verlofaanvragen' : '/ziekmelden' }}">
                             <i class="ph-bold ph-user-plus"></i>
-                            <p>{{$user_info->role_id == 3 || 2 ? 'Ziekmelden' : ''}}</p>
+                            <p>{{$user_info->role_id == 3 || 2 ? 'Verlof' : 'Ziekmelden'}}</p>
                         </a>
                     </div>
                     <div class="quick-access-item">
