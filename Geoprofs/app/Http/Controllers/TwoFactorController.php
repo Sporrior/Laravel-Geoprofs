@@ -34,12 +34,11 @@ class TwoFactorController extends Controller
             '2fa_code' => 'required|numeric|digits:6',
         ]);
 
-        $userId = $request->input('user_id') ?? 'guest'; // Default to 'guest' if no user ID is provided
+        $userId = $request->input('user_id') ?? 'guest';
         $cacheKeyCode = '2fa_code_' . $userId;
         $cacheKeyAttempts = '2fa_attempts_' . $userId;
         $cacheKeyTimeout = '2fa_timeout_' . $userId;
 
-        // Check if the user is in a timeout
         if (Cache::has($cacheKeyTimeout)) {
             $remainingTime = Cache::get($cacheKeyTimeout) - time();
             return response()->json([
@@ -50,9 +49,7 @@ class TwoFactorController extends Controller
 
         $storedCode = Cache::get($cacheKeyCode);
 
-        // Verify the code
         if ($storedCode && $request->input('2fa_code') == $storedCode) {
-            // Reset failed attempts and remove timeout if verification is successful
             Cache::forget($cacheKeyAttempts);
             Cache::forget($cacheKeyTimeout);
             Cache::forget($cacheKeyCode);
@@ -63,17 +60,15 @@ class TwoFactorController extends Controller
             ]);
         }
 
-        // Increment failed attempts
         $attempts = Cache::increment($cacheKeyAttempts, 1);
 
         if ($attempts === 1) {
-            Cache::put($cacheKeyAttempts, 1, now()->addMinutes(10)); // Expire attempts after 10 minutes
+            Cache::put($cacheKeyAttempts, 1, now()->addMinutes(10));
         }
 
         $remainingAttempts = 3 - $attempts;
 
         if ($remainingAttempts <= 0) {
-            // Set a timeout for 10 seconds
             Cache::put($cacheKeyTimeout, time() + 10, now()->addSeconds(10));
             Cache::forget($cacheKeyAttempts);
 
