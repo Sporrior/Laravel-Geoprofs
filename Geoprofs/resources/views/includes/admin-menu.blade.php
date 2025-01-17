@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <style>
         .zijbalk {
@@ -125,12 +126,33 @@
                 @if($user_info->role_id == 3)
                     <li><a href="/account-toevoegen" class="navigatie-link {{ request()->is('account-toevoegen') ? 'actief' : '' }}">Account Toevoegen</a></li>
                 @endif
+                <a href="#" class="navigatie-link" onclick="logout()">Log uit</a>
             </ul>
         </div>
         <div class="logo">
             <a href="/dashboard"><img src="{{ asset('assets/geoprofs-oranje.png') }}" alt="Logo" class="logo-icon"></a>
         </div>
     </div>
+    
+    <script>
+    function logout() {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        fetch("{{ route('logout') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": csrfToken,
+            },
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = "/";
+            } else {
+                console.error("Logout mislukt.");
+            }
+        }).catch(error => console.error("Er is een fout opgetreden:", error));
+    }
+</script>
 </body>
 
 </html>
