@@ -289,6 +289,9 @@
 
 
                 <button type="submit">Filter</button>
+
+                <a href="{{ route('verlofdata.export', request()->query()) }}" class="export-button" style="display: inline-block; text-decoration: none; color: rgb(255, 255, 255); background-color: #007bff; padding: 10px 20px; border-radius: 5px; font-weight: bold; text-align: center;">Exporteren naar Excel</a>
+
             </form>
 
             @foreach($verlofaanvragen->sortByDesc('updated_at') as $aanvraag)
