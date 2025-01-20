@@ -16,7 +16,7 @@ of u have it installed u Dont need to innstall
 
 Clone the repository/Folder
 
-    git clone https://github.com/Ahmad-MHK/Laravel-Geoprofs
+    git clone https://github.com/Sporrior/Laravel-Geoprofs
 
 
 switch to the folder
@@ -52,7 +52,7 @@ Build your dependencies & start the local development server
 
 ### All Commands
 
-    git clone https://github.com/Ahmad-MHK/Laravel-Geoprofs
+    git clone https://github.com/Sporrior/Laravel-Geoprofs
     cd crm-vidian.git
     composer install
     npm install
@@ -96,7 +96,7 @@ Start XAMPP and start Apach and MYSQL
 
 Server starten
 
-    php artisan serve
+    php artisan serve --host=0.0.0.0 --port=8000
 
 npm starten
 
@@ -110,16 +110,17 @@ npm starten
 
 Default login Email :
 
+
     ahmad@gmail.com
     
 
 Default login password:
 
-    ahmad
+    Ahmad
 
 ## Issue with login Email/password
 
-Refresh your DB
+Refresh your Database
 
-    php artisan db:seed
+    php artisan migrate --seed
     
