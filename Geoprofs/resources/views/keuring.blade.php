@@ -357,10 +357,14 @@
                 select.addEventListener('change', function () {
                     const aanvraagId = this.getAttribute('data-aanvraag-id');
                     const reasonContainer = document.getElementById(`reason-container-${aanvraagId}`);
-                    if (this.value === '0') {
+                    const reasonTextarea = reasonContainer.querySelector('textarea');
+
+                    if (this.value === '0') { // Als "Weigeren" is geselecteerd
                         reasonContainer.style.display = 'block';
-                    } else {
+                        reasonTextarea.setAttribute('required', 'true');
+                    } else { 
                         reasonContainer.style.display = 'none';
+                        reasonTextarea.removeAttribute('required');
                     }
                 });
             });
