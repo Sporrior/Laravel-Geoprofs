@@ -7,98 +7,137 @@ use Tests\TestCase;
 
 class TwoFactorControllerTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withHeaders([
+            'X-CSRF-TOKEN' => csrf_token(),
+        ]);
+    }
+
     public function test_store_2fa_code_generates_and_stores_code()
     {
-        // Trigger the store code endpoint
         $response = $this->postJson('/api/store-2fa-code');
 
-        // Assert response structure and status
         $response->assertStatus(200)
             ->assertJsonStructure(['status', 'message', 'code'])
             ->assertJson(['status' => 'success', 'message' => '2FA code generated successfully']);
 
-        // Assert that the code is stored in the cache
         $this->assertNotNull(Cache::get('2fa_code'));
     }
 
     public function test_get_2fa_code_generates_new_code_if_none_exists()
     {
-        // Ensure no code exists in the cache
         Cache::forget('2fa_code');
 
-        // Trigger the get code endpoint
         $response = $this->getJson('/api/get-2fa-code');
 
-        // Assert response structure and status
         $response->assertStatus(200)
             ->assertJsonStructure(['status', 'code'])
             ->assertJson(['status' => 'success']);
 
-        // Assert that a code is now stored in the cache
         $this->assertNotNull(Cache::get('2fa_code'));
     }
 
     public function test_get_2fa_code_returns_existing_code_if_exists()
     {
-        // Manually store a code in the cache
         $code = random_int(100000, 999999);
         Cache::put('2fa_code', $code, now()->addMinutes(10));
 
-        // Trigger the get code endpoint
         $response = $this->getJson('/api/get-2fa-code');
 
-        // Assert response contains the existing code
         $response->assertStatus(200)
             ->assertJson(['status' => 'success', 'code' => $code]);
     }
 
     public function test_verify_2fa_code_success()
     {
-        // Manually store a code in the cache
         $code = random_int(100000, 999999);
         Cache::put('2fa_code', $code, now()->addMinutes(10));
 
-        // Send the correct 2FA code for verification
         $response = $this->postJson('/verify-2fa', ['2fa_code' => $code]);
 
-        // Assert response status and message
         $response->assertStatus(200)
             ->assertJson(['status' => 'success', 'message' => '2FA verification successful.']);
 
-        // Assert the code is removed from the cache
         $this->assertNull(Cache::get('2fa_code'));
     }
 
     public function test_verify_2fa_code_fails_with_incorrect_code()
     {
-        // Manually store a code in the cache
         $correctCode = random_int(100000, 999999);
         Cache::put('2fa_code', $correctCode, now()->addMinutes(10));
 
-        // Send an incorrect code
         $response = $this->postJson('/verify-2fa', ['2fa_code' => '123456']);
 
-        // Assert response status and error message
         $response->assertStatus(400)
-            ->assertJson(['status' => 'error', 'message' => 'The 2FA code is incorrect or has expired.']);
+            ->assertJson(['status' => 'error', 'message' => 'De 2FA code is fout. Je hebt nog 2 pogingen over.']);
 
-        // Ensure the correct code is still in the cache
         $this->assertEquals($correctCode, Cache::get('2fa_code'));
     }
 
     public function test_verify_2fa_code_fails_when_code_not_in_cache()
     {
-        // Ensure no code exists in the cache
         Cache::forget('2fa_code');
 
-        // Send a code for verification
         $response = $this->postJson('/verify-2fa', ['2fa_code' => '123456']);
 
-        // Assert response status and error message
         $response->assertStatus(400)
-            ->assertJson(['status' => 'error', 'message' => 'The 2FA code is incorrect or has expired.']);
+            ->assertJson(['status' => 'error', 'message' => 'De 2FA code is fout. Je hebt nog 2 pogingen over.']);
 
-        // Ensure the cache is still empty
         $this->assertNull(Cache::get('2fa_code'));
+    }
+
+    public function test_cooldown_activates_after_three_failed_attempts()
+    {
+        $correctCode = random_int(100000, 999999);
+        Cache::put('2fa_code', $correctCode, now()->addMinutes(10));
+
+        $response1 = $this->postJson('/verify-2fa', ['2fa_code' => '111111']);
+        $response1->assertStatus(400)
+            ->assertJson(['status' => 'error', 'message' => 'De 2FA code is fout. Je hebt nog 2 pogingen over.']);
+
+        $response2 = $this->postJson('/verify-2fa', ['2fa_code' => '222222']);
+        $response2->assertStatus(400)
+            ->assertJson(['status' => 'error', 'message' => 'De 2FA code is fout. Je hebt nog 1 pogingen over.']);
+
+        $response3 = $this->postJson('/verify-2fa', ['2fa_code' => '333333']);
+        $response3->assertStatus(429)
+            ->assertJson(['status' => 'error', 'message' => 'Te veel pogingen. Wacht alsjeblieft 5 minuten voor je het weer probeert']);
+
+        $this->assertTrue(Cache::has('2fa_cooldown'));
+        $this->assertNull(Cache::get('2fa_attempts'));
+    }
+
+    public function test_cooldown_prevents_attempts_during_active_period()
+    {
+        Cache::put('2fa_cooldown', time() + 300, now()->addMinutes(5));
+
+        $response = $this->postJson('/verify-2fa', ['2fa_code' => '123456']);
+
+        $response->assertStatus(429)
+            ->assertJsonStructure(['status', 'message'])
+            ->assertJson(['status' => 'error']);
+
+        $message = $response->json()['message'];
+        $this->assertStringContainsString('Je hebt een cooldown', $message);
+    }
+
+    public function test_successful_verification_resets_attempts_and_cooldown()
+    {
+        $code = random_int(100000, 999999);
+        Cache::put('2fa_code', $code, now()->addMinutes(10));
+        Cache::put('2fa_attempts', 2, now()->addMinutes(10));
+        Cache::put('2fa_cooldown', time() + 300, now()->addMinutes(5));
+
+        $response = $this->postJson('/verify-2fa', ['2fa_code' => $code]);
+
+        $response->assertStatus(200)
+            ->assertJson(['status' => 'success', 'message' => '2FA verification successful.']);
+
+        $this->assertNull(Cache::get('2fa_code'));
+        $this->assertNull(Cache::get('2fa_attempts'));
+        $this->assertNull(Cache::get('2fa_cooldown'));
     }
 }

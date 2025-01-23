@@ -28,7 +28,7 @@ class RegisterController extends Controller
 
         $user = User::create([
             'voornaam' => $voornaam,
-            'tussennaam' => $tussennaam,
+            'tussennaam' => null,
             'achternaam' => $achternaam,
             'profielFoto' => null, 
             'telefoon' => '', 

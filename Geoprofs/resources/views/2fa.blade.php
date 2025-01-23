@@ -120,46 +120,46 @@
     </div>
 
     <script>
-        const alertBox = document.getElementById('alert');
-        const verifyBtn = document.getElementById('verifyBtn');
+const alertBox = document.getElementById('alert');
+const verifyBtn = document.getElementById('verifyBtn');
 
-        let alertTimeout;
+let alertTimeout;
 
-        verifyBtn.addEventListener('click', () => {
-            const code = document.getElementById('2faCode').value;
+verifyBtn.addEventListener('click', () => {
+    const code = document.getElementById('2faCode').value;
 
-            if (!/^\d{6}$/.test(code)) {
-                showAlert('Please enter a valid 6-digit code.');
-                return;
+    if (!/^\d{6}$/.test(code)) {
+        showAlert('Please enter a valid 6-digit code.');
+        return;
+    }
+
+    fetch('/verify-2fa', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ '2fa_code': code })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                window.location.href = '/dashboard';
+            } else {
+                showAlert(data.message);
             }
-
-            fetch('/verify-2fa', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ '2fa_code': code })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        window.location.href = '/dashboard';
-                    } else {
-                        showAlert(data.message);
-                    }
-                })
-                .catch(() => {
-                    showAlert('An error occurred. Please try again later.');
-                });
+        })
+        .catch(() => {
+            showAlert('An error occurred. Please try again later.');
         });
+});
 
-        function showAlert(message) {
-            alertBox.textContent = message;
-            alertBox.classList.add('show');
-            clearTimeout(alertTimeout);
-            alertTimeout = setTimeout(() => alertBox.classList.remove('show'), 5000);
-        }
+function showAlert(message) {
+    alertBox.textContent = message;
+    alertBox.classList.add('show');
+    clearTimeout(alertTimeout);
+    alertTimeout = setTimeout(() => alertBox.classList.remove('show'), 5000);
+}
     </script>
 </body>
 
