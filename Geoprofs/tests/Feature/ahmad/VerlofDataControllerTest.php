@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\ahmad;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -11,20 +11,6 @@ use App\Models\User;
 class VerlofDataControllerTest extends TestCase
 {
     use RefreshDatabase;
-
-    /**
-     * Test the index method.
-     */
-    // public function testIndexMethod()
-    // {
-    //     $user = User::factory()->create();
-    //     $this->actingAs($user);
-
-    //     $response = $this->get(route('verlofdata.index'));
-
-    //     $response->assertStatus(200);
-    //     $response->assertViewIs('verlofdata');
-    // }
 
     /**
      * Test the export method.

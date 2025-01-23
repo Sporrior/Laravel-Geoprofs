@@ -12,11 +12,11 @@ class UserInfoFactory extends Factory
     public function definition()
     {
         return [
-            'id' => null, // Ensure to set this manually to match the User
-            'voornaam' => $this->faker->firstName,
-            'achternaam' => $this->faker->lastName,
-            'email' => $this->faker->unique()->safeEmail,
-            'telefoon' => $this->faker->phoneNumber,
+            'id' => null,
+            'voornaam' => null,
+            'achternaam' => null,
+            'email' => null,
+            'telefoon' => null,
             'verlof_dagen' => 20,
             'failed_login_attempts' => 0,
             'blocked_until' => null,

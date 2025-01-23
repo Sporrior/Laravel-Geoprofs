@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Dashboard for C:\xampp\htdocs\Geoprofs\Laravel-Geoprofs\Geoprofs\app</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="_css/bootstrap.min.css?v=11.0.6" rel="stylesheet" type="text/css">
+  <link href="_css/nv.d3.min.css?v=11.0.6" rel="stylesheet" type="text/css">
+  <link href="_css/style.css?v=11.0.6" rel="stylesheet" type="text/css">
+  <link href="_css/custom.css" rel="stylesheet" type="text/css">
+ </head>
+ <body>
+  <header>
+   <div class="container-fluid">
+    <div class="row">
+     <div class="col-md-12">
+      <nav aria-label="breadcrumb">
+       <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="index.html">C:\xampp\htdocs\Geoprofs\Laravel-Geoprofs\Geoprofs\app</a></li>
+         <li class="breadcrumb-item active">(Dashboard)</li>
+
+       </ol>
+      </nav>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container-fluid">
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Classes</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="classCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="classComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Exports/VerlofaanvragenExport.php.html#12">App\Exports\VerlofaanvragenExport</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/DashboardController.php.html#10">App\Http\Controllers\DashboardController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/TwoFactorController.php.html#8">App\Http\Controllers\TwoFactorController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/CheckRole.php.html#9">App\Http\Middleware\CheckRole</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/logboek.php.html#8">App\Models\logboek</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/role.php.html#8">App\Models\role</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/team.php.html#8">App\Models\team</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/type.php.html#8">App\Models\type</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/VerlofDataController.php.html#12">App\Http\Controllers\VerlofDataController</a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="Http/Controllers/LoginController.php.html#12">App\Http\Controllers\LoginController</a></td><td class="text-right">60%</td></tr>
+       <tr><td><a href="Models/UserInfo.php.html#8">App\Models\UserInfo</a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="Http/Controllers/KeuringController.php.html#12">App\Http\Controllers\KeuringController</a></td><td class="text-right">72%</td></tr>
+       <tr><td><a href="Models/User.php.html#9">App\Models\User</a></td><td class="text-right">75%</td></tr>
+       <tr><td><a href="Http/Controllers/AccounttoevoegenController.php.html#13">App\Http\Controllers\AccounttoevoegenController</a></td><td class="text-right">88%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Http/Controllers/DashboardController.php.html#10">App\Http\Controllers\DashboardController</a></td><td class="text-right">90</td></tr>
+       <tr><td><a href="Http/Controllers/TwoFactorController.php.html#8">App\Http\Controllers\TwoFactorController</a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="Exports/VerlofaanvragenExport.php.html#12">App\Exports\VerlofaanvragenExport</a></td><td class="text-right">42</td></tr>
+       <tr><td><a href="Http/Controllers/LoginController.php.html#12">App\Http\Controllers\LoginController</a></td><td class="text-right">25</td></tr>
+       <tr><td><a href="Http/Controllers/KeuringController.php.html#12">App\Http\Controllers\KeuringController</a></td><td class="text-right">15</td></tr>
+       <tr><td><a href="Http/Middleware/CheckRole.php.html#9">App\Http\Middleware\CheckRole</a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Models/User.php.html#9">App\Models\User</a></td><td class="text-right">7</td></tr>
+       <tr><td><a href="Http/Controllers/AccounttoevoegenController.php.html#13">App\Http\Controllers\AccounttoevoegenController</a></td><td class="text-right">4</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Methods</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="methodCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="methodComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Exports/VerlofaanvragenExport.php.html#14"><abbr title="App\Exports\VerlofaanvragenExport::collection">collection</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Exports/VerlofaanvragenExport.php.html#23"><abbr title="App\Exports\VerlofaanvragenExport::map">map</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Exports/VerlofaanvragenExport.php.html#41"><abbr title="App\Exports\VerlofaanvragenExport::headings">headings</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Exports/VerlofaanvragenExport.php.html#59"><abbr title="App\Exports\VerlofaanvragenExport::styles">styles</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/AccounttoevoegenController.php.html#20"><abbr title="App\Http\Controllers\AccounttoevoegenController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/DashboardController.php.html#12"><abbr title="App\Http\Controllers\DashboardController::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/DashboardController.php.html#17"><abbr title="App\Http\Controllers\DashboardController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/DashboardController.php.html#49"><abbr title="App\Http\Controllers\DashboardController::getLopendeAanvragen">getLopendeAanvragen</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/DashboardController.php.html#60"><abbr title="App\Http\Controllers\DashboardController::getStatusLabel">getStatusLabel</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/DashboardController.php.html#69"><abbr title="App\Http\Controllers\DashboardController::prepareDays">prepareDays</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/DashboardController.php.html#102"><abbr title="App\Http\Controllers\DashboardController::getDutchDayName">getDutchDayName</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/LoginController.php.html#67"><abbr title="App\Http\Controllers\LoginController::show2faForm">show2faForm</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/LoginController.php.html#72"><abbr title="App\Http\Controllers\LoginController::store2faCodeFromApp">store2faCodeFromApp</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/LoginController.php.html#85"><abbr title="App\Http\Controllers\LoginController::verify2fa">verify2fa</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/TwoFactorController.php.html#13"><abbr title="App\Http\Controllers\TwoFactorController::storeCode">storeCode</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/TwoFactorController.php.html#31"><abbr title="App\Http\Controllers\TwoFactorController::verifyCode">verifyCode</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/VerlofDataController.php.html#15"><abbr title="App\Http\Controllers\VerlofDataController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/CheckRole.php.html#11"><abbr title="App\Http\Middleware\CheckRole::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/User.php.html#87"><abbr title="App\Models\User::role">role</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/User.php.html#95"><abbr title="App\Models\User::team">team</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/UserInfo.php.html#40"><abbr title="App\Models\UserInfo::getFullNameAttribute">getFullNameAttribute</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/logboek.php.html#21"><abbr title="App\Models\logboek::user">user</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/role.php.html#17"><abbr title="App\Models\role::users">users</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/team.php.html#17"><abbr title="App\Models\team::users">users</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/type.php.html#14"><abbr title="App\Models\type::verlofaanvragen">verlofaanvragen</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/KeuringController.php.html#19"><abbr title="App\Http\Controllers\KeuringController::index">index</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="Http/Controllers/KeuringController.php.html#50"><abbr title="App\Http\Controllers\KeuringController::updateStatus">updateStatus</abbr></a></td><td class="text-right">75%</td></tr>
+       <tr><td><a href="Models/User.php.html#51"><abbr title="App\Models\User::save">save</abbr></a></td><td class="text-right">84%</td></tr>
+       <tr><td><a href="Http/Controllers/LoginController.php.html#19"><abbr title="App\Http\Controllers\LoginController::login">login</abbr></a></td><td class="text-right">85%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Http/Controllers/TwoFactorController.php.html#31"><abbr title="App\Http\Controllers\TwoFactorController::verifyCode">verifyCode</abbr></a></td><td class="text-right">42</td></tr>
+       <tr><td><a href="Exports/VerlofaanvragenExport.php.html#23"><abbr title="App\Exports\VerlofaanvragenExport::map">map</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Controllers/DashboardController.php.html#60"><abbr title="App\Http\Controllers\DashboardController::getStatusLabel">getStatusLabel</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Middleware/CheckRole.php.html#11"><abbr title="App\Http\Middleware\CheckRole::handle">handle</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Controllers/KeuringController.php.html#50"><abbr title="App\Http\Controllers\KeuringController::updateStatus">updateStatus</abbr></a></td><td class="text-right">7</td></tr>
+       <tr><td><a href="Http/Controllers/LoginController.php.html#19"><abbr title="App\Http\Controllers\LoginController::login">login</abbr></a></td><td class="text-right">7</td></tr>
+       <tr><td><a href="Http/Controllers/DashboardController.php.html#69"><abbr title="App\Http\Controllers\DashboardController::prepareDays">prepareDays</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/LoginController.php.html#72"><abbr title="App\Http\Controllers\LoginController::store2faCodeFromApp">store2faCodeFromApp</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/LoginController.php.html#85"><abbr title="App\Http\Controllers\LoginController::verify2fa">verify2fa</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/KeuringController.php.html#19"><abbr title="App\Http\Controllers\KeuringController::index">index</abbr></a></td><td class="text-right">4</td></tr>
+       <tr><td><a href="Models/User.php.html#51"><abbr title="App\Models\User::save">save</abbr></a></td><td class="text-right">4</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <footer>
+    <hr/>
+    <p>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 11.0.6</a> using <a href="https://www.php.net/" target="_top">PHP 8.2.12</a> and <a href="https://phpunit.de/">PHPUnit 11.3.6</a> at Thu Jan 23 12:09:57 UTC 2025.</small>
+    </p>
+   </footer>
+  </div>
+  <script src="_js/jquery.min.js?v=11.0.6" type="text/javascript"></script>
+  <script src="_js/d3.min.js?v=11.0.6" type="text/javascript"></script>
+  <script src="_js/nv.d3.min.js?v=11.0.6" type="text/javascript"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#classCoverageDistribution svg')
+      .datum(getCoverageDistributionData([8,0,0,0,0,0,1,2,2,1,3,7], "Class Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#methodCoverageDistribution svg')
+      .datum(getCoverageDistributionData([25,0,0,0,0,0,0,1,1,2,4,27], "Method Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getCoverageDistributionData(data, label) {
+    var labels = [
+      '0%',
+      '0-10%',
+      '10-20%',
+      '20-30%',
+      '30-40%',
+      '40-50%',
+      '50-60%',
+      '60-70%',
+      '70-80%',
+      '80-90%',
+      '90-100%',
+      '100%'
+    ];
+    var values = [];
+    $.each(labels, function(key) {
+      values.push({x: labels[key], y: data[key]});
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Cyclomatic Complexity');
+
+    d3.select('#classComplexity svg')
+      .datum(getComplexityData([[0,6,"<a href=\"Exports\/VerlofaanvragenExport.php.html#12\">App\\Exports\\VerlofaanvragenExport<\/a>"],[88.57142857142857,4,"<a href=\"Http\/Controllers\/AccounttoevoegenController.php.html#13\">App\\Http\\Controllers\\AccounttoevoegenController<\/a>"],[100,5,"<a href=\"Http\/Controllers\/CalendarController.php.html#9\">App\\Http\\Controllers\\CalendarController<\/a>"],[100,0,"<a href=\"Http\/Controllers\/Controller.php.html#9\">App\\Http\\Controllers\\Controller<\/a>"],[0,9,"<a href=\"Http\/Controllers\/DashboardController.php.html#10\">App\\Http\\Controllers\\DashboardController<\/a>"],[72.09302325581395,12,"<a href=\"Http\/Controllers\/KeuringController.php.html#12\">App\\Http\\Controllers\\KeuringController<\/a>"],[60.86956521739131,14,"<a href=\"Http\/Controllers\/LoginController.php.html#12\">App\\Http\\Controllers\\LoginController<\/a>"],[100,0,"<a href=\"Http\/Controllers\/PermissieController.php.html#7\">App\\Http\\Controllers\\PermissieController<\/a>"],[100,4,"<a href=\"Http\/Controllers\/ProfielController.php.html#12\">App\\Http\\Controllers\\ProfielController<\/a>"],[90.9090909090909,4,"<a href=\"Http\/Controllers\/RegisterController.php.html#9\">App\\Http\\Controllers\\RegisterController<\/a>"],[0,7,"<a href=\"Http\/Controllers\/TwoFactorController.php.html#8\">App\\Http\\Controllers\\TwoFactorController<\/a>"],[92.10526315789474,5,"<a href=\"Http\/Controllers\/VerlofAanvraagController.php.html#13\">App\\Http\\Controllers\\VerlofAanvraagController<\/a>"],[50,2,"<a href=\"Http\/Controllers\/VerlofDataController.php.html#12\">App\\Http\\Controllers\\VerlofDataController<\/a>"],[95.45454545454545,4,"<a href=\"Http\/Controllers\/ZiekmeldenController.php.html#11\">App\\Http\\Controllers\\ZiekmeldenController<\/a>"],[0,3,"<a href=\"Http\/Middleware\/CheckRole.php.html#9\">App\\Http\\Middleware\\CheckRole<\/a>"],[75,7,"<a href=\"Models\/User.php.html#9\">App\\Models\\User<\/a>"],[66.66666666666666,3,"<a href=\"Models\/UserInfo.php.html#8\">App\\Models\\UserInfo<\/a>"],[0,1,"<a href=\"Models\/logboek.php.html#8\">App\\Models\\logboek<\/a>"],[0,1,"<a href=\"Models\/role.php.html#8\">App\\Models\\role<\/a>"],[0,1,"<a href=\"Models\/team.php.html#8\">App\\Models\\team<\/a>"],[0,1,"<a href=\"Models\/type.php.html#8\">App\\Models\\type<\/a>"],[100,3,"<a href=\"Models\/verlofaanvragen.php.html#9\">App\\Models\\verlofaanvragen<\/a>"],[100,2,"<a href=\"Providers\/AppServiceProvider.php.html#10\">App\\Providers\\AppServiceProvider<\/a>"],[100,4,"<a href=\"Providers\/RouteServiceProvider.php.html#8\">App\\Providers\\RouteServiceProvider<\/a>"]], 'Class Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Method Complexity');
+
+    d3.select('#methodComplexity svg')
+      .datum(getComplexityData([[0,1,"<a href=\"Exports\/VerlofaanvragenExport.php.html#14\">App\\Exports\\VerlofaanvragenExport::collection<\/a>"],[0,3,"<a href=\"Exports\/VerlofaanvragenExport.php.html#23\">App\\Exports\\VerlofaanvragenExport::map<\/a>"],[0,1,"<a href=\"Exports\/VerlofaanvragenExport.php.html#41\">App\\Exports\\VerlofaanvragenExport::headings<\/a>"],[0,1,"<a href=\"Exports\/VerlofaanvragenExport.php.html#59\">App\\Exports\\VerlofaanvragenExport::styles<\/a>"],[100,1,"<a href=\"Http\/Controllers\/AccounttoevoegenController.php.html#15\">App\\Http\\Controllers\\AccounttoevoegenController::__construct<\/a>"],[0,1,"<a href=\"Http\/Controllers\/AccounttoevoegenController.php.html#20\">App\\Http\\Controllers\\AccounttoevoegenController::index<\/a>"],[96.7741935483871,2,"<a href=\"Http\/Controllers\/AccounttoevoegenController.php.html#27\">App\\Http\\Controllers\\AccounttoevoegenController::store<\/a>"],[100,1,"<a href=\"Http\/Controllers\/CalendarController.php.html#11\">App\\Http\\Controllers\\CalendarController::index<\/a>"],[100,1,"<a href=\"Http\/Controllers\/CalendarController.php.html#17\">App\\Http\\Controllers\\CalendarController::getCalendarData<\/a>"],[100,2,"<a href=\"Http\/Controllers\/CalendarController.php.html#30\">App\\Http\\Controllers\\CalendarController::prepareDays<\/a>"],[100,1,"<a href=\"Http\/Controllers\/CalendarController.php.html#63\">App\\Http\\Controllers\\CalendarController::getDutchDayName<\/a>"],[0,1,"<a href=\"Http\/Controllers\/DashboardController.php.html#12\">App\\Http\\Controllers\\DashboardController::__construct<\/a>"],[0,1,"<a href=\"Http\/Controllers\/DashboardController.php.html#17\">App\\Http\\Controllers\\DashboardController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/DashboardController.php.html#49\">App\\Http\\Controllers\\DashboardController::getLopendeAanvragen<\/a>"],[0,3,"<a href=\"Http\/Controllers\/DashboardController.php.html#60\">App\\Http\\Controllers\\DashboardController::getStatusLabel<\/a>"],[0,2,"<a href=\"Http\/Controllers\/DashboardController.php.html#69\">App\\Http\\Controllers\\DashboardController::prepareDays<\/a>"],[0,1,"<a href=\"Http\/Controllers\/DashboardController.php.html#102\">App\\Http\\Controllers\\DashboardController::getDutchDayName<\/a>"],[100,1,"<a href=\"Http\/Controllers\/KeuringController.php.html#14\">App\\Http\\Controllers\\KeuringController::__construct<\/a>"],[66.66666666666666,4,"<a href=\"Http\/Controllers\/KeuringController.php.html#19\">App\\Http\\Controllers\\KeuringController::index<\/a>"],[75,7,"<a href=\"Http\/Controllers\/KeuringController.php.html#50\">App\\Http\\Controllers\\KeuringController::updateStatus<\/a>"],[100,1,"<a href=\"Http\/Controllers\/LoginController.php.html#14\">App\\Http\\Controllers\\LoginController::showLoginForm<\/a>"],[85.18518518518519,7,"<a href=\"Http\/Controllers\/LoginController.php.html#19\">App\\Http\\Controllers\\LoginController::login<\/a>"],[0,1,"<a href=\"Http\/Controllers\/LoginController.php.html#67\">App\\Http\\Controllers\\LoginController::show2faForm<\/a>"],[0,2,"<a href=\"Http\/Controllers\/LoginController.php.html#72\">App\\Http\\Controllers\\LoginController::store2faCodeFromApp<\/a>"],[0,2,"<a href=\"Http\/Controllers\/LoginController.php.html#85\">App\\Http\\Controllers\\LoginController::verify2fa<\/a>"],[100,1,"<a href=\"Http\/Controllers\/LoginController.php.html#101\">App\\Http\\Controllers\\LoginController::logout<\/a>"],[100,1,"<a href=\"Http\/Controllers\/ProfielController.php.html#14\">App\\Http\\Controllers\\ProfielController::show<\/a>"],[100,3,"<a href=\"Http\/Controllers\/ProfielController.php.html#32\">App\\Http\\Controllers\\ProfielController::update<\/a>"],[100,1,"<a href=\"Http\/Controllers\/RegisterController.php.html#11\">App\\Http\\Controllers\\RegisterController::showRegisterForm<\/a>"],[90.47619047619048,3,"<a href=\"Http\/Controllers\/RegisterController.php.html#16\">App\\Http\\Controllers\\RegisterController::register<\/a>"],[0,1,"<a href=\"Http\/Controllers\/TwoFactorController.php.html#13\">App\\Http\\Controllers\\TwoFactorController::storeCode<\/a>"],[0,6,"<a href=\"Http\/Controllers\/TwoFactorController.php.html#31\">App\\Http\\Controllers\\TwoFactorController::verifyCode<\/a>"],[100,1,"<a href=\"Http\/Controllers\/VerlofAanvraagController.php.html#15\">App\\Http\\Controllers\\VerlofAanvraagController::create<\/a>"],[91.42857142857143,4,"<a href=\"Http\/Controllers\/VerlofAanvraagController.php.html#23\">App\\Http\\Controllers\\VerlofAanvraagController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/VerlofDataController.php.html#15\">App\\Http\\Controllers\\VerlofDataController::index<\/a>"],[100,1,"<a href=\"Http\/Controllers\/VerlofDataController.php.html#20\">App\\Http\\Controllers\\VerlofDataController::export<\/a>"],[100,1,"<a href=\"Http\/Controllers\/ZiekmeldenController.php.html#13\">App\\Http\\Controllers\\ZiekmeldenController::__construct<\/a>"],[100,1,"<a href=\"Http\/Controllers\/ZiekmeldenController.php.html#18\">App\\Http\\Controllers\\ZiekmeldenController::index<\/a>"],[94.73684210526315,2,"<a href=\"Http\/Controllers\/ZiekmeldenController.php.html#25\">App\\Http\\Controllers\\ZiekmeldenController::store<\/a>"],[0,3,"<a href=\"Http\/Middleware\/CheckRole.php.html#11\">App\\Http\\Middleware\\CheckRole::handle<\/a>"],[84.61538461538461,4,"<a href=\"Models\/User.php.html#51\">App\\Models\\User::save<\/a>"],[100,1,"<a href=\"Models\/User.php.html#79\">App\\Models\\User::userInfo<\/a>"],[0,1,"<a href=\"Models\/User.php.html#87\">App\\Models\\User::role<\/a>"],[0,1,"<a href=\"Models\/User.php.html#95\">App\\Models\\User::team<\/a>"],[100,1,"<a href=\"Models\/UserInfo.php.html#30\">App\\Models\\UserInfo::role<\/a>"],[100,1,"<a href=\"Models\/UserInfo.php.html#35\">App\\Models\\UserInfo::team<\/a>"],[0,1,"<a href=\"Models\/UserInfo.php.html#40\">App\\Models\\UserInfo::getFullNameAttribute<\/a>"],[0,1,"<a href=\"Models\/logboek.php.html#21\">App\\Models\\logboek::user<\/a>"],[0,1,"<a href=\"Models\/role.php.html#17\">App\\Models\\role::users<\/a>"],[0,1,"<a href=\"Models\/team.php.html#17\">App\\Models\\team::users<\/a>"],[0,1,"<a href=\"Models\/type.php.html#14\">App\\Models\\type::verlofaanvragen<\/a>"],[100,1,"<a href=\"Models\/verlofaanvragen.php.html#37\">App\\Models\\verlofaanvragen::type<\/a>"],[100,1,"<a href=\"Models\/verlofaanvragen.php.html#45\">App\\Models\\verlofaanvragen::user<\/a>"],[100,1,"<a href=\"Models\/verlofaanvragen.php.html#50\">App\\Models\\verlofaanvragen::team<\/a>"],[100,1,"<a href=\"Providers\/AppServiceProvider.php.html#15\">App\\Providers\\AppServiceProvider::register<\/a>"],[100,1,"<a href=\"Providers\/AppServiceProvider.php.html#23\">App\\Providers\\AppServiceProvider::boot<\/a>"],[100,1,"<a href=\"Providers\/RouteServiceProvider.php.html#18\">App\\Providers\\RouteServiceProvider::boot<\/a>"],[100,1,"<a href=\"Providers\/RouteServiceProvider.php.html#26\">App\\Providers\\RouteServiceProvider::map<\/a>"],[100,1,"<a href=\"Providers\/RouteServiceProvider.php.html#36\">App\\Providers\\RouteServiceProvider::mapApiRoutes<\/a>"],[100,1,"<a href=\"Providers\/RouteServiceProvider.php.html#47\">App\\Providers\\RouteServiceProvider::mapWebRoutes<\/a>"]], 'Method Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getComplexityData(data, label) {
+    var values = [];
+    $.each(data, function(key) {
+      var value = Math.round(data[key][0]*100) / 100;
+      values.push({
+        x: value,
+        y: data[key][1],
+        class: data[key][2],
+        size: 0.05,
+        shape: 'diamond'
+      });
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+});
+  </script>
+ </body>
+</html>

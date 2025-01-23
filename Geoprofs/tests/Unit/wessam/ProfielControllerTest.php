@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\wessam;
 
 use App\Models\User;
 use App\Models\UserInfo;

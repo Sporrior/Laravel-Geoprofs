@@ -125,13 +125,11 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($users as $userData) {
-            // Create or update the User (password is handled in the `users` table)
             $user = User::updateOrCreate(
                 ['id' => UserInfo::where('email', $userData['email'])->value('id')],
                 ['password' => $userData['password']]
             );
 
-            // Create or update UserInfo (linked to User by `id`)
             UserInfo::updateOrCreate(
                 ['id' => $user->id],
                 array_merge($userData['info'], ['email' => $userData['email']])

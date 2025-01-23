@@ -1,9 +1,8 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\wessam;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Role;
@@ -56,33 +55,5 @@ class AccounttoevoegenControllerTest extends TestCase
     ]);
 }
 
-
-
-//     public function test_store_validates_input()
-// {
-//     // Seed roles
-//     $role = Role::factory()->create(['role_name' => 'manager']);
-
-//     // Authenticate a user
-//     $adminUser = User::factory()->create();
-//     $this->actingAs($adminUser);
-
-//     // Prepare invalid input data
-//     $data = [
-//         'voornaam' => '',
-//         'achternaam' => '',
-//         'telefoon' => '1234567890',
-//         'email' => 'not-an-email',
-//         'password' => 'short',
-//         'password_confirmation' => 'short',
-//         'role_id' => 999,
-//     ];
-
-//     // Perform the POST request
-//     $response = $this->post(route('account-toevoegen.store'), $data);
-
-//     // Assert validation errors
-//     $response->assertSessionHasErrors(['voornaam', 'achternaam', 'email', 'password', 'role_id']);
-// }
 
 }
