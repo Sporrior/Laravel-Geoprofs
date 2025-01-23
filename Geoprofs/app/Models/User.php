@@ -4,11 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -39,36 +46,54 @@ class User extends Authenticatable
     ];
 
     /**
-     * Define the relationship with the UserInfo model.
+     * Override save to ensure `password` is handled properly in the `users` table.
      */
-    public function info()
+    public function save(array $options = [])
+    {
+        $isCreating = !$this->exists;
+
+        if ($isCreating && !isset($this->attributes['password'])) {
+            throw new \Exception("Password is required for new User records.");
+        }
+
+        if (isset($this->attributes['password'])) {
+            $password = $this->attributes['password'];
+            unset($this->attributes['password']);
+
+            parent::save($options);
+
+            DB::table($this->getTable())->updateOrInsert(
+                ['id' => $this->id],
+                ['password' => $password, 'created_at' => now(), 'updated_at' => now()]
+            );
+
+            return true;
+        }
+
+        return parent::save($options);
+    }
+
+    /**
+     * Relationship with the UserInfo model.
+     */
+    public function userInfo()
     {
         return $this->hasOne(UserInfo::class, 'id', 'id');
     }
 
     /**
-     * Magic property access for UserInfo fields.
-     *
-     * If a property is not directly on the User model, attempt to retrieve it from UserInfo.
+     * Relationship with the Role model.
      */
-    public function __get($key)
+    public function role()
     {
-        if (in_array($key, [
-            'voornaam',
-            'tussennaam',
-            'achternaam',
-            'profielFoto',
-            'email',
-            'telefoon',
-            'verlof_dagen',
-            'failed_login_attempts',
-            'blocked_until',
-            'role_id',
-            'team_id',
-        ])) {
-            return $this->info->$key ?? null;
-        }
+        return $this->belongsTo(Role::class, 'role_id');
+    }
 
-        return parent::__get($key);
+    /**
+     * Relationship with the Team model.
+     */
+    public function team()
+    {
+        return $this->belongsTo(Team::class, 'team_id');
     }
 }

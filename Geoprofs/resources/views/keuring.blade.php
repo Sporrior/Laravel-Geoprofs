@@ -1,6 +1,6 @@
-@if(!$user->id == 2 || $user->id == 3)
+@if(!$user->role_id == 2 || $user->role_id == 3)
 
-@elseif($user->id == 1)
+@elseif($user->role_id == 3)
     <script>window.location = "/dashboard";</script>
 @endif
 <!DOCTYPE html>
@@ -274,12 +274,29 @@
                     </div>
                 </div>
 
+                <div class="dropdown" data-control="checkbox-dropdown">
+                    <label class="dropdown-label">Team</label>
+                    <div class="dropdown-list">
+                        @foreach($teams as $team)
+                            <label class="dropdown-option">
+                                <input type="checkbox" name="teams[]" value="{{ $team->id }}"
+                                    {{ (is_array(request('teams')) && in_array($team->id, request('teams'))) ? 'checked' : '' }} />
+                                {{ $team->group_name }}
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+
+
                 <button type="submit">Filter</button>
+
+                <a href="{{ route('verlofdata.export', request()->query()) }}" class="export-button" style="display: inline-block; text-decoration: none; color: rgb(255, 255, 255); background-color: #007bff; padding: 10px 20px; border-radius: 5px; font-weight: bold; text-align: center;">Exporteren naar Excel</a>
+
             </form>
 
             @foreach($verlofaanvragen->sortByDesc('updated_at') as $aanvraag)
                 <div class="leave-card">
-                    <h3>{{ optional($aanvraag->user->info)->voornaam }}'s Verlofaanvraag</h3>
+                <h3>{{ $aanvraag->user ? $aanvraag->user->voornaam : 'Onbekende Gebruiker' }}'s Verlofaanvraag</h3>
                     <div class="leave-details">
                         <div class="leave-detail"><strong>Reden:</strong> {{ $aanvraag->verlof_reden }}</div>
                         <div class="leave-detail"><strong>Start Datum:</strong> {{ $aanvraag->start_datum }}</div>
@@ -340,10 +357,14 @@
                 select.addEventListener('change', function () {
                     const aanvraagId = this.getAttribute('data-aanvraag-id');
                     const reasonContainer = document.getElementById(`reason-container-${aanvraagId}`);
-                    if (this.value === '0') {
+                    const reasonTextarea = reasonContainer.querySelector('textarea');
+
+                    if (this.value === '0') { // Als "Weigeren" is geselecteerd
                         reasonContainer.style.display = 'block';
-                    } else {
+                        reasonTextarea.setAttribute('required', 'true');
+                    } else { 
                         reasonContainer.style.display = 'none';
+                        reasonTextarea.removeAttribute('required');
                     }
                 });
             });

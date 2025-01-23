@@ -8,5 +8,6 @@
     </head>
 
     <body>
-        <a href="{{ route('verlofaanvragen.export', request()->query()) }}" class="export-button">Exporteren naar Excel</a>
+        <a href="{{ route('verlofdata.export', request()->query()) }}" class="export-button">Exporteren naar Excel</a>
     </body>
+

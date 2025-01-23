@@ -46,7 +46,6 @@
         }
 
         .success-message {
-            background-color: #4caf50;
             color: #fff;
             padding: 15px 20px;
             border-radius: 5px;
@@ -56,7 +55,6 @@
             right: 20px;
             z-index: 1000;
             display: none;
-            /* Initially hidden */
             font-size: 14px;
             transition: opacity 0.5s ease;
         }
@@ -118,8 +116,13 @@
             <div class="container">
                 <h1>Ziekmelden</h1>
 
-                @if(session('success'))
-                    <div class="success-message" id="successMessage">{{ session('success') }}</div>
+                @if(session('success') || session('error'))
+                    <div 
+                        class="success-message" 
+                        id="successMessage" 
+                        style="background-color: {{ session('error') ? '#ff4c4c' : '#4caf50' }};">
+                        {{ session('success') ?? session('error') }}
+                    </div>
                 @endif
 
                 <form action="{{ route('ziekmelden.store') }}" method="POST" class="sick-form">

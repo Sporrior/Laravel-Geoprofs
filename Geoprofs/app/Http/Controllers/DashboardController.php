@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Verlofaanvragen;
+use App\Models\UserInfo;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -16,52 +18,99 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        $verlofaanvragen = verlofaanvragen::with('user')->get();
+        $user_info = UserInfo::with(['role', 'team'])->findOrFail($user->id);
 
-        foreach ($verlofaanvragen as $aanvraag) {
-            if (is_null($aanvraag->status)) {
-                $aanvraag->status_label = "Afwachting";
-            } elseif ($aanvraag->status === 1) {
-                $aanvraag->status_label = "Goedgekeurd";
-            } else {
-                $aanvraag->status_label = "Geweigerd";
-            }
-        }
+        $verlofaanvragen = Verlofaanvragen::with('user')
+            ->where('user_id', $user->id)
+            ->get()
+            ->map(function ($aanvraag) {
+                $aanvraag->status_label = $this->getStatusLabel($aanvraag->status);
+                return $aanvraag;
+            });
 
-        // Roep de lopendeAanvragen() functie aan
-        $lopendeAanvragen = $this->lopendeAanvragen();
+        $lopendeAanvragen = $this->getLopendeAanvragen($user->id);
+
+        $allVerlofaanvragen = Verlofaanvragen::where('status', 1)
+            ->with('user')
+            ->get();
+
+        $dagen = $this->prepareDays($allVerlofaanvragen);
 
         return view("dashboard", [
+            "user" => $user,
+            "user_info" => $user_info,
             "verlofaanvragen" => $verlofaanvragen,
             "lopendeAanvragen" => $lopendeAanvragen,
-            "vakantiedagen" => $user->verlof_dagen,
+            "vakantiedagen" => $user_info->verlof_dagen,
+            "dagen" => $dagen,
         ]);
     }
 
-    public function lopendeAanvragen()
-{
-    $user = Auth::user();
-
-    // Haal alle relevante verlofaanvragen op
-    $verlofaanvragen = Verlofaanvragen::with("user")
-        ->where([
-            ['status', '=', null],
-            ['verlof_soort', '=', 4],
-            ['user_id', '=', $user->id],
-        ])
-        ->get();
-
-    // Voeg status labels toe aan elke aanvraag
-    foreach ($verlofaanvragen as $aanvraag) {
-        if (is_null($aanvraag->status)) {
-            $aanvraag->status_label = "Afwachting";
-        } elseif ($aanvraag->status === 1) {
-            $aanvraag->status_label = "Goedgekeurd";
-        } else {
-            $aanvraag->status_label = "Geweigerd";
-        }
+    private function getLopendeAanvragen($userId)
+    {
+        return Verlofaanvragen::where('user_id', $userId)
+            ->whereNull('status')
+            ->get()
+            ->map(function ($aanvraag) {
+                $aanvraag->status_label = $this->getStatusLabel($aanvraag->status);
+                return $aanvraag;
+            });
     }
 
-    return $verlofaanvragen;
-}
+    private function getStatusLabel($status)
+    {
+        if (is_null($status)) {
+            return "Afwachting";
+        }
+
+        return $status === 1 ? "Goedgekeurd" : "Geweigerd";
+    }
+
+    private function prepareDays($verlofaanvragen)
+    {
+        $dagen = [];
+        $startVanWeek = now()->startOfWeek();
+
+        for ($i = 0; $i < 7; $i++) {
+            $huidigeDatum = $startVanWeek->copy()->addDays($i);
+
+            $gefilterdeVerzoeken = $verlofaanvragen->filter(function ($verzoek) use ($huidigeDatum) {
+                $startDatum = $verzoek->start_datum;
+                $eindDatum = $verzoek->eind_datum;
+
+                return $huidigeDatum->between($startDatum, $eindDatum);
+            })->map(function ($verzoek, $index) {
+                return [
+                    'voornaam' => $verzoek->user->voornaam ?? 'Onbekend',
+                    'reden' => $verzoek->verlof_reden,
+                    'tijd' => $verzoek->start_datum->format('H:i') . ' - ' . $verzoek->eind_datum->format('H:i'),
+                    'start' => max((int) $verzoek->start_datum->format('H') - 8 + $index, 1),
+                    'end' => max((int) $verzoek->eind_datum->format('H') - 8 + $index + 1, 2),
+                ];
+            });
+
+            $dagen[] = [
+                'datumNummer' => $huidigeDatum->format('j'),
+                'datumDag' => $this->getDutchDayName($huidigeDatum->format('D')),
+                'verlofaanvragen' => $gefilterdeVerzoeken,
+            ];
+        }
+
+        return $dagen;
+    }
+
+    private function getDutchDayName($day)
+    {
+        $dayMap = [
+            'Mon' => 'Ma',
+            'Tue' => 'Di',
+            'Wed' => 'Wo',
+            'Thu' => 'Do',
+            'Fri' => 'Vr',
+            'Sat' => 'Za',
+            'Sun' => 'Zo',
+        ];
+
+        return $dayMap[$day] ?? $day;
+    }
 }

@@ -11,11 +11,10 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+            $table->id(); // Primary key
+            $table->string('password')->default('Welkom01');
+            $table->rememberToken(); // For "remember me" functionality
+            $table->timestamps(); // Created and updated timestamps
         });
 
         Schema::create('sessions', function (Blueprint $table) {

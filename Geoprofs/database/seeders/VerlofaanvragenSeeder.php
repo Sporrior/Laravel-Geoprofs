@@ -23,7 +23,7 @@ class VerlofaanvragenSeeder extends Seeder
 
             // Inserting a sick day on November 11
             DB::table('verlofaanvragen')->insert([
-                'verlof_reden' => 'Ziek', // Reason for sick leave
+                'verlof_reden' => 'Verlof', 
                 'aanvraag_datum' => Carbon::now()->format('Y-m-d'),
                 'start_datum' => '2024-11-11',
                 'eind_datum' => '2024-11-11',

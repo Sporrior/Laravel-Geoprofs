@@ -12,12 +12,12 @@ return new class extends Migration {
     {
         Schema::create('user_info', function (Blueprint $table) {
             $table->id();
-            $table->string('voornaam');
+            $table->string('voornaam')->default('');
             $table->string('tussennaam')->nullable();
-            $table->string('achternaam');
+            $table->string('achternaam')->default('');
             $table->string('profielFoto')->nullable()->default('profile_pictures/default_profile_photo.png');
-            $table->string('email')->unique();
-            $table->string('telefoon');
+            $table->string('email')->unique()->default('');
+            $table->string('telefoon')->default('');
             $table->integer('verlof_dagen')->default(25);
             $table->integer('failed_login_attempts')->default(0);
             $table->timestamp('blocked_until')->nullable();

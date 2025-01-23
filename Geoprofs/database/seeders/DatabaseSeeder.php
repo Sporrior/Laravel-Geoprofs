@@ -13,25 +13,29 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        Role::firstOrCreate(['role_name' => 'werknemer']);
-        Role::firstOrCreate(['role_name' => 'manager']);
-        Role::firstOrCreate(['role_name' => 'officemanagement']);
-
+        $this->createRoles();
         $this->createTeams();
-
         $this->createUsers();
 
         $this->call(VerlofaanvragenSeeder::class);
     }
 
+    private function createRoles()
+    {
+        $roles = ['werknemer', 'manager', 'officemanagement'];
+
+        foreach ($roles as $role) {
+            Role::firstOrCreate(['role_name' => $role]);
+        }
+    }
+
     private function createTeams()
     {
-        Team::firstOrCreate(['group_name' => 'GeoICT']);
-        Team::firstOrCreate(['group_name' => 'GeoDECY']);
-        Team::firstOrCreate(['group_name' => 'HRM']);
-        Team::firstOrCreate(['group_name' => 'Finances']);
-        Team::firstOrCreate(['group_name' => 'ICT']);
-        Team::firstOrCreate(['group_name' => 'OM']);
+        $teams = ['GeoICT', 'GeoDECY', 'HRM', 'Finances', 'ICT', 'OM'];
+
+        foreach ($teams as $team) {
+            Team::firstOrCreate(['group_name' => $team]);
+        }
     }
 
     private function createUsers()
@@ -41,6 +45,17 @@ class DatabaseSeeder extends Seeder
         $OM = Team::where('group_name', 'OM')->first()->id;
 
         $users = [
+            [
+                'email' => 'wessam@gmail.com',
+                'password' => Hash::make('Wess123456'),
+                'info' => [
+                    'voornaam' => 'Wess',
+                    'achternaam' => 'Boy',
+                    'telefoon' => '06123123123',
+                    'role_id' => Role::where('role_name', 'officemanagement')->first()->id,
+                    'team_id' => $hrm,
+                ],
+            ],
             [
                 'email' => 'ahmad@gmail.com',
                 'password' => Hash::make('Ahmad'),
@@ -64,88 +79,60 @@ class DatabaseSeeder extends Seeder
                 ],
             ],
             [
-                'email' => 'wessam@gmail.com',
-                'password' => Hash::make('wessam12345'),
+                'email' => 'User01@gmail.com',
+                'password' => Hash::make('User01'),
                 'info' => [
-                    'voornaam' => 'Wessam',
-                    'achternaam' => 'Gold',
-                    'telefoon' => '06234567890',
-                    'role_id' => Role::where('role_name', 'officemanagement')->first()->id,
+                    'voornaam' => 'User01',
+                    'achternaam' => 'back',
+                    'telefoon' => '06123456789',
+                    'role_id' => Role::where('role_name', 'werknemer')->first()->id,
                     'team_id' => $hrm,
                 ],
             ],
             [
-                'email' => 'testen@gmail.com',
-                'password' => Hash::make('testen'),
+                'email' => 'User02@gmail.com',
+                'password' => Hash::make('User02'),
                 'info' => [
-                    'voornaam' => 'Testen',
-                    'achternaam' => 'Smith',
-                    'telefoon' => '06234567890',
-                    'role_id' => Role::where('role_name', 'officemanagement')->first()->id,
-                    'team_id' => $OM,
-                ],
-            ],
-            [
-                'email' => 'karel@gmail.com',
-                'password' => Hash::make('Karel'),
-                'info' => [
-                    'voornaam' => 'Karel',
-                    'achternaam' => 'Gold',
-                    'telefoon' => '06234567890',
+                    'voornaam' => 'User02',
+                    'achternaam' => 'back',
+                    'telefoon' => '06123456789',
                     'role_id' => Role::where('role_name', 'werknemer')->first()->id,
                     'team_id' => $geoICT,
                 ],
             ],
             [
-                'email' => 'bob@gmail.com',
-                'password' => Hash::make('Bob'),
+                'email' => 'User03@gmail.com',
+                'password' => Hash::make('User03'),
                 'info' => [
-                    'voornaam' => 'Bob',
-                    'achternaam' => 'Bouwer',
-                    'telefoon' => '06234567890',
+                    'voornaam' => 'User03',
+                    'achternaam' => 'back',
+                    'telefoon' => '06123456789',
                     'role_id' => Role::where('role_name', 'werknemer')->first()->id,
                     'team_id' => $geoICT,
                 ],
             ],
             [
-                'email' => 'samet@gmail.com',
-                'password' => Hash::make('Samet'),
+                'email' => 'User04@gmail.com',
+                'password' => Hash::make('User04'),
                 'info' => [
-                    'voornaam' => 'Samet',
-                    'achternaam' => 'Lahmacun',
-                    'telefoon' => '06234567890',
-                    'role_id' => Role::where('role_name', 'werknemer')->first()->id,
-                    'team_id' => $geoICT,
-                ],
-            ],
-            [
-                'email' => 'kees@gmail.com',
-                'password' => Hash::make('Kees'),
-                'info' => [
-                    'voornaam' => 'Kees',
-                    'achternaam' => 'van der Veen',
-                    'telefoon' => '06234567890',
-                    'role_id' => Role::where('role_name', 'werknemer')->first()->id,
+                    'voornaam' => 'User04',
+                    'achternaam' => 'back',
+                    'telefoon' => '06123456789',
+                    'role_id' => Role::where('role_name', 'manager')->first()->id,
                     'team_id' => $geoICT,
                 ],
             ],
         ];
 
         foreach ($users as $userData) {
-            $user_info = UserInfo::firstOrCreate(
-                ['email' => $userData['email']],
-                [
-                    'voornaam' => $userData['info']['voornaam'],
-                    'achternaam' => $userData['info']['achternaam'],
-                    'telefoon' => $userData['info']['telefoon'],
-                    'role_id' => $userData['info']['role_id'],
-                    'team_id' => $userData['info']['team_id'],
-                ]
+            $user = User::updateOrCreate(
+                ['id' => UserInfo::where('email', $userData['email'])->value('id')],
+                ['password' => $userData['password']]
             );
 
-            User::firstOrCreate(
-                ['user_id' => $user_info->id],
-                ['password' => $userData['password']]
+            UserInfo::updateOrCreate(
+                ['id' => $user->id],
+                array_merge($userData['info'], ['email' => $userData['email']])
             );
         }
     }
