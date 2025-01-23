@@ -17,7 +17,15 @@ class ZiekmeldenControllerTest extends TestCase
     {
         // Arrange: Create a user and associate UserInfo
         $user = User::factory()->create();
-        UserInfo::factory()->create(['id' => $user->id]);
+        $userInfo = UserInfo::factory()->create([
+            'id' => $user->id,
+            'voornaam' => 'Ahmad',
+            'achternaam' => 'Test',
+            'email' => 'ahmad.test@example.com',
+            'telefoon' => '0612345678',
+            'verlof_dagen' => 10,
+        ]);
+
 
         // Act: Authenticate and make a GET request to the index route
         $response = $this->actingAs($user)->get(route('ziekmelden.index'));

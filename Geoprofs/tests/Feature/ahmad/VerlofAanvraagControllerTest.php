@@ -20,7 +20,14 @@ class VerlofAanvraagControllerTest extends TestCase
     public function testCreateMethod()
 {
     $user = User::factory()->create();
-    $userInfo = UserInfo::factory()->create(['id' => $user->id]);
+    $userInfo = UserInfo::factory()->create([
+        'id' => $user->id,
+        'voornaam' => 'Ahmad',
+        'achternaam' => 'Test',
+        'email' => 'ahmad.test@example.com',
+        'telefoon' => '0612345678',
+        'verlof_dagen' => 10,
+    ]);
 
     $types = Type::factory(3)->create();
 
@@ -43,7 +50,15 @@ class VerlofAanvraagControllerTest extends TestCase
     public function testStoreMethodWithValidData()
 {
     $user = User::factory()->create();
-    $userInfo = UserInfo::factory()->create(['id' => $user->id, 'verlof_dagen' => 10]);
+    $userInfo = UserInfo::factory()->create([
+        'id' => $user->id,
+        'voornaam' => 'Ahmad',
+        'achternaam' => 'Test',
+        'email' => 'ahmad.test@example.com',
+        'telefoon' => '0612345678',
+        'verlof_dagen' => 10,
+    ]);
+
 
     $type = Type::factory()->create();
 
@@ -75,7 +90,15 @@ class VerlofAanvraagControllerTest extends TestCase
     public function testStoreMethodWithExceedingLeaveDays()
     {
         $user = User::factory()->create();
-        $userInfo = UserInfo::factory()->create(['id' => $user->id, 'verlof_dagen' => 2]);
+        $userInfo = UserInfo::factory()->create([
+            'id' => $user->id,
+            'voornaam' => 'Ahmad',
+            'achternaam' => 'Test',
+            'email' => 'ahmad.test@example.com',
+            'telefoon' => '0612345678',
+            'verlof_dagen' => 2,
+        ]);
+
 
         $type = Type::factory()->create();
 
@@ -102,7 +125,15 @@ class VerlofAanvraagControllerTest extends TestCase
     public function testStoreMethodWithTooManyPendingRequests()
     {
         $user = User::factory()->create();
-        $userInfo = UserInfo::factory()->create(['id' => $user->id]);
+        $userInfo = UserInfo::factory()->create([
+            'id' => $user->id,
+            'voornaam' => 'Ahmad',
+            'achternaam' => 'Test',
+            'email' => 'ahmad.test@example.com',
+            'telefoon' => '0612345678',
+            'verlof_dagen' => 10,
+        ]);
+
 
         $type = Type::factory()->create();
 

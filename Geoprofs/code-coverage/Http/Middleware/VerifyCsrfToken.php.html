@@ -2,7 +2,7 @@
 <html lang="en">
  <head>
   <meta charset="UTF-8">
-  <title>Code Coverage for C:\xampp\htdocs\Geoprofs\Laravel-Geoprofs\Geoprofs\app\Http\Controllers\PermissieController.php</title>
+  <title>Code Coverage for C:\xampp\htdocs\Geoprofs\Laravel-Geoprofs\Geoprofs\app\Http\Middleware\VerifyCsrfToken.php</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="../../_css/bootstrap.min.css?v=11.0.6" rel="stylesheet" type="text/css">
   <link href="../../_css/octicons.css?v=11.0.6" rel="stylesheet" type="text/css">
@@ -18,8 +18,8 @@
        <ol class="breadcrumb">
          <li class="breadcrumb-item"><a href="../../index.html">C:\xampp\htdocs\Geoprofs\Laravel-Geoprofs\Geoprofs\app</a></li>
          <li class="breadcrumb-item"><a href="../index.html">Http</a></li>
-         <li class="breadcrumb-item"><a href="index.html">Controllers</a></li>
-         <li class="breadcrumb-item active">PermissieController.php</li>
+         <li class="breadcrumb-item"><a href="index.html">Middleware</a></li>
+         <li class="breadcrumb-item active">VerifyCsrfToken.php</li>
 
        </ol>
       </nav>
@@ -58,7 +58,7 @@
       </tr>
 
       <tr>
-       <td class=""><abbr title="App\Http\Controllers\PermissieController">PermissieController</abbr></td>
+       <td class=""><abbr title="App\Http\Middleware\VerifyCsrfToken">VerifyCsrfToken</abbr></td>
        <td class=" big"></td>
        <td class=" small"><div align="right">n/a</div></td>
        <td class=" small"><div align="right">0&nbsp;/&nbsp;0</div></td>
@@ -79,14 +79,21 @@
 <tbody>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="1" href="#1">1</a></td><td class="col-11 codeLine"><span class="default">&lt;?php</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="2" href="#2">2</a></td><td class="col-11 codeLine"></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="3" href="#3">3</a></td><td class="col-11 codeLine"><span class="keyword">namespace</span><span class="default">&nbsp;</span><span class="default">App\Http\Controllers</span><span class="keyword">;</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="3" href="#3">3</a></td><td class="col-11 codeLine"><span class="keyword">namespace</span><span class="default">&nbsp;</span><span class="default">App\Http\Middleware</span><span class="keyword">;</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="4" href="#4">4</a></td><td class="col-11 codeLine"></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="5" href="#5">5</a></td><td class="col-11 codeLine"><span class="keyword">use</span><span class="default">&nbsp;</span><span class="default">Illuminate\Http\Request</span><span class="keyword">;</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="5" href="#5">5</a></td><td class="col-11 codeLine"><span class="keyword">use</span><span class="default">&nbsp;</span><span class="default">Illuminate\Foundation\Http\Middleware\VerifyCsrfToken</span><span class="default">&nbsp;</span><span class="keyword">as</span><span class="default">&nbsp;</span><span class="default">Middleware</span><span class="keyword">;</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="6" href="#6">6</a></td><td class="col-11 codeLine"></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="7" href="#7">7</a></td><td class="col-11 codeLine"><span class="keyword">class</span><span class="default">&nbsp;</span><span class="default">PermissieController</span><span class="default">&nbsp;</span><span class="keyword">extends</span><span class="default">&nbsp;</span><span class="default">Controller</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="7" href="#7">7</a></td><td class="col-11 codeLine"><span class="keyword">class</span><span class="default">&nbsp;</span><span class="default">VerifyCsrfToken</span><span class="default">&nbsp;</span><span class="keyword">extends</span><span class="default">&nbsp;</span><span class="default">Middleware</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="8" href="#8">8</a></td><td class="col-11 codeLine"><span class="keyword">{</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="9" href="#9">9</a></td><td class="col-11 codeLine"></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="10" href="#10">10</a></td><td class="col-11 codeLine"><span class="keyword">}</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="9" href="#9">9</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="10" href="#10">10</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;The&nbsp;URIs&nbsp;that&nbsp;should&nbsp;be&nbsp;excluded&nbsp;from&nbsp;CSRF&nbsp;verification.</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="11" href="#11">11</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="12" href="#12">12</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@var&nbsp;array&lt;int,&nbsp;string&gt;</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="13" href="#13">13</a></td><td class="col-11 codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="14" href="#14">14</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">protected</span><span class="default">&nbsp;</span><span class="default">$except</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="keyword">[</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="15" href="#15">15</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">'/verify-2fa'</span><span class="keyword">,</span><span class="default">&nbsp;</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="16" href="#16">16</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">]</span><span class="keyword">;</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="17" href="#17">17</a></td><td class="col-11 codeLine"><span class="keyword">}</span></td></tr>
 
 </tbody>
 </table>

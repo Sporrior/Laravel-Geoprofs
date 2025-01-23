@@ -18,12 +18,20 @@ class KeuringControllerTest extends TestCase
      */
     public function testIndexMethodFiltersDataCorrectly()
     {
+
         // Seed database with test data
         $type1 = Type::factory()->create();
         $type2 = Type::factory()->create();
 
         $user = User::factory()->create();
-        $userInfo = UserInfo::factory()->create(['id' => $user->id]);
+        $userInfo = UserInfo::factory()->create([
+            'id' => $user->id,
+            'voornaam' => 'John',
+            'achternaam' => 'Doe',
+            'email' => 'john.doe@example.com',
+            'telefoon' => '1234567890',
+            'verlof_dagen' => 20,
+        ]);
 
         VerlofAanvragen::factory()->create([
             'verlof_soort' => $type1->id,
@@ -51,7 +59,14 @@ class KeuringControllerTest extends TestCase
     public function testUpdateStatusMethod()
 {
     $user = User::factory()->create();
-    $userInfo = UserInfo::factory()->create(['id' => $user->id, 'verlof_dagen' => 10]);
+    $userInfo = UserInfo::factory()->create([
+        'id' => $user->id,
+        'voornaam' => 'Jane',
+        'achternaam' => 'Smith',
+        'email' => 'jane.smith@example.com',
+        'telefoon' => '9876543210',
+        'verlof_dagen' => 10,
+    ]);
 
     $verlofAanvraag = VerlofAanvragen::factory()->create([
         'user_id' => $userInfo->id,
