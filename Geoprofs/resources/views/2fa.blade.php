@@ -123,6 +123,8 @@
         const alertBox = document.getElementById('alert');
         const verifyBtn = document.getElementById('verifyBtn');
 
+        let alertTimeout;
+
         verifyBtn.addEventListener('click', () => {
             const code = document.getElementById('2faCode').value;
 
@@ -155,7 +157,8 @@
         function showAlert(message) {
             alertBox.textContent = message;
             alertBox.classList.add('show');
-            setTimeout(() => alertBox.classList.remove('show'), 5000);
+            clearTimeout(alertTimeout);
+            alertTimeout = setTimeout(() => alertBox.classList.remove('show'), 5000);
         }
     </script>
 </body>

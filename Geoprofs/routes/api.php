@@ -5,4 +5,4 @@ use App\Http\Controllers\TwoFactorController;
 
 
 Route::post('/store-2fa-code', [TwoFactorController::class, 'storeCode']);
-Route::post('/verify-2fa-code', [TwoFactorController::class, 'verifyCode']);
+Route::get('/get-2fa-code', [TwoFactorController::class, 'getCode']); 

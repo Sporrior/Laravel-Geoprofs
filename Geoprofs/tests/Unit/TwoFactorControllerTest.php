@@ -2,8 +2,6 @@
 
 namespace Tests\Unit;
 
-use App\Models\User;
-use App\Models\UserInfo;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
@@ -11,93 +9,96 @@ class TwoFactorControllerTest extends TestCase
 {
     public function test_store_2fa_code_generates_and_stores_code()
     {
-        // Create a User and a corresponding UserInfo
-        $user = User::factory()->create(); // Password and auth-related fields
-        $userInfo = UserInfo::factory()->create(['id' => $user->id]); // Additional details
-
-        // Authenticate the user
-        $this->actingAs($user);
-
-        // Trigger the endpoint
-        $response = $this->postJson(route('2fa.store'));
+        // Trigger the store code endpoint
+        $response = $this->postJson('/api/store-2fa-code');
 
         // Assert response structure and status
         $response->assertStatus(200)
             ->assertJsonStructure(['status', 'message', 'code'])
             ->assertJson(['status' => 'success', 'message' => '2FA code generated successfully']);
 
-        // Assert code is stored in cache
-        $this->assertNotNull(Cache::get('2fa_code_' . $user->id));
+        // Assert that the code is stored in the cache
+        $this->assertNotNull(Cache::get('2fa_code'));
+    }
+
+    public function test_get_2fa_code_generates_new_code_if_none_exists()
+    {
+        // Ensure no code exists in the cache
+        Cache::forget('2fa_code');
+
+        // Trigger the get code endpoint
+        $response = $this->getJson('/api/get-2fa-code');
+
+        // Assert response structure and status
+        $response->assertStatus(200)
+            ->assertJsonStructure(['status', 'code'])
+            ->assertJson(['status' => 'success']);
+
+        // Assert that a code is now stored in the cache
+        $this->assertNotNull(Cache::get('2fa_code'));
+    }
+
+    public function test_get_2fa_code_returns_existing_code_if_exists()
+    {
+        // Manually store a code in the cache
+        $code = random_int(100000, 999999);
+        Cache::put('2fa_code', $code, now()->addMinutes(10));
+
+        // Trigger the get code endpoint
+        $response = $this->getJson('/api/get-2fa-code');
+
+        // Assert response contains the existing code
+        $response->assertStatus(200)
+            ->assertJson(['status' => 'success', 'code' => $code]);
     }
 
     public function test_verify_2fa_code_success()
     {
-        // Create a User and a corresponding UserInfo
-        $user = User::factory()->create();
-        $userInfo = UserInfo::factory()->create(['id' => $user->id]);
-
-        // Authenticate the user
-        $this->actingAs($user);
-
-        // Store a 2FA code in the cache
+        // Manually store a code in the cache
         $code = random_int(100000, 999999);
-        Cache::put('2fa_code_' . $user->id, $code, now()->addMinutes(10));
+        Cache::put('2fa_code', $code, now()->addMinutes(10));
 
         // Send the correct 2FA code for verification
-        $response = $this->post(route('2fa.verify'), ['2fa_code' => $code]);
+        $response = $this->postJson('/verify-2fa', ['2fa_code' => $code]);
 
-        // Assert redirection and success message
-        $response->assertRedirect(route('dashboard'))
-            ->assertSessionHas('success', '2FA verification successful!');
+        // Assert response status and message
+        $response->assertStatus(200)
+            ->assertJson(['status' => 'success', 'message' => '2FA verification successful.']);
 
-        // Assert code is removed from cache
-        $this->assertNull(Cache::get('2fa_code_' . $user->id));
+        // Assert the code is removed from the cache
+        $this->assertNull(Cache::get('2fa_code'));
     }
 
     public function test_verify_2fa_code_fails_with_incorrect_code()
     {
-        // Create a User and a corresponding UserInfo
-        $user = User::factory()->create();
-        $userInfo = UserInfo::factory()->create(['id' => $user->id]);
-
-        // Authenticate the user
-        $this->actingAs($user);
-
-        // Store a correct 2FA code in the cache
+        // Manually store a code in the cache
         $correctCode = random_int(100000, 999999);
-        Cache::put('2fa_code_' . $user->id, $correctCode, now()->addMinutes(10));
+        Cache::put('2fa_code', $correctCode, now()->addMinutes(10));
 
         // Send an incorrect code
-        $response = $this->post(route('2fa.verify'), ['2fa_code' => '123456']);
+        $response = $this->postJson('/verify-2fa', ['2fa_code' => '123456']);
 
-        // Assert error message
-        $response->assertRedirect()
-            ->assertSessionHasErrors(['2fa_code' => 'The code you entered is incorrect. Please try again.']);
+        // Assert response status and error message
+        $response->assertStatus(400)
+            ->assertJson(['status' => 'error', 'message' => 'The 2FA code is incorrect or has expired.']);
 
-        // Ensure the correct code is still in cache
-        $this->assertEquals($correctCode, Cache::get('2fa_code_' . $user->id));
+        // Ensure the correct code is still in the cache
+        $this->assertEquals($correctCode, Cache::get('2fa_code'));
     }
 
     public function test_verify_2fa_code_fails_when_code_not_in_cache()
     {
-        // Create a User and a corresponding UserInfo
-        $user = User::factory()->create();
-        $userInfo = UserInfo::factory()->create(['id' => $user->id]);
+        // Ensure no code exists in the cache
+        Cache::forget('2fa_code');
 
-        // Authenticate the user
-        $this->actingAs($user);
+        // Send a code for verification
+        $response = $this->postJson('/verify-2fa', ['2fa_code' => '123456']);
 
-        // Ensure no 2FA code exists in the cache
-        Cache::forget('2fa_code_' . $user->id);
-
-        // Send a 2FA code for verification
-        $response = $this->post(route('2fa.verify'), ['2fa_code' => '123456']);
-
-        // Assert error message
-        $response->assertRedirect()
-            ->assertSessionHasErrors(['2fa_code' => 'The code you entered is incorrect. Please try again.']);
+        // Assert response status and error message
+        $response->assertStatus(400)
+            ->assertJson(['status' => 'error', 'message' => 'The 2FA code is incorrect or has expired.']);
 
         // Ensure the cache is still empty
-        $this->assertNull(Cache::get('2fa_code_' . $user->id));
+        $this->assertNull(Cache::get('2fa_code'));
     }
 }

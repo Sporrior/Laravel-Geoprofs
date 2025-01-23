@@ -8,79 +8,69 @@ use Illuminate\Support\Facades\Cache;
 class TwoFactorController extends Controller
 {
     /**
-     * Generate and store 2FA code.
+     * Show the 2FA form.
      */
-    public function storeCode(Request $request)
+    public function show2faForm()
+    {
+        return view('2fa');
+    }
+
+    /**
+     * Generate and store a new 2FA code.
+     */
+    public function storeCode()
     {
         $code = random_int(100000, 999999);
-
-        $cacheKey = '2fa_code_' . ($request->input('user_id') ?? 'guest');
-
-        Cache::put($cacheKey, $code, now()->addMinutes(10));
+        Cache::put('2fa_code', $code, now()->addMinutes(10));
 
         return response()->json([
             'status' => 'success',
             'message' => '2FA code generated successfully',
-            'code' => $code
+            'code' => $code,
         ], 200);
     }
 
     /**
-     * Verify 2FA code.
+     * Retrieve the latest 2FA code (for Discord bot).
      */
-    public function verifyCode(Request $request)
+    public function getCode()
+    {
+        $code = Cache::get('2fa_code');
+
+        if (!$code) {
+            // Automatically generate a new code if none exists
+            $code = random_int(100000, 999999);
+            Cache::put('2fa_code', $code, now()->addMinutes(10));
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'code' => $code,
+        ], 200);
+    }
+
+    /**
+     * Verify the 2FA code.
+     */
+    public function verify2fa(Request $request)
     {
         $request->validate([
             '2fa_code' => 'required|numeric|digits:6',
         ]);
 
-        $userId = $request->input('user_id') ?? 'guest';
-        $cacheKeyCode = '2fa_code_' . $userId;
-        $cacheKeyAttempts = '2fa_attempts_' . $userId;
-        $cacheKeyTimeout = '2fa_timeout_' . $userId;
-
-        if (Cache::has($cacheKeyTimeout)) {
-            $remainingTime = Cache::get($cacheKeyTimeout) - time();
-            return response()->json([
-                'status' => 'error',
-                'message' => "You are timed out. Please wait {$remainingTime} seconds before trying again.",
-            ]);
-        }
-
-        $storedCode = Cache::get($cacheKeyCode);
+        $storedCode = Cache::get('2fa_code');
 
         if ($storedCode && $request->input('2fa_code') == $storedCode) {
-            Cache::forget($cacheKeyAttempts);
-            Cache::forget($cacheKeyTimeout);
-            Cache::forget($cacheKeyCode);
-
+            Cache::forget('2fa_code');
             return response()->json([
                 'status' => 'success',
-                'message' => '2FA verification successful!',
-            ]);
-        }
-
-        $attempts = Cache::increment($cacheKeyAttempts, 1);
-
-        if ($attempts === 1) {
-            Cache::put($cacheKeyAttempts, 1, now()->addMinutes(10));
-        }
-
-        $remainingAttempts = 3 - $attempts;
-
-        if ($remainingAttempts <= 0) {
-            Cache::put($cacheKeyTimeout, time() + 10, now()->addSeconds(10));
-            Cache::forget($cacheKeyAttempts);
-
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Too many failed attempts. Please wait 10 seconds before trying again.',
-            ]);
+                'message' => '2FA verification successful.',
+            ], 200);
         }
 
         return response()->json([
             'status' => 'error',
-            'message' => "The code you entered is incorrect. You have {$remainingAttempts} more attempt(s) before being timed out.",
-        ]);
+            'message' => 'The 2FA code is incorrect or has expired.',
+        ], 400);
     }
 }
