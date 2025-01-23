@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\damien;
 
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;

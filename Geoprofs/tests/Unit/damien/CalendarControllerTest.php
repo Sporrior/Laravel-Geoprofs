@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Feature;
+namespace Tests\Unit\damien;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
