@@ -22,12 +22,12 @@ describe('Submit and Approve Leave Request', () => {
 
       // Fill out and submit the leave request form
       cy.get('input[placeholder="dd-mm-jjjj"]').eq(0)
-      .invoke('val', '2024-12-18')
+      .invoke('val', '2025-2-11')
       .trigger('change');
 
     // Set the end date
     cy.get('input[placeholder="dd-mm-jjjj"]').eq(1)
-      .invoke('val', '2024-12-20')
+      .invoke('val', '2025-2-12')
       .trigger('change');
 
       cy.get('textarea').type('vakantie');
