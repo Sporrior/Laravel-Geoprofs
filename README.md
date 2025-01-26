@@ -1,126 +1,177 @@
-# Getting started
+# Aan de slag
 
-## First install Laravel
+## Installatie van Laravel
 
-install composer 
-of u have it installed u dont need to install
+### Composer installeren
+Indien Composer nog niet is geïnstalleerd, kun je deze downloaden via:
 
-    https://getcomposer.org/
+[https://getcomposer.org/](https://getcomposer.org/)
 
-install Nodejs
-of u have it installed u Dont need to innstall
+### Node.js installeren
+Indien Node.js nog niet is geïnstalleerd, kun je deze downloaden via:
 
-    https://nodejs.org/en
+[https://nodejs.org/en](https://nodejs.org/en)
 
-## Installing the folder 
+---
 
-Clone the repository/Folder
+## Het project installeren
 
-    git clone https://github.com/Sporrior/Laravel-Geoprofs
+### Clone de repository
+Clone de repository naar jouw lokale omgeving:
 
+```bash
+git clone https://github.com/Sporrior/Laravel-Geoprofs
+```
 
-switch to the folder
+### Ga naar de projectmap
+Navigeer naar de map:
 
-    cd Laravel-Geoprofs
+```bash
+cd Laravel-Geoprofs
+```
 
-install Composer and npm
+### Installeer Composer en npm
 
-    composer install
-    npm install
+```bash
+composer install
+npm install
+```
 
-Copy the example env file and make the required configuration changes in the .env file
+### Kopieer en configureer de `.env`-bestand
+Kopieer het voorbeeldbestand en pas de configuratie aan waar nodig:
 
-    copy .env.example .env
+```bash
+copy .env.example .env
+```
 
-Generate a new application key
+### Genereer een applicatiesleutel
 
-    php artisan key:generate
+```bash
+php artisan key:generate
+```
 
-Run the database migrations 
+### Voer de database-migraties uit
 
-    php artisan migrate
+```bash
+php artisan migrate
+```
 
+### Vul de database met standaardgegevens (seeds)
 
-Run the database seeder
+```bash
+php artisan db:seed
+```
 
-    php artisan db:seed
+### Bouw de afhankelijkheden en start de lokale ontwikkelserver
 
-Build your dependencies & start the local development server
+```bash
+npm run build
+npm run dev
+```
 
-    npm run build
-    npm run dev
+---
 
-### All Commands
+## Alle commando's in één overzicht
 
-    git clone https://github.com/Sporrior/Laravel-Geoprofs
-    cd crm-vidian.git
-    composer install
-    npm install
-    php artisan migrate
-    npm run build
-    npm run dev
-    php artisan db:seed
+```bash
+git clone https://github.com/Sporrior/Laravel-Geoprofs
+cd Laravel-Geoprofs
+composer install
+npm install
+php artisan key:generate
+php artisan migrate
+php artisan db:seed
+npm run build
+npm run dev
+```
 
-# Issues with installing
+---
 
-## ini
-if u have issue with php.ini and you are using XAMPP
+# Veelvoorkomende installatieproblemen
 
-Open XAMPP and right next to APACHE there is config click on it and open PHP (php.ini)
+## Problemen met `php.ini`
+Als je problemen ondervindt met `php.ini` en je gebruikt XAMPP:
 
-Control + F and search
+1. Open XAMPP.
+2. Klik naast **APACHE** op "Config" en selecteer "PHP (php.ini)".
+3. Zoek de regel:
 
-    ;extension=intl
+   ```ini
+   ;extension=intl
+   ```
 
-Change it to 
+4. Verwijder het puntkomma (`;`) zodat de regel wordt:
 
-    extension=intl
+   ```ini
+   extension=intl
+   ```
 
-## of u get error with database
+5. Start Apache opnieuw.
 
-refresh database
+## Problemen met de database
 
-    php artisan migrate:refresh
+### Database vernieuwen
 
-than u need to reintall your Seeder to login
+Als je een fout krijgt met betrekking tot de database, voer dan de volgende commando's uit:
 
-    php artisan db:seed
+```bash
+php artisan migrate:refresh
+php artisan db:seed
+```
 
-# How to Start the Serve
+---
 
-### XAMPP
+# Server starten
 
-Start XAMPP and start Apach and MYSQL
+## Met XAMPP
+1. Start XAMPP.
+2. Start **Apache** en **MySQL**.
 
-### Command
+## Via de command-line
 
-Server starten
+Start de PHP-server:
 
-    php artisan serve --host=0.0.0.0 --port=8000
+```bash
+php artisan serve --host=0.0.0.0 --port=8000
+```
 
-npm starten
+Start npm:
 
-    npm dev run
+```bash
+npm run dev
+```
 
-### Link
+### Toegang tot de applicatie
 
-    http://localhost:8000/
+Open in je browser:
 
-## Login
+[http://localhost:8000/](http://localhost:8000/)
 
-Default login Email :
+---
 
+# Inloggen
 
-    ahmad@gmail.com
-    
+### Standaard inloggegevens
 
-Default login password:
+**E-mailadres:**
 
-    Ahmad
+```text
+ahmad@gmail.com
+```
 
-## Issue with login Email/password
+**Wachtwoord:**
 
-Refresh your Database
+```text
+Ahmad
+```
 
-    php artisan migrate --seed
-    
+---
+
+## Problemen met inloggen
+Als je problemen ervaart met inloggen, voer dan de volgende commando's uit om de database te vernieuwen:
+
+```bash
+php artisan migrate --seed
+```
+
+---
