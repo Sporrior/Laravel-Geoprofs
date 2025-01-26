@@ -17,7 +17,7 @@ class RegisterController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:user_info',
             'password' => 'required|string|confirmed|min:8',
         ]);
 
@@ -27,14 +27,18 @@ class RegisterController extends Controller
         $achternaam = count($nameParts) > 1 ? end($nameParts) : '';
 
         $user = User::create([
-            'voornaam' => $voornaam,
-            'tussennaam' => null,
-            'achternaam' => $achternaam,
-            'profielFoto' => null, 
-            'telefoon' => '', 
-            'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
-            'role_id' => null,
+        ]);
+
+        // user_info en geen user tabel...
+        $userInfo = $user->userInfo()->create([
+            'voornaam' => $voornaam,
+            'tussennaam' => $tussennaam,
+            'achternaam' => $achternaam,
+            'email' => $validatedData['email'],
+            'telefoon' => $request->telefoon ?? '', 
+            'role_id' => 1, 
+            'team_id' => 1,
         ]);
 
         auth()->login($user);

@@ -5,7 +5,7 @@ describe('Login with Two-Factor Authentication That is below 6 Numbers', () => {
     
         // Input email
         cy.get('input[name="email"]').type('wessam@gmail.com');
-        cy.get('input[name="password"]').type('Wess');
+        cy.get('input[name="password"]').type('Wess123456');
         cy.get('button[type="submit"]').click();
         cy.url().should('include', '/2fa');
         cy.contains('Two-Factor Authentication').should('be.visible');
