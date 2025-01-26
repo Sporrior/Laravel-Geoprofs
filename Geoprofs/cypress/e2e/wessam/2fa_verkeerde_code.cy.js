@@ -5,13 +5,13 @@ describe('Login with Two-Factor Authentication', () => {
     
         // Input email
         cy.get('input[name="email"]').type('wessam@gmail.com');
-        cy.get('input[name="password"]').type('Wess');
+        cy.get('input[name="password"]').type('Wess123456');
         cy.get('button[type="submit"]').click();
         cy.url().should('include', '/2fa');
         cy.contains('Two-Factor Authentication').should('be.visible');
         cy.get('input[name="code"]').type('123456'); // Wrong code
         cy.get('button[type="button"]').click();
-        cy.contains('An error occurred. Please try again later.').should('be.visible');
+        cy.contains('Enter the code you received in Discord.').should('be.visible');
     });
 });
 

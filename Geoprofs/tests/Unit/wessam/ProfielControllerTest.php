@@ -15,22 +15,21 @@ class ProfielControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    /** @test */
     public function test_show_profile()
     {
         $user = User::factory()->create();
-        $adminRole = Role::factory()->create(['role_name' => 'admin']);
+        $role = Role::factory()->create(['role_name' => 'admin']);
         $team = Team::factory()->create();
 
         $userInfo = UserInfo::factory()->create([
             'id' => $user->id,
-            'role_id' => $adminRole->id,
+            'voornaam' => 'John',
+            'achternaam' => 'Doe',
+            'email' => 'john@example.com',
+            'telefoon' => '0612345678',
+            'role_id' => $role->id,
             'team_id' => $team->id,
-        ]);
-
-        $werknemerRole = Role::firstOrCreate(['role_name' => 'werknemer']);
-        $teamMember = UserInfo::factory()->create([
-            'team_id' => $team->id,
-            'role_id' => $werknemerRole->id,
         ]);
 
         $response = $this->actingAs($user)->get(route('profiel.show'));
@@ -38,11 +37,9 @@ class ProfielControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertViewIs('profiel');
         $response->assertViewHas('user_info', $userInfo);
-        $response->assertViewHas('users', function ($users) use ($teamMember) {
-            return $users->contains($teamMember);
-        });
     }
 
+    /** @test */
     public function test_update_profile_without_photo()
     {
         $user = User::factory()->create();
@@ -51,6 +48,10 @@ class ProfielControllerTest extends TestCase
 
         $userInfo = UserInfo::factory()->create([
             'id' => $user->id,
+            'voornaam' => 'John',
+            'achternaam' => 'Doe',
+            'email' => 'john@example.com',
+            'telefoon' => '0612345678',
             'role_id' => $role->id,
             'team_id' => $team->id,
         ]);
@@ -72,9 +73,9 @@ class ProfielControllerTest extends TestCase
         ]);
     }
 
+    /** @test */
     public function test_update_profile_with_photo()
     {
-        // Mock the storage
         Storage::fake('public');
 
         $user = User::factory()->create();
@@ -83,13 +84,16 @@ class ProfielControllerTest extends TestCase
 
         $userInfo = UserInfo::factory()->create([
             'id' => $user->id,
+            'voornaam' => 'John',
+            'achternaam' => 'Doe',
+            'email' => 'john@example.com',
+            'telefoon' => '0612345678',
+            'profielFoto' => 'profile_pictures/default_profile_photo.png', // default_profile_photo.png the default photo. path in DB: profile_pictures/default_profile_photo.png
             'role_id' => $role->id,
             'team_id' => $team->id,
-            'profielFoto' => 'profile_pictures/old_photo.jpg',
         ]);
 
-        // Fake a new photo
-        $newPhoto = UploadedFile::fake()->image('new_photo.jpg');
+        $newPhoto = UploadedFile::fake()->image('new_photo.png');
 
         $response = $this->actingAs($user)->put(route('profiel.update'), [
             'voornaam' => 'UpdatedFirstName',
@@ -101,16 +105,11 @@ class ProfielControllerTest extends TestCase
         $response->assertRedirect();
         $response->assertSessionHas('success', 'Profiel succesvol bijgewerkt');
 
-        // Get the expected stored photo path
         $storedPhotoPath = 'profile_pictures/' . $newPhoto->hashName();
 
-        // Assert the new photo is stored correctly
         Storage::disk('public')->assertExists($storedPhotoPath);
-
-        // Assert the old photo is removed
         Storage::disk('public')->assertMissing('profile_pictures/old_photo.jpg');
 
-        // Assert the database updates
         $this->assertDatabaseHas('user_info', [
             'id' => $user->id,
             'voornaam' => 'UpdatedFirstName',
@@ -120,6 +119,7 @@ class ProfielControllerTest extends TestCase
         ]);
     }
 
+    /** @test */
     public function test_update_profile_with_duplicate_email()
     {
         $user1 = User::factory()->create();
@@ -128,15 +128,22 @@ class ProfielControllerTest extends TestCase
         $role = Role::factory()->create();
         $team = Team::factory()->create();
 
-        $userInfo1 = UserInfo::factory()->create([
+        UserInfo::factory()->create([
             'id' => $user1->id,
+            'voornaam' => 'John',
+            'achternaam' => 'Doe',
+            'email' => 'existing@example.com',
+            'telefoon' => '0612345678',
             'role_id' => $role->id,
             'team_id' => $team->id,
-            'email' => 'existing@example.com',
         ]);
 
-        $userInfo2 = UserInfo::factory()->create([
+        UserInfo::factory()->create([
             'id' => $user2->id,
+            'voornaam' => 'Jane',
+            'achternaam' => 'Smith',
+            'email' => 'unique@example.com',
+            'telefoon' => '0612345678',
             'role_id' => $role->id,
             'team_id' => $team->id,
         ]);

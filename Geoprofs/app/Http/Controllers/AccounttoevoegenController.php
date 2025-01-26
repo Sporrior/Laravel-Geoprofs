@@ -44,14 +44,15 @@ class AccounttoevoegenController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        UserInfo::create([
-            'id' => $user->id,
+        $userInfo = UserInfo::create([
             'voornaam' => $request->voornaam,
             'tussennaam' => $request->tussennaam,
             'achternaam' => $request->achternaam,
-            'telefoon' => $request->telefoon,
             'email' => $request->email,
+            'telefoon' => $request->telefoon,
             'role_id' => $request->role_id,
+            'team_id' => $request->team_id ?? null, 
+            'profielFoto' => 'default_profile_photo.jpg', 
         ]);
 
         $loggedInUser = auth()->user();
