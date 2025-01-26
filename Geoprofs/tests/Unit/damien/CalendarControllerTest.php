@@ -11,12 +11,12 @@ class CalendarControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_it_returns_calendar_data_for_index_page()
+    public function test_het_retourneert_kalendergegevens_voor_indexpagina()
     {
         $user = User::factory()->create();
         $this->actingAs($user);
         
-        $leaveRequest = Verlofaanvragen::factory()->create([
+        $verlofaanvraag = Verlofaanvragen::factory()->create([
             'user_id' => $user->id,
             'start_datum' => now(),
             'eind_datum' => now(),
@@ -29,50 +29,50 @@ class CalendarControllerTest extends TestCase
         $response->assertViewHas('user_info');
     }
 
-    public function test_it_prepares_days_for_the_calendar()
+    public function test_het_bereidt_dagen_voor_de_kalender_voor()
     {
         $user = User::factory()->create();
-        $startOfWeek = now()->startOfWeek();
+        $startVanDeWeek = now()->startOfWeek();
         
         Verlofaanvragen::factory()->create([
             'user_id' => $user->id,
-            'start_datum' => $startOfWeek->copy()->addDay(),
-            'eind_datum' => $startOfWeek->copy()->addDay(),
+            'start_datum' => $startVanDeWeek->copy()->addDay(),
+            'eind_datum' => $startVanDeWeek->copy()->addDay(),
             'status' => 1,
         ]);
         
         $controller = new \App\Http\Controllers\CalendarController();
-        $calendarData = $controller->getCalendarData();
+        $kalenderGegevens = $controller->getCalendarData();
         
-        $this->assertIsArray($calendarData['dagen']);
-        $this->assertGreaterThan(0, count($calendarData['dagen']));
-        $this->assertArrayHasKey('datumNummer', $calendarData['dagen'][0]);
-        $this->assertArrayHasKey('verlofaanvragen', $calendarData['dagen'][0]);
+        $this->assertIsArray($kalenderGegevens['dagen']);
+        $this->assertGreaterThan(0, count($kalenderGegevens['dagen']));
+        $this->assertArrayHasKey('datumNummer', $kalenderGegevens['dagen'][0]);
+        $this->assertArrayHasKey('verlofaanvragen', $kalenderGegevens['dagen'][0]);
     }
 
-    public function test_it_filters_leave_requests_by_date()
+    public function test_het_filtert_verlofaanvragen_op_datum()
     {
         $user = User::factory()->create();
-        $startOfWeek = now()->startOfWeek();
+        $startVanDeWeek = now()->startOfWeek();
         
         Verlofaanvragen::factory()->create([
             'user_id' => $user->id,
-            'start_datum' => $startOfWeek,
-            'eind_datum' => $startOfWeek,
+            'start_datum' => $startVanDeWeek,
+            'eind_datum' => $startVanDeWeek,
             'status' => 1,
         ]);
         
         Verlofaanvragen::factory()->create([
             'user_id' => $user->id,
-            'start_datum' => $startOfWeek->copy()->addDay(),
-            'eind_datum' => $startOfWeek->copy()->addDay(),
+            'start_datum' => $startVanDeWeek->copy()->addDay(),
+            'eind_datum' => $startVanDeWeek->copy()->addDay(),
             'status' => 1,
         ]);
         
         $controller = new \App\Http\Controllers\CalendarController();
-        $calendarData = $controller->getCalendarData();
+        $kalenderGegevens = $controller->getCalendarData();
         
-        $this->assertCount(1, $calendarData['dagen'][0]['verlofaanvragen']);
-        $this->assertCount(1, $calendarData['dagen'][1]['verlofaanvragen']);
+        $this->assertCount(1, $kalenderGegevens['dagen'][0]['verlofaanvragen']);
+        $this->assertCount(1, $kalenderGegevens['dagen'][1]['verlofaanvragen']);
     }
 }

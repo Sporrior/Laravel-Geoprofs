@@ -13,7 +13,7 @@ class DashboardControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_dashboard_index_displays_correct_data()
+    public function test_dashboard_index_toont_juiste_data()
     {
         $user = User::factory()->create();
         UserInfo::factory()->create([
@@ -42,7 +42,7 @@ class DashboardControllerTest extends TestCase
         $response->assertViewHas('dagen');
     }
 
-    public function test_dashboard_index_displays_correct_pending_request()
+    public function test_dashboard_index_toont_juiste_lopende_aanvraag()
     {
         $user = User::factory()->create();
         UserInfo::factory()->create([
@@ -50,7 +50,7 @@ class DashboardControllerTest extends TestCase
             'voornaam' => 'John',
             'achternaam' => 'Doe',
             'email' => 'john.doe@example.com',
-            'telefoon' => '0123456789', // Add 'telefoon' here
+            'telefoon' => '0123456789',
             'verlof_dagen' => 20,
             'failed_login_attempts' => 0,
             'blocked_until' => null,
@@ -60,7 +60,7 @@ class DashboardControllerTest extends TestCase
 
         $type = Type::factory()->create();
 
-        $pendingAanvraag = Verlofaanvragen::factory()->create([
+        $lopendeAanvraag = Verlofaanvragen::factory()->create([
             'user_id' => $user->id,
             'verlof_soort' => $type->id,
             'status' => null,
@@ -75,8 +75,8 @@ class DashboardControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('dashboard'));
 
         $response->assertStatus(200);
-        $response->assertViewHas('lopendeAanvragen', function ($data) use ($pendingAanvraag) {
-            return $data->count() === 1 && $data->first()->id === $pendingAanvraag->id;
+        $response->assertViewHas('lopendeAanvragen', function ($data) use ($lopendeAanvraag) {
+            return $data->count() === 1 && $data->first()->id === $lopendeAanvraag->id;
         });
     }
 }
